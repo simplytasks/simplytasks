@@ -207,7 +207,7 @@ nav li.log-in a:hover {
     display: inline-block;
     width: 1.25em;
     height: 1.25em;
-    background-image: url(/images/timer.png);
+    background-image: url(images/timer.png);
     background-repeat: no-repeat;
     background-size: contain;
     margin-right: .5em;

@@ -1,3 +1,8 @@
+# hidden files
 .*
 !/.gitignore
 
+# tex related
+*.aux
+*.synctex
+*.log
