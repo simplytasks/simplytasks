@@ -173,6 +173,7 @@ nav li.log-in a:hover {
         width: 33%;
         height: auto;
         margin-right: 8em;
+        margin-top: -2em;
     }
 
     /* center call to action */
