@@ -5,4 +5,5 @@
 # tex related
 *.aux
 *.synctex
+*.synctex.gz
 *.log
