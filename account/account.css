@@ -46,15 +46,15 @@ body {
 }
 
 /* render logo */
-.navbar .logo {
+.logo {
    text-decoration: none;
    font-weight: bold;
    color: black;
    font-size: 1.2em;
 }
 
-.navbar .logo span {
-    color: var(--primary-color);
+.logo span {
+    color: var(--secondary-color);
 }
 
 /* lay out the navbar (just like home page) */
@@ -121,8 +121,12 @@ nav li.return-to-home a:hover {
     justify-content: center;
     align-items: center;
     text-align: center;
+    flex-direction: column;
 }
 
+.account-area .container .logo {
+    margin-bottom: .5em;
+}
 .account-area .container .form input {
     box-shadow: 0.3em 0.3em 0.3em var(--secondary-color);
     border-radius: 1em;
