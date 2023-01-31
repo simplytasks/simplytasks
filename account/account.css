@@ -160,7 +160,7 @@ nav li.return-to-home a:hover {
         align-items: center;
     }
     .account-area .container .form input {
-        width:80%;
+        width:67%;
         font-size: .6em;
     }
 
@@ -169,9 +169,9 @@ nav li.return-to-home a:hover {
     }
 }
 
-@media only screen and (max-width: 550px) {
+@media only screen and (max-width: 580px) {
     .account-area .container .form input {
-        width: 92%;
+        width: 90.5%;
         font-size: .5em;
     }
 
