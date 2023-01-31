@@ -113,10 +113,10 @@ nav li.return-to-home a:hover {
 
 .account-area .container {
     margin: 0 auto;
-    width: 50%;
-    height: 50%;
+    width: 100%;
+    height: auto;
     box-sizing: border-box;
-    padding: 5em;
+    padding: 6em;
     background-color: #268e8e;
     border-radius: 10em;
     max-width: 500px;
@@ -141,7 +141,7 @@ nav li.return-to-home a:hover {
 }
 
 .account-area .container .form input[type=submit] {
-    margin: .2em auto 0 auto;
+    margin: 1em auto 0 auto;
     width: 30%;
 }
 
@@ -149,7 +149,7 @@ nav li.return-to-home a:hover {
     cursor: pointer;
 }
 
-@media only screen and (max-width: 736px) {
+/* @media only screen and (max-width: 736px) {
 
     .account-area .form {
         width: 100%;
@@ -178,4 +178,4 @@ nav li.return-to-home a:hover {
     .account-area .container .form input[type=submit] {
         width: 40%;
     }
-}
+} */
