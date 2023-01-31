@@ -137,13 +137,13 @@ nav li.log-in a:hover {
 }
 
 /* fix watch video button */
-.watch-video {
+/* .watch-video {
     display: flex;
     align-items: center;
     justify-content: center;
     margin-top: 1em;
     font-weight: bold;
-}
+} */
 
 .hero-img {
     width: 30%;
