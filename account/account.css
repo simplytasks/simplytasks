@@ -54,6 +54,10 @@ body {
 }
 
 .logo span {
+    color: var(--primary-color);
+}
+
+.account-area .logo span {
     color: var(--secondary-color);
 }
 
