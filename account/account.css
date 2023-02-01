@@ -140,6 +140,10 @@ nav li.return-to-home a:hover {
     border: .2em solid var(--primary-color)
 }
 
+::placeholder {
+    color: var(--c, gray);
+}
+
 .account-area .container .form input[type=submit] {
     margin: 1em auto 0 auto;
     width: 30%;
