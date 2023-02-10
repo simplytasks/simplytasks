@@ -1,0 +1,272 @@
+@import url("https://fonts.googleapis.com/css2?family=IBM+Plex+Sans:wght@400;700&display=swap"); 
+
+
+ /* color scheme */
+ :root {
+  --primary-color: #268e8e;
+  --offwhite-color: #f4f3f3;
+  --secondary-color: #4cbfbf;
+  --gray-color: #3e4348;
+} 
+
+/* get rid of side space */
+.container {
+    width: 100%;
+}
+
+/* default rendering */
+body {
+  background: #e4e2e2;
+  margin: 0;
+  font-family: "IBM Plex Sans", sans-serif;
+  overflow-x: hidden;
+}
+
+/* strip links */
+a {
+    color: #444444;
+    text-decoration: none;
+}
+
+/* strip ul */
+ul {
+    list-style-type: none;
+    margin: 0;
+    padding: 0;
+}
+
+/* default for sections */
+section {
+    padding: 4em 2em;
+}
+
+
+/* NAVBAR */
+/* default */
+.navbar {
+    background: var(--offwhite-color);
+    padding: 1em;
+}
+
+/* render logo */
+.navbar .logo {
+   text-decoration: none;
+   font-weight: bold;
+   color: black;
+   font-size: 1.2em;
+}
+
+.navbar .logo span {
+    color: var(--primary-color);
+}
+
+/* lay out the navbar */
+.navbar .container {
+     display: grid;
+     grid-template-columns: auto auto;
+}
+
+nav {
+    justify-content: end;
+    width: 100%;
+}
+
+nav ul {
+    display: flex;
+    margin-right: 0;
+    padding-right: 0;
+    float: right;
+}
+
+nav a {
+    color: black;
+    font-size: 1em;
+    padding: 0em 1em;
+}
+
+nav li a:hover {
+    font-weight: bold;
+}
+
+nav li.log-in a {
+    color: var(--primary-color);
+    border: 0.3em solid var(--primary-color);
+    font-weight: bold;
+    border-radius: 5em;
+}
+
+nav li.log-in a:hover {
+    background-color: var(--primary-color);
+    color: var(--offwhite-color);
+}
+
+
+
+/* HERO */
+
+.hero {
+    text-align: center;
+}
+
+/* style the slogan */
+ .slogan {
+    text-transform: uppercase;
+    font-weight: bold;
+    color: gray;
+    letter-spacing: 0.25em;
+}
+
+/* set up leftside header font */
+.hero-left h1 {
+    font-size: 2.5em;
+    line-height: 1em;
+    margin-top: 0.25em;
+}
+
+/* fix make account button */
+.make-account {
+    background: var(--primary-color);
+    color: var(--offwhite-color);
+    text-decoration: none;
+    padding: 0.3em 1em;
+    font-size: 1.3em;
+    border-radius: 1em;
+    width: fit-content;
+    font-weight: bold;
+    display: inline-block;
+}
+
+.hero-img {
+    width: 30%;
+    margin-top: 3em;
+}
+
+/* fix hero display on big screens */
+@media only screen and (min-width: 1080px){
+    section {
+        padding: 10em 4em;
+    }
+
+    /* bring text to the left */
+    .hero .container {
+        display: flex;
+        justify-content: space-between;
+        text-align: left;
+        margin: 1em 3em 0 5em;
+    }
+
+    .hero-left h1 {
+        font-size: 3em;
+        width: 90%;
+    }
+
+    .hero-img {
+        width: 33%;
+        height: auto;
+        margin-right: 8em;
+        margin-top: -2em;
+    }
+
+    /* center call to action */
+    .hero-cta {
+        position: absolute;
+    }
+}
+
+.features-section {
+    background: var(--gray-color);
+    color: var(--offwhite-color);
+}
+
+ .features-list {
+    margin: 0;
+    padding-left: 0.2em;
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(18rem, 2fr));
+
+}
+
+.features-list li {
+    font-size: 1.1em;
+    margin-bottom: 1em;
+    margin-left: 2em;
+    position: relative;
+}
+
+.features-list li::before {
+    content: "";
+    display: inline-block;
+    width: 1.25em;
+    height: 1.25em;
+    background-image: url(images/timer.png);
+    background-repeat: no-repeat;
+    background-size: contain;
+    margin-right: .5em;
+} 
+
+.features-section img {
+    display: none;
+}
+
+/* adjust features section for bigger screens */
+@media only screen and (min-width: 1080px){
+    .features-list {
+        display: block;
+        margin-left: 5em;
+    }
+    .features-list li {
+        font-size:1.4em;
+    }
+    .features-list li:before {
+        width: 1.75em;
+        height: 1.75em;
+    }
+    .features-section img {
+        display: block;
+        position: absolute;
+        right: 0;
+        width: 30%;
+        bottom: -2em;
+    }
+    .features-section {
+        position: relative;
+    }
+}
+
+
+/* TESTIMONIALS SECTION */
+
+.testimonials-section {
+    background: var(--primary-color);
+    color: var(--offwhite-color);
+}
+
+.testimonials-section cite {
+    font-style: normal;
+}
+
+.testimonials-section img {
+    width: 5em; height: 5em;
+    border: 5px solid var(--secondary-color);
+    border-radius: 50%;
+    margin-top: -4.5em;
+}
+
+.testimonials-section li {
+    background: var(--secondary-color);
+    text-align: center;
+    padding: 2em 0em;
+    width: 70%;
+    margin: 0 auto 5em auto;
+    border-radius: 1em;
+}
+
+@media only screen and (min-width: 1080px){
+    .testimonials-section ul {
+        display: flex;
+    }
+
+    .testimonials-section li {
+        margin: 0 4em;
+    }
+}

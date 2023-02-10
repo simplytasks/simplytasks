@@ -1,0 +1,102 @@
+@import url("https://fonts.googleapis.com/css2?family=IBM+Plex+Sans:wght@400;700&display=swap"); 
+
+
+ /* color scheme */
+ :root {
+  --primary-color: #268e8e;
+  --offwhite-color: #f4f3f3;
+  --secondary-color: #4cbfbf;
+  --gray-color: #3e4348;
+} 
+
+/* strip links */
+a {
+    color: #444444;
+    text-decoration: none;
+}
+
+/* strip ul */
+ul {
+    list-style-type: none;
+    margin: 0;
+    padding: 0;
+}
+
+/* get rid of side space */
+.container {
+    width: 100%;
+}
+
+/* default rendering */
+body {
+  background: #e4e2e2;
+  margin: 0;
+  padding: 0;
+  height: 100%;
+  font-family: "IBM Plex Sans", sans-serif;
+  overflow-x: hidden;
+}
+
+/* NAVBAR */
+
+/* default */
+.navbar {
+    background: var(--offwhite-color);
+    padding: 1em;
+}
+
+/* render logo */
+.logo {
+   text-decoration: none;
+   font-weight: bold;
+   color: black;
+   font-size: 1.2em;
+}
+
+.logo span {
+    color: var(--primary-color);
+}
+
+/* .account-area .logo span {
+    color: var(--secondary-color);
+} */
+
+/* lay out the navbar (just like home page) */
+.navbar .container {
+     display: grid;
+     grid-template-columns: auto auto;
+}
+
+nav {
+    justify-content: end;
+    width: 100%;
+}
+
+nav ul {
+    display: flex;
+    margin-right: 0;
+    padding-right: 0;
+    float: right;
+}
+
+nav a {
+    color: black;
+    font-size: 1em;
+    padding: 0em 1em;
+}
+
+nav li a:hover {
+    font-weight: bold;
+}
+
+nav li.log-out a {
+    color: var(--primary-color);
+    border: 0.3em solid var(--primary-color);
+    font-weight: bold;
+    border-radius: 5em;
+}
+
+nav li.log-out a:hover {
+    background-color: var(--primary-color);
+    color: var(--offwhite-color);
+}
