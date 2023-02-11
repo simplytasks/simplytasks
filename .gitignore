@@ -12,21 +12,23 @@
 
 *~
 
+# metadata
+project-metadata/arteen-weekly-reports
 
 ###
 # react related
 ###
 
 # dependencies
-/node_modules
-/.pnp
+simply-tasks/node_modules
+simply-tasks/.pnp
 .pnp.js
 
 # testing
-/coverage
+simply-tasks/coverage
 
 # production
-/build
+simply-tasks/build
 
 # misc
 .DS_Store
