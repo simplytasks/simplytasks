@@ -153,6 +153,10 @@ nav li.return-to-home a:hover {
     cursor: pointer;
 }
 
+.account-area .container .form input[type=submit]:active {
+    transform: scale(0.95);   
+}
+
 /* @media only screen and (max-width: 736px) {
 
     .account-area .form {

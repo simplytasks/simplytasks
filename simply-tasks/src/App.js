@@ -1,16 +1,20 @@
+import TaskPage from './dynamic/TaskPage'
+import HomePage from './static/HomePage/HomePage'
+import LogInPage from './static/LogInPage/LogInPage'
 
-
-import NavBar from './components/NavBar.js'
-import TaskList from './components/TaskList.js'
+import {useState} from 'react';
 
 function App() {
 
-  return (
-    <>
-      <NavBar />
-      <TaskList />
-    </>
-  );
+  const [currentPage, setCurrentPage] = useState('home')
+
+  if (currentPage === 'home'){
+    return <HomePage setCurrentPage={setCurrentPage} />;
+  } else if (currentPage === 'log-in'){
+    return <LogInPage setCurrentPage={setCurrentPage} />;
+  } else {
+    return <TaskPage setCurrentPage={setCurrentPage} />
+  }
 }
 
 export default App;

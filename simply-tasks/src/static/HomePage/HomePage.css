@@ -125,6 +125,8 @@ nav li.log-in a:hover {
 
 /* fix make account button */
 .make-account {
+    margin-top: 1em;
+    box-shadow: 0.1em 0.1em 0.1em var(--secondary-color);
     background: var(--primary-color);
     color: var(--offwhite-color);
     text-decoration: none;
@@ -134,6 +136,10 @@ nav li.log-in a:hover {
     width: fit-content;
     font-weight: bold;
     display: inline-block;
+}
+
+.make-account:active {
+    transform: scale(0.95);
 }
 
 .hero-img {
@@ -198,7 +204,7 @@ nav li.log-in a:hover {
     display: inline-block;
     width: 1.25em;
     height: 1.25em;
-    background-image: url(images/timer.png);
+    background-image: url(timer.png);
     background-repeat: no-repeat;
     background-size: contain;
     margin-right: .5em;
@@ -269,5 +275,11 @@ nav li.log-in a:hover {
 
     .testimonials-section li {
         margin: 0 4em;
+    }
+}
+
+@media only screen and (min-width: 1300px){
+    .hero-left {
+        margin-top: 3%;
     }
 }

@@ -1,4 +1,4 @@
-function NavBar() {
+function NavBar({setCurrentPage}) {
     return (
     <div className="navbar"> 
         <div className="container">
@@ -6,7 +6,9 @@ function NavBar() {
   
           <nav>
               <ul>
-                  <li className="log-out"><a href="home-page/home-page.html">Log Out</a></li>
+                  <li className="log-out">
+                    <a href="home-page/home-page.html" onClick={()=>setCurrentPage('home')}>Log Out</a>
+                  </li>
               </ul>
           </nav>
         </div>
