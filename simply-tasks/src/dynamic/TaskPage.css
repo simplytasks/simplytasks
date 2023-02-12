@@ -1,5 +1,4 @@
-@import url("https://fonts.googleapis.com/css2?family=IBM+Plex+Sans:wght@400;700&display=swap"); 
-
+@import url('https://fonts.googleapis.com/css2?family=IBM+Plex+Sans:wght@200;400;500;600;700&display=swap');
 
  /* color scheme */
  :root {
@@ -189,5 +188,50 @@ TASK LIST
     font-weight: bold;
     color: gray;
     letter-spacing: 0.1em;
-    margin-top: 7em;
+    margin-top: 5em;
+}
+
+/* task adder */
+
+.task-adder {
+  display: flex;
+  justify-content: space-between;
+  background: var(--offwhite-color);
+  margin: 0.3em;
+  padding: 0.95em;
+}
+
+.task-adder .✔ {
+  color: var(--primary-color);
+  cursor: pointer;
+  margin-bottom: .4em
+}
+
+.task-adder .left-side {
+  display: flex;
+  flex-direction: column;
+  float: left;
+  margin-left: .85em;
+}
+
+.task-adder .right-side {
+  float: right;
+  display: flex;
+  flex-direction: column;
+  margin-right: .33em;
+  font-size: 1.1em;
+}
+
+.task-adder .left-side input[type=text] {
+  font-size: 1.05em;
+  margin-bottom: .1em;
+}
+
+.task-adder .left-side input[type=text]::placeholder {
+  font-weight: 550;
+}
+
+.task-adder .left-side input[type=date] {
+  font-size: .9em;
+  width: 60%;
 }
