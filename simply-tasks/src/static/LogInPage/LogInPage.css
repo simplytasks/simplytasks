@@ -142,6 +142,7 @@ nav li.return-to-home a:hover {
 
 ::placeholder {
     color: var(--c, gray);
+    font-weight: 550;
 }
 
 .account-area .container .form input[type=submit] {
