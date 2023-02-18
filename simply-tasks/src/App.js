@@ -3,6 +3,7 @@ import HomePage from './static/HomePage/HomePage'
 import LogInPage from './static/LogInPage/LogInPage'
 
 import {useState} from 'react';
+import CalendarPage from './dynamic/CalendarPage';
 
 function App() {
 
@@ -12,6 +13,8 @@ function App() {
     return <HomePage setCurrentPage={setCurrentPage} />;
   } else if (currentPage === 'log-in'){
     return <LogInPage setCurrentPage={setCurrentPage} />;
+  } else if (currentPage === 'calendar'){
+    return <CalendarPage setCurrentPage={setCurrentPage} />;
   } else {
     return <TaskPage setCurrentPage={setCurrentPage} />
   }
