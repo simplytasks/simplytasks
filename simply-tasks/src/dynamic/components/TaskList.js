@@ -42,22 +42,19 @@ function TaskList () {
       }
       
       const sortTasks = (currentTasks) => {
-        if(sortMethod === 'Message')
-          currentTasks.sort(sortTasksByMessage);
+        let copyOfCurrentTasks = [...currentTasks];
+        if(sortMethod === 'Message'){
+          copyOfCurrentTasks.sort(sortTasksByMessage);
+        }
         //implement other if statements here
-        setTasks(currentTasks);
+        else{
+        }
+        return copyOfCurrentTasks;
       }
 
-      const changeSort = () => {
-        let newSortMethod = 'Message';
-        // if(sortMethod === 'None') 
-        //   newSortMethod = 'Message'
-        // else if(sortMethod === 'Message')
-        //   newSortMethod = 'None'
+      const changeSortMethod = (newSortMethod) => {
         setSortMethod(newSortMethod);
-        sortTasks(tasks);
       }
-
     
       // delete task
       const deleteTask = (e, id) => {
@@ -85,16 +82,15 @@ function TaskList () {
         const newTask = { id, ...task, highlight };
         let currentTasks = [newTask, ...tasks]
         setTasks(currentTasks);
-        sortTasks(currentTasks);
       }
 
     return (
         <>
             <div className="task-list">
                 <div className="container">
-                <TaskListHeader setAdder={() => setShowAdder(true)} changeSort={() => changeSort()}/>
+                <TaskListHeader setAdder={() => setShowAdder(true)} changeSort={changeSortMethod}/>
                 {showAdder && <TaskAdder addTask={addTask} unsetAdder={() => setShowAdder(false)} /> }
-                {tasks.length > 0 ? <Tasks tasks={tasks} highlightTask={highlightTask} deleteTask={deleteTask} />: <div className="no-tasks">Empty Task List</div>}
+                {tasks.length > 0 ? <Tasks tasks={sortTasks(tasks)} highlightTask={highlightTask} deleteTask={deleteTask} />: <div className="no-tasks">Empty Task List</div>}
                 </div>
             </ div>
         </>
