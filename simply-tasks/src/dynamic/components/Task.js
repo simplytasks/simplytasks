@@ -7,6 +7,8 @@ import SubtaskAdder from './SubtaskAdder'
 const Task = ({task, deleteTask, highlightTask, deleteSubtask, 
     highlightSubtask, showSubtasks, addSubtask, toggleSubtaskAdder}) => {
 
+// Task objects display their contents and handle their own deletion
+
     // onDoubleClick conflict with Click so add separate mechanism for show subtasks
     // which honestly looks amazing
     return (
