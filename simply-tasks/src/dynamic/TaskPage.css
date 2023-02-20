@@ -235,3 +235,25 @@ TASK LIST
   font-size: .9em;
   width: 60%;
 }
+
+/* task sort-by selector */
+
+.sort-selector {
+  /* color: var(--off-white-color);
+  background: var(--primary-color);
+  margin: 0.3em;
+  padding: 0.1em; */
+  margin:0.13em
+}
+
+.sort-selector .label{
+  margin: 0.2em;
+  padding: 0.95em;
+}
+
+.sort-selector .selector{
+  color: var(--off-white-color);
+  margin: 0.3em;
+  padding: 0.3em;
+}
+

@@ -32,7 +32,7 @@ function TaskList () {
       // will show TaskAdder
       const [showAdder, setShowAdder] = useState(false);
       // keeps track of how tasks will be sorted
-      const [sortMethod, setSortMethod] = useState('None');
+      const [sortMethod, setSortMethod] = useState('Latest');
 
       const sortTasksByMessage = (task1, task2) => {
         if(tasks.length < 2) return;
@@ -47,16 +47,25 @@ function TaskList () {
         return 0;
       }
       
+      const sortTasksByDueDate = (task1, task2) => {
+        //if task1 and task2 are not in the right format, return 0
+        //if task 1 is not in the right format, return 1
+        //if task 2 is not in the right format, return -1
+        //otherwise:
+        //algorithm to implement this: 10000 * year + 100 * month + day; then compare the two numbers
+      }
+
+      //if the tasks get an attribute for their date posted, I won't need to make a copy and then can just add sortByDatePosted()
       const sortTasks = (currentTasks) => {
-        let copyOfCurrentTasks = [...currentTasks];
+        let currentTasksCopy = [...currentTasks];
         if(sortMethod === 'Message'){
-          copyOfCurrentTasks.sort(sortTasksByMessage);
+          currentTasksCopy.sort(sortTasksByMessage);
         }
         //implement other if statements here
         else if(sortMethod === 'Highlighted'){
-          copyOfCurrentTasks.sort(sortTasksByHighlight);
+          currentTasksCopy.sort(sortTasksByHighlight);
         }
-        return copyOfCurrentTasks;
+        return currentTasksCopy;
       }
 
       const changeSortMethod = (newSortMethod) => {

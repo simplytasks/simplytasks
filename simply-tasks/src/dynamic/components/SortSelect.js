@@ -1,19 +1,22 @@
 import React from "react";
 
-const SortSelect = ({handleSortChange}) => {
-    const handleChange = (event) => {
-        handleSortChange(event.target.value);
+const SortSelect = ({changeSort}) => {
+    const handleUserSelection = (event) => {
+        changeSort(event.target.value); 
+        //event.target.value is the value of the option that was selected
     }
 
     return (
-    <>
-        <label htmlFor="sortby">Sort by:</label>
-        <select id="sortby" onChange={handleChange}>
-            <option value="None">None</option>
-            <option value="Message">Message</option>
-            <option value="Highlighted">Highlighted</option>
-            <option value="Date">Date</option>
-        </select>
+    <>  
+        <div className="sort-selector">
+            <label className="label" htmlFor="sortby">Sort by:</label>
+            <select className="selector" id="sortby" onChange={handleUserSelection}>
+                <option value="Latest">Latest</option>
+                <option value="Upcoming">Upcoming</option>
+                <option value="Highlighted">Highlighted</option>
+                <option value="Message">Message</option>
+            </select>
+        </div>
     </>
     );
 }
