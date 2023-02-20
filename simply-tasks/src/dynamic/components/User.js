@@ -1,29 +1,42 @@
-import { db, UsrColRef, userDocs} from "../../backend/firebase"
-import { getDocs, addDoc, deleteDoc, doc, collection } from "firebase/firestore"
+import { db } from "../../backend/firebase"
+import { addDoc, doc, collection, updateDoc} from "firebase/firestore"
+import { useState } from "react";
 
 
 //Initial Tasks for new users
-export function initTasks(uid) {
-    const docRef = doc(db, "Users", uid);
-    const colRef = collection(docRef, "Tasks")
+export async function initTasks(uid) {
+    let tempRef;
+    
+    const docRef = doc(db, "Users", uid); //Current User's document
+        
+    const colRef = collection(docRef, "Tasks") //Current User's tasks
     //First default task
-    addDoc(colRef, {
+    tempRef = await addDoc(colRef, {
         content: "Double-click on this task to highlight it",
         date: "Today",
         highlight: false,
     })
+    //get ID from firebase and add it as ID
+    await updateDoc(doc(db, "Users", uid, "Tasks", tempRef.id), {id: tempRef.id})
+
     //Second default task
-    addDoc(colRef, {
+    tempRef = await addDoc(colRef, {
         content: "Click on this task to see subtasks",
         date: "Today",
         highlight: false,
     })
+    //get ID from firebase and add it as ID
+    await updateDoc(doc(db, "Users", uid, "Tasks", tempRef.id), {id: tempRef.id})
+
     //Third default task
-    addDoc(colRef, {
+    tempRef = await addDoc(colRef, {
         content: "Click the delete button to delete the task",
         date: "Today",
         highlight: false,
     })
+    //get ID from firebase and add it as ID
+    await updateDoc(doc(db, "Users", uid, "Tasks", tempRef.id), {id: tempRef.id})
+
 }
 
 // -=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-
@@ -34,7 +47,11 @@ export function initTasks(uid) {
  * our task manager application. 
  * 
  * This function should only be called once, and it hardcodes 
- * those default tasks for new users.
+ * those default tasks for new users. Also gets ID from firebase
+ * so we can list all the tasks
+ * 
+ * For future reference we'll need to update fields to work with
+ * preserving order for the tasks.
  */
 
 // -=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-
