@@ -171,13 +171,19 @@ TASK LIST
     font-weight: normal;
   }
 
+  .task .arrow {
+    color: var(--primary-color);
+    font-size: 1.1em;
+    margin-right: .05em;
+  }
+
   @media only screen and (max-width: 600px) {   /* fix for small-scale */
     .task-list .container {
         max-width: 80%;
       }
   }
 
-  /* error msg for no tasks */
+  /* no task msg for no tasks */
 
 
 .task-list .container {
@@ -235,3 +241,37 @@ TASK LIST
   font-size: .9em;
   width: 60%;
 }
+
+/* SUB-TASKS */
+
+.subtask {
+  background: var(--offwhite-color);
+  margin: 0.3em;
+  padding: .625em 1.25em;
+  width: 60%;
+  margin-left: .9em;
+  margin-bottom: .7em;
+}
+
+.subtask.highlight {
+  border-left: .4em solid var(--secondary-color);
+}
+
+.subtask h4 {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  font-size: .99em;
+}
+
+.subtask .X {
+  margin-right: -0.5em;
+}
+
+/* .task h5 {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  font-size:.9em;
+  font-weight: normal;
+} */
