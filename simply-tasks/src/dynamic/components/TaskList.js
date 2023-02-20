@@ -48,23 +48,41 @@ function TaskList () {
       }
       
       const sortTasksByDueDate = (task1, task2) => {
-        //if task1 and task2 are not in the right format, return 0
-        //if task 1 is not in the right format, return 1
-        //if task 2 is not in the right format, return -1
-        //otherwise:
-        //algorithm to implement this: 10000 * year + 100 * month + day; then compare the two numbers
+        if(task1.date === '' && task2.date === '') return 0;
+        if(task1.date === '') return 1; 
+        if(task2.date === '') return -1;
+
+        const task1Year = parseInt(task1.date.substr(0, 4));
+        const task2Year = parseInt(task2.date.substr(0, 4));
+
+        const task1Month = parseInt(task1.date.substr(5, 7));
+        const task2Month = parseInt(task2.date.substr(5, 7));
+
+        const task1Day = parseInt(task1.date.substr(8, 10));
+        const task2Day = parseInt(task2.date.substr(8, 10));
+
+        const score1 = 10000 * task1Year + 100 * task1Month + task1Day;
+        const score2 = 10000 * task2Year + 100 * task2Month + task2Day; 
+
+        if(score1 < score2) return -1; 
+        else if (score1 > score2) return 1; 
+        return 0;
       }
 
       //if the tasks get an attribute for their date posted, I won't need to make a copy and then can just add sortByDatePosted()
       const sortTasks = (currentTasks) => {
         let currentTasksCopy = [...currentTasks];
+
         if(sortMethod === 'Message'){
           currentTasksCopy.sort(sortTasksByMessage);
         }
-        //implement other if statements here
         else if(sortMethod === 'Highlighted'){
           currentTasksCopy.sort(sortTasksByHighlight);
         }
+        else if(sortMethod === 'Upcoming'){
+          currentTasksCopy.sort(sortTasksByDueDate);
+        }
+
         return currentTasksCopy;
       }
 
