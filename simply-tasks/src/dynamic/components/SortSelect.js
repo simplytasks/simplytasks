@@ -9,12 +9,11 @@ const SortSelect = ({changeSort}) => {
     return (
     <>  
         <div className="sort-selector">
-            <label className="label" htmlFor="sortby">Sort by:</label>
-            <select className="selector" id="sortby" onChange={handleUserSelection}>
-                <option value="Latest">Latest</option>
-                <option value="Upcoming">Upcoming</option>
-                <option value="Highlighted">Highlighted</option>
-                <option value="Message">Message</option>
+            <select className="selector" onChange={handleUserSelection}>
+                <option value="Latest">Sort by: Latest</option>
+                <option value="Upcoming">Sort by: Upcoming</option>
+                <option value="Highlighted">Sort by: Highlighted</option>
+                <option value="Message">Sort by: Message</option>
             </select>
         </div>
     </>
