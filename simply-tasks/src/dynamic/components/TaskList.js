@@ -40,6 +40,12 @@ function TaskList () {
         else if (task1.content > task2.content) return 1;
         else return 0; 
       }
+
+      const sortTasksByHighlight = (task1, task2) => {
+        if(task1.highlight) return -1;
+        if(task2.highlight) return 1;
+        return 0;
+      }
       
       const sortTasks = (currentTasks) => {
         let copyOfCurrentTasks = [...currentTasks];
@@ -47,7 +53,8 @@ function TaskList () {
           copyOfCurrentTasks.sort(sortTasksByMessage);
         }
         //implement other if statements here
-        else{
+        else if(sortMethod === 'Highlighted'){
+          copyOfCurrentTasks.sort(sortTasksByHighlight);
         }
         return copyOfCurrentTasks;
       }
@@ -80,8 +87,7 @@ function TaskList () {
         const highlight = false;
 
         const newTask = { id, ...task, highlight };
-        let currentTasks = [newTask, ...tasks]
-        setTasks(currentTasks);
+        setTasks([newTask, ...tasks]);
       }
 
     return (
