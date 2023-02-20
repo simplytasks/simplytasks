@@ -1,6 +1,6 @@
 import './LogInPage.css';
 import { UsrColRef } from "../../backend/firebase"
-import { getDocs, addDoc } from "firebase/firestore"
+import { getDocs, addDoc, getDoc } from "firebase/firestore"
 
 import { initTasks } from '../../dynamic/components/User';
 
@@ -36,31 +36,32 @@ const LogIn = ({setCurrentPage}) => {
             setTimeout(() => username.style.setProperty('--c', 'gray'), 1500);
         } else {
             let count = 0;
-            let newUser = false;
-            getDocs(UsrColRef).then((snapshot) =>{
+            let existingUser = true;
+            const items =  getDocs(UsrColRef).then(async (snapshot) =>{
                 snapshot.docs.forEach((user) => {
                     console.log(count + ": Current UserID: " + user.id + " - " + user.data().username);
                     count++;
 
                     // Check for new users
-                    if(user.data().username !== username.value){
-                        console.log("Not Found");
-                        newUser = true;
-                    }
-                    
-                    //Add new User to document
-                    if(newUser){
-                        addDoc(UsrColRef, {username : username.value}).then((ref) =>{
-                            console.log("Added user: " + ref.id );
-                            initTasks(ref.id);
-                        });
-                        
-                        newUser = false;
-                    }
+                    if(user.data().username === username.value){
+                        console.log("Found User");
+                        existingUser = false;
+                    }  
                 })
+                
+                //Add new User to document
+                if(existingUser == true){
+                    const docRef = await addDoc(UsrColRef, {username : username.value})
+                    
+                    initTasks(docRef.id);
+                    
+                    existingUser = true;
+                }
+                
+                
             }).catch((error) =>{
                 console.log(error);
-            });
+            })
             // console.log(username.value); // grab value of username for database, rerouted to specific user page
             setCurrentPage('user');
         }
