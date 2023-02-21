@@ -56,9 +56,11 @@ function TaskList () {
       const [sortMethod, setSortMethod] = useState('Latest');
 
       const sortTasksByMessage = (task1, task2) => {
+        let task1Message = task1.content.toLowerCase();
+        let task2Message = task2.content.toLowerCase();
         if(tasks.length < 2) return;
-        if(task1.content < task2.content) return -1;
-        else if (task1.content > task2.content) return 1;
+        if(task1Message < task2Message) return -1;
+        else if (task1Message > task2Message) return 1;
         else return 0; 
       }
 
@@ -73,14 +75,14 @@ function TaskList () {
         if(task1.date === '') return 1; 
         if(task2.date === '') return -1;
 
-        const task1Year = parseInt(task1.date.substr(0, 4));
-        const task2Year = parseInt(task2.date.substr(0, 4));
+        const task1Year = parseInt(task1.date.substr(6, 10));
+        const task2Year = parseInt(task2.date.substr(6, 10));
 
-        const task1Month = parseInt(task1.date.substr(5, 7));
-        const task2Month = parseInt(task2.date.substr(5, 7));
+        const task1Month = parseInt(task1.date.substr(0, 2));
+        const task2Month = parseInt(task2.date.substr(0, 2));
 
-        const task1Day = parseInt(task1.date.substr(8, 10));
-        const task2Day = parseInt(task2.date.substr(8, 10));
+        const task1Day = parseInt(task1.date.substr(4, 6));
+        const task2Day = parseInt(task2.date.substr(4, 6));
 
         const score1 = 10000 * task1Year + 100 * task1Month + task1Day;
         const score2 = 10000 * task2Year + 100 * task2Month + task2Day; 
