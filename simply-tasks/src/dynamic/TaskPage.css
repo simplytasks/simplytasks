@@ -171,10 +171,11 @@ TASK LIST
     font-weight: normal;
   }
 
-  .task .arrow {
+  .arrow {
     color: var(--primary-color);
     font-size: 1.1em;
     margin-right: .05em;
+    cursor: pointer;
   }
 
   @media only screen and (max-width: 600px) {   /* fix for small-scale */
@@ -248,9 +249,10 @@ TASK LIST
   background: var(--offwhite-color);
   margin: 0.3em;
   padding: .625em 1.25em;
+  /* width: 58.9%; */
   width: 60%;
   margin-left: .9em;
-  margin-bottom: .7em;
+  /* border-left: 0.4em solid transparent; */
 }
 
 .subtask.highlight {
@@ -261,17 +263,48 @@ TASK LIST
   display: flex;
   align-items: center;
   justify-content: space-between;
-  font-size: .99em;
+  font-size: .95em;
 }
 
 .subtask .X {
   margin-right: -0.5em;
 }
 
-/* .task h5 {
+.subtask-adder {
   display: flex;
-  align-items: center;
   justify-content: space-between;
-  font-size:.9em;
-  font-weight: normal;
-} */
+  background: var(--offwhite-color);
+  margin: 0.3em;
+  padding: 0.625em 1.25em;
+  width: 60%;
+  margin-left: 0.9em;
+}
+
+.subtask-input {
+  width: 60%;
+  font-size: .9em;
+}
+
+.subtask-adder .✔ {
+  color: var(--primary-color);
+  cursor: pointer;
+  margin-top: .2em;
+  margin-right: -0.5em;
+  font-size: 0.9em;
+}
+
+.subtask-adder-area {
+  display: flex;
+  margin-top: -.25em;
+}
+
+.subtask-adder-area .arrow {
+  float: right;
+  height: auto;
+  margin-left: .3em;
+  font-size: 1.4em;
+}
+
+.subtask-adder-area .arrow.right {
+  margin: .5em 0 .4em 1em;
+}

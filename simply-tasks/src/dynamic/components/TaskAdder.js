@@ -30,7 +30,7 @@ const TaskAdder = ({addTask, unsetAdder}) => {
         <form className='task-adder'>
             <div className='left-side'>
                 <input type='text' placeholder='Type your new task'
-                value={content} onChange={(e) => setContent(e.target.value)} />
+                 value={content} onChange={(e) => setContent(e.target.value)} />
                 <input type='date' min={today}
                 value={inputDate} onChange={(e) => setInputDate(e.target.value) } />
             </div>

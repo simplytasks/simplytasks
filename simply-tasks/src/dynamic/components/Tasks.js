@@ -1,6 +1,7 @@
 import Task from './Task'
 
-const Tasks = ({tasks, deleteTask, highlightTask, deleteSubtask, highlightSubtask, showSubtasks}) =>
+const Tasks = ({tasks, deleteTask, highlightTask, deleteSubtask, 
+    highlightSubtask, showSubtasks, addSubtask, toggleSubtaskAdder}) =>
 {
     return (
         <div className="tasks">
@@ -8,7 +9,8 @@ const Tasks = ({tasks, deleteTask, highlightTask, deleteSubtask, highlightSubtas
             tasks.map((task) =>(
             // replace keys with database info in long run
             <Task key={task.id} task={task} deleteTask={deleteTask} highlightTask={highlightTask}
-             deleteSubtask={deleteSubtask} highlightSubtask={highlightSubtask} showSubtasks={showSubtasks} />
+             deleteSubtask={deleteSubtask} highlightSubtask={highlightSubtask} showSubtasks={showSubtasks}
+             addSubtask={addSubtask} toggleSubtaskAdder={toggleSubtaskAdder} />
             ))
             }
         </div>
