@@ -35,12 +35,12 @@ const HomePage = ({setCurrentPage}) => {
     <section id="features-section" className="features-section">
         <div className="container">
             <ul className="features-list">
-                <li>Add new tasks!</li>
-                <li>Remove any old tasks!</li>
-                <li>Highlight tasks!</li>
-                <li>Sort by highlight or by date added!</li>
-                <li>Fun to use!</li>
-                <li>Great to look at!</li>
+                <li>Add, highlight, and remove tasks!</li>
+                <li>Create sub-tasks specific to any task!</li>
+                <li>Sort your tasks by date or highlight!</li>
+                <li>Drag and drop to re-organize your tasks!</li>
+                <li>View your tasks in a calender view!</li>
+                <li>Never worry about losing your tasks!</li>
             </ul>
 
             <img alt='' src="/images/desktop-hands.jpg" />

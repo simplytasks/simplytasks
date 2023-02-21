@@ -11,23 +11,44 @@ function TaskList () {
     const [tasks, setTasks] = useState([
         {
           id: 0,
-          content: 'finish task list',
-          date: '2023-02-12',
-          highlight: true
+          content: 'finish drag and drop functionality',
+          date: '02/27/2023',
+          highlight: true,
+          showSubtasks: true,
+          showSubtaskAdder: true,
+          subtasks: [
+            {
+              id: 0,
+              content: 'an example subtask',
+              highlight: false
+            }
+          ]
         },
         {
           id: 1,
-          content: 'finish add functionality',
-          date: '2023-02-12',
-          highlight: false
+          content: 'finish sort functionality',
+          date: '02/27/2023',
+          highlight: false,
+          showSubtasks: false,
+          showSubtaskAdder: false,
+          subtasks: [{
+            id: 0,
+            content: 'a second example subtask',
+            highlight: true
+          }]
         },
         {
           id: 2,
-          content: 'make add functionality look really good',
-          date: '2023-02-12',
-          hightlight: false
+          content: 'finish database task tracking',
+          date: '02/27/2023',
+          hightlight: false,
+          showSubtasks: false,
+          showSubtaskAdder: false,
+          subtasks: []
         }
       ]);
+
+      // MAIN TASKS
 
       // will show TaskAdder
       const [showAdder, setShowAdder] = useState(false);
@@ -112,9 +133,77 @@ function TaskList () {
         // this will break at some point if enough tasks are added
         const id = Math.floor(Math.random() * 11111) + 3;
         const highlight = false;
+        const showSubtasks = false;
+        const showSubtaskAdder = false;
+        const subtasks = [];
 
-        const newTask = { id, ...task, highlight };
+        const newTask = { id, ...task, highlight, showSubtasks, showSubtaskAdder, subtasks};
         setTasks([newTask, ...tasks]);
+      }
+
+      // SUBTASKS
+
+      const showSubtasks = (e, id) => {
+        e.stopPropagation();
+        setTasks(
+          tasks.map((task) => task.id === id ? {...task, showSubtasks: !task.showSubtasks, showSubtaskAdder: false} : task)
+        )
+      }
+
+      const deleteSubtask = (e, taskID, subtaskID) => {
+        e.stopPropagation();
+        const updatedTasks = [...tasks];
+        updatedTasks.forEach(
+          (task) => {
+            if (task.id === taskID){
+              task.subtasks = task.subtasks.filter((subtask) => subtask.id !== subtaskID);
+            }
+          }
+        )
+        setTasks(updatedTasks);
+      }
+
+      const highlightSubtask = (taskID, subtaskID) => {
+        const updatedTasks = [...tasks];
+        updatedTasks.forEach(
+          (task) => {
+            if (task.id === taskID){
+              task.subtasks = task.subtasks.map(
+                (subtask) => subtask.id === subtaskID ? { ...subtask, highlight: !subtask.highlight }: subtask
+              )
+            }
+          }
+        )
+        setTasks(updatedTasks);
+      }
+
+      const addSubtask = (content, taskID) => {
+
+        const id = Math.floor(Math.random() * 11111) + 3;
+        const highlight = false;
+        const newSubtask = {id, content, highlight};
+
+        const updatedTasks = [...tasks];
+        updatedTasks.forEach(
+          (task) => {
+            if (task.id === taskID){
+              task.subtasks = [...task.subtasks, newSubtask]
+            }
+          }
+        )
+        setTasks(updatedTasks);
+      }
+
+      const toggleSubtaskAdder = (taskID) => {
+        const updatedTasks = [...tasks];
+        updatedTasks.forEach(
+          (task) => {
+            if (task.id === taskID){
+              task.showSubtaskAdder = !task.showSubtaskAdder;
+            }
+          }
+        )
+        setTasks(updatedTasks);
       }
 
     return (
@@ -123,7 +212,9 @@ function TaskList () {
                 <div className="container">
                 <TaskListHeader setAdder={() => setShowAdder(true)} changeSort={changeSortMethod}/>
                 {showAdder && <TaskAdder addTask={addTask} unsetAdder={() => setShowAdder(false)} /> }
-                {tasks.length > 0 ? <Tasks tasks={sortTasks(tasks)} highlightTask={highlightTask} deleteTask={deleteTask} />: <div className="no-tasks">Empty Task List</div>}
+                {tasks.length > 0 ? <Tasks tasks={sortTasks(tasks)} highlightTask={highlightTask} deleteTask={deleteTask}
+                 highlightSubtask={highlightSubtask} deleteSubtask={deleteSubtask} showSubtasks={showSubtasks}
+                 addSubtask={addSubtask} toggleSubtaskAdder={toggleSubtaskAdder} />: <div className="no-tasks">Empty Task List</div>}
                 </div>
             </ div>
         </>
