@@ -264,6 +264,7 @@ nav li.log-in a:hover {
     text-align: center;
     padding: 2em 0em;
     width: 70%;
+    max-width: 25em;
     margin: 0 auto 5em auto;
     border-radius: 1em;
 }
@@ -275,6 +276,8 @@ nav li.log-in a:hover {
 
     .testimonials-section li {
         margin: 0 4em;
+        padding: 1em;
+        max-width: 20em;
     }
 }
 
