@@ -13,11 +13,11 @@ function TaskList () {
     let [tasks, setTasks] = useState([
         {
           id: 0,
-          content: 'finish drag and drop functionality',
+          content: '+0',
           date: '02/27/2023',
-          highlight: true,
-          showSubtasks: true,
-          showSubtaskAdder: true,
+          highlight: false,
+          showSubtasks: false,
+          showSubtaskAdder: false,
           subtasks: [
             {
               id: 0,
@@ -29,8 +29,8 @@ function TaskList () {
         },
         {
           id: 1,
-          content: 'finish sort functionality',
-          date: '02/27/2023',
+          content: '+30',
+          date: '03/27/2023',
           highlight: false,
           showSubtasks: false,
           showSubtaskAdder: false,
@@ -43,8 +43,8 @@ function TaskList () {
         },
         {
           id: 2,
-          content: 'finish database task tracking',
-          date: '02/27/2023',
+          content: '+360',
+          date: '02/22/2024',
           hightlight: false,
           showSubtasks: false,
           showSubtaskAdder: false,
@@ -56,7 +56,7 @@ function TaskList () {
       // will show TaskAdder
       const [showAdder, setShowAdder] = useState(false);
       // keeps track of how tasks will be sorted
-      const [sortMethod, setSortMethod] = useState('Sort by: Newest');
+      const [sortMethod, setSortMethod] = useState('Sort by: Recently Added');
       
       const sortTasksByTimeAdded = (task1, task2) =>{
         if(task1.timeAdded < task2.timeAdded) 
@@ -101,30 +101,42 @@ function TaskList () {
         return 0;
       }
 
+      const areAnyTasksHighlighted = (currentTasksCopy) => {
+        let myBool = false;
+        currentTasksCopy.forEach(
+          (task) => {
+            if (task.highlight) myBool = true;
+          }
+        )
+        return myBool;
+      }
+
       const sortTasks = () => {
         let currentTasksCopy = [...tasks];
 
         if(sortMethod === 'Sort by: Highlighted'){
-          currentTasksCopy.sort(sortTasksByHighlight);
+          if (areAnyTasksHighlighted(currentTasksCopy)){
+            currentTasksCopy.sort(sortTasksByHighlight);
+          }
         }
-        else if(sortMethod === 'Sort by: Due Date'){
+        else if (sortMethod === 'Sort by: Due Date'){
           currentTasksCopy.sort(sortTasksByDueDate);
         }
-        else{
+        else if (sortMethod === 'Sort by: Recently Added') {
           currentTasksCopy.sort(sortTasksByTimeAdded);
         }
 
-        tasks = currentTasksCopy; // I don't use setTasks() here to avoid an infinite render
+        // tasks = currentTasksCopy; // I don't use setTasks() here to avoid an infinite render
         return currentTasksCopy;
       }
 
       const changeSortMethod = () => {
-        if(sortMethod === 'Sort by: Newest')
+        if(sortMethod === 'Sort by: Recently Added')
           setSortMethod('Sort by: Due Date');
         else if(sortMethod === 'Sort by: Due Date')
           setSortMethod('Sort by: Highlighted');
         else if(sortMethod === 'Sort by: Highlighted')
-          setSortMethod('Sort by: Newest');
+          setSortMethod('Sort by: Recently Added');
       }
     
       // delete task
