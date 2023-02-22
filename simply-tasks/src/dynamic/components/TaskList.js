@@ -56,26 +56,13 @@ function TaskList () {
       // will show TaskAdder
       const [showAdder, setShowAdder] = useState(false);
       // keeps track of how tasks will be sorted
-      const [sortMethod, setSortMethod] = useState('Sort by: Recent');
+      const [sortMethod, setSortMethod] = useState('Sort by: Newest');
       
       const sortTasksByTimeAdded = (task1, task2) =>{
         if(task1.timeAdded < task2.timeAdded) 
           return 1; 
         else
           return -1;
-      }
-
-      const sortTasksByMessage = (task1, task2) => {
-        let task1Message = task1.content.toLowerCase();
-        let task2Message = task2.content.toLowerCase();
-        if(tasks.length < 2) 
-          return;
-        if(task1Message < task2Message) 
-          return -1;
-        else if (task1Message > task2Message) 
-          return 1;
-
-        return 0; 
       }
 
       const sortTasksByHighlight = (task1, task2) => {
@@ -117,13 +104,10 @@ function TaskList () {
       const sortTasks = () => {
         let currentTasksCopy = [...tasks];
 
-        if(sortMethod === 'Sort by: Message'){
-          currentTasksCopy.sort(sortTasksByMessage);
-        }
-        else if(sortMethod === 'Sort by: Highlighted'){
+        if(sortMethod === 'Sort by: Highlighted'){
           currentTasksCopy.sort(sortTasksByHighlight);
         }
-        else if(sortMethod === 'Sort by: Upcoming'){
+        else if(sortMethod === 'Sort by: Due Date'){
           currentTasksCopy.sort(sortTasksByDueDate);
         }
         else{
@@ -135,14 +119,12 @@ function TaskList () {
       }
 
       const changeSortMethod = () => {
-        if(sortMethod === 'Sort by: Recent')
-          setSortMethod('Sort by: Upcoming');
-        else if(sortMethod === 'Sort by: Upcoming')
+        if(sortMethod === 'Sort by: Newest')
+          setSortMethod('Sort by: Due Date');
+        else if(sortMethod === 'Sort by: Due Date')
           setSortMethod('Sort by: Highlighted');
         else if(sortMethod === 'Sort by: Highlighted')
-          setSortMethod('Sort by: Message');
-        else if(sortMethod === 'Sort by: Message')
-          setSortMethod('Sort by: Recent');
+          setSortMethod('Sort by: Newest');
       }
     
       // delete task
@@ -170,8 +152,7 @@ function TaskList () {
         let hour = now.getUTCHours().toString().padStart(2, "0");
         let minute = now.getUTCMinutes().toString().padStart(2, "0");
         let second = now.getUTCSeconds().toString().padStart(2, "0");
-        let millisecond = now.getUTCMilliseconds().toString().padStart(3, "0");
-        let id = parseInt(`${year}${month}${day}${hour}${minute}${second}${millisecond}`);
+        let id = parseInt(`${year}${month}${day}${hour}${minute}${second}`);
         return id;
       }
 

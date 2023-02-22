@@ -1,5 +1,4 @@
 import Button from './Button'
-import SortSelect from './SortSelect'
 
 const TaskListHeader = ({setAdder, changeSort, sortMethod}) => {
 
