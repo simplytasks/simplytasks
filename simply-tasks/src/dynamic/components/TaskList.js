@@ -101,32 +101,35 @@ function TaskList () {
         return 0;
       }
 
-      const areAnyTasksHighlighted = (currentTasksCopy) => {
-        let myBool = false;
-        currentTasksCopy.forEach(
-          (task) => {
-            if (task.highlight) myBool = true;
-          }
-        )
-        return myBool;
-      }
+      // const areAnyTasksHighlighted = (currentTasksCopy) => {
+      //   let myBool = false;
+      //   currentTasksCopy.forEach(
+      //     (task) => {
+      //       if (task.highlight) myBool = true;
+      //     }
+      //   )
+      //   return myBool;
+      // }
 
       const sortTasks = () => {
+        console.log('calling sortTasks()');
         let currentTasksCopy = [...tasks];
 
         if(sortMethod === 'Sort by: Highlighted'){
-          if (areAnyTasksHighlighted(currentTasksCopy)){
+          // if (areAnyTasksHighlighted(currentTasksCopy)){
             currentTasksCopy.sort(sortTasksByHighlight);
-          }
+          // }
         }
         else if (sortMethod === 'Sort by: Due Date'){
           currentTasksCopy.sort(sortTasksByDueDate);
         }
-        else if (sortMethod === 'Sort by: Recently Added') {
+        else
+        // (sortMethod === 'Sort by: Recently Added')
+        {
           currentTasksCopy.sort(sortTasksByTimeAdded);
         }
 
-        // tasks = currentTasksCopy; // I don't use setTasks() here to avoid an infinite render
+        tasks = currentTasksCopy; // I don't use setTasks() here to avoid an infinite render
         return currentTasksCopy;
       }
 

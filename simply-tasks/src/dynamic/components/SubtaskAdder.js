@@ -1,4 +1,4 @@
-import { FaCheck} from 'react-icons/fa';
+import { FaCheck } from 'react-icons/fa';
 import {useState} from 'react'
 
 const SubtaskAdder = ({taskID, addSubtask}) => {
