@@ -125,9 +125,9 @@ TASK LIST
     margin-bottom: 1.5em;
   }
 
-  .task-list .logo {
-    margin-left: 0.4em;
-  }
+.task-list .header .sort {
+  align-items: right !important;
+}
   
 .btn {
     display: inline-block;
@@ -135,7 +135,7 @@ TASK LIST
     color: var(--offwhite-color);
     border: none;
     box-shadow: 0.3em 0.3em 0.3em var(--secondary-color);
-    padding: .625em 1.25em;
+    padding: .625em 1.0em;
     margin: .5m;
     border-radius: 5px;    
     cursor: pointer;
@@ -309,15 +309,3 @@ TASK LIST
   margin: .5em 0 .4em 1em;
 }
 
-.sort-selector .selector{
-  display: inline-block;
-  background: var(--primary-color);
-  color: var(--offwhite-color);
-  border: none;
-  box-shadow: 0.3em 0.3em 0.3em var(--secondary-color);
-  padding: .625em 0.200em;
-  border-radius: 5px;    
-  cursor: pointer;
-  font-size: 0.92em;
-  font-family: inherit;
-}

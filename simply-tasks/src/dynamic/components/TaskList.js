@@ -8,7 +8,9 @@ export default TaskList;
 
 
 function TaskList () {
-    const [tasks, setTasks] = useState([
+
+    //tasks is not a constant so I can edit it in certain functions without causing an infinite render
+    let [tasks, setTasks] = useState([
         {
           id: 0,
           content: 'finish drag and drop functionality',
@@ -22,7 +24,8 @@ function TaskList () {
               content: 'an example subtask',
               highlight: false
             }
-          ]
+          ],
+          timeAdded: 1
         },
         {
           id: 1,
@@ -35,7 +38,8 @@ function TaskList () {
             id: 0,
             content: 'a second example subtask',
             highlight: true
-          }]
+          }],
+          timeAdded: 2
         },
         {
           id: 2,
@@ -44,73 +48,101 @@ function TaskList () {
           hightlight: false,
           showSubtasks: false,
           showSubtaskAdder: false,
-          subtasks: []
+          subtasks: [],
+          timeAdded: 3
         }
       ]);
-
-      // MAIN TASKS
 
       // will show TaskAdder
       const [showAdder, setShowAdder] = useState(false);
       // keeps track of how tasks will be sorted
-      const [sortMethod, setSortMethod] = useState('Latest');
+      const [sortMethod, setSortMethod] = useState('Sort by: Recent');
+      
+      const sortTasksByTimeAdded = (task1, task2) =>{
+        if(task1.timeAdded < task2.timeAdded) 
+          return 1; 
+        else
+          return -1;
+      }
 
       const sortTasksByMessage = (task1, task2) => {
         let task1Message = task1.content.toLowerCase();
         let task2Message = task2.content.toLowerCase();
-        if(tasks.length < 2) return;
-        if(task1Message < task2Message) return -1;
-        else if (task1Message > task2Message) return 1;
-        else return 0; 
+        if(tasks.length < 2) 
+          return;
+        if(task1Message < task2Message) 
+          return -1;
+        else if (task1Message > task2Message) 
+          return 1;
+
+        return 0; 
       }
 
       const sortTasksByHighlight = (task1, task2) => {
-        if(task1.highlight) return -1;
-        if(task2.highlight) return 1;
+        if(task1.highlight && task2.highlight)
+          return 0;
+        if(task1.highlight) 
+          return -1;
+        if(task2.highlight) 
+          return 1;
+
         return 0;
       }
       
       const sortTasksByDueDate = (task1, task2) => {
-        if(task1.date === '' && task2.date === '') return 0;
-        if(task1.date === '') return 1; 
-        if(task2.date === '') return -1;
+        if(task1.date === task2.date) 
+          return 0;
+        if(task1.date === '') 
+          return 1; 
+        if(task2.date === '') 
+          return -1;
 
-        const task1Year = parseInt(task1.date.substr(6, 10));
-        const task2Year = parseInt(task2.date.substr(6, 10));
+        const task1Year = task1.date.substr(6, 10);
+        const task2Year = task2.date.substr(6, 10);
 
-        const task1Month = parseInt(task1.date.substr(0, 2));
-        const task2Month = parseInt(task2.date.substr(0, 2));
+        const task1Month = task1.date.substr(0, 2).padStart(2, "0");
+        const task2Month = task2.date.substr(0, 2).padStart(2, "0");
 
-        const task1Day = parseInt(task1.date.substr(4, 6));
-        const task2Day = parseInt(task2.date.substr(4, 6));
+        const task1Day = task1.date.substr(4, 6).padStart(2, "0");
+        const task2Day = task2.date.substr(4, 6).padStart(2, "0");
 
-        const score1 = 10000 * task1Year + 100 * task1Month + task1Day;
-        const score2 = 10000 * task2Year + 100 * task2Month + task2Day; 
+        const score1 = parseInt(`${task1Year}${task1Month}${task1Day}`);
+        const score2 = parseInt(`${task2Year}${task2Month}${task2Day}`); 
 
         if(score1 < score2) return -1; 
         else if (score1 > score2) return 1; 
         return 0;
       }
 
-      //if the tasks get an attribute for their date posted, I won't need to make a copy and then can just add sortByDatePosted()
-      const sortTasks = (currentTasks) => {
-        let currentTasksCopy = [...currentTasks];
+      const sortTasks = () => {
+        let currentTasksCopy = [...tasks];
 
-        if(sortMethod === 'Message'){
+        if(sortMethod === 'Sort by: Message'){
           currentTasksCopy.sort(sortTasksByMessage);
         }
-        else if(sortMethod === 'Highlighted'){
+        else if(sortMethod === 'Sort by: Highlighted'){
           currentTasksCopy.sort(sortTasksByHighlight);
         }
-        else if(sortMethod === 'Upcoming'){
+        else if(sortMethod === 'Sort by: Upcoming'){
           currentTasksCopy.sort(sortTasksByDueDate);
         }
+        else{
+          currentTasksCopy.sort(sortTasksByTimeAdded);
+        }
 
+        tasks = currentTasksCopy; // I don't use setTasks() here to avoid an infinite render
         return currentTasksCopy;
       }
 
-      const changeSortMethod = (newSortMethod) => {
-        setSortMethod(newSortMethod);
+      const changeSortMethod = () => {
+        if(sortMethod === 'Sort by: Recent')
+          setSortMethod('Sort by: Upcoming');
+        else if(sortMethod === 'Sort by: Upcoming')
+          setSortMethod('Sort by: Highlighted');
+        else if(sortMethod === 'Sort by: Highlighted')
+          setSortMethod('Sort by: Message');
+        else if(sortMethod === 'Sort by: Message')
+          setSortMethod('Sort by: Recent');
       }
     
       // delete task
@@ -122,11 +154,25 @@ function TaskList () {
       }
 
       // highlight task
-      // can add sort feature based on highlights
       const highlightTask = (id) => {
         setTasks(
             tasks.map((task) => task.id === id ? { ...task, highlight: !task.highlight} : task)
         )
+      }
+
+      //this function returns an ID which specifies when it was created 
+      //and is used to sort the tasks by time created
+      function getCurrentTimeID() {
+        let now = new Date();
+        let year = now.getUTCFullYear().toString();
+        let month = (now.getUTCMonth() + 1).toString().padStart(2, "0");
+        let day = now.getUTCDate().toString().padStart(2, "0");
+        let hour = now.getUTCHours().toString().padStart(2, "0");
+        let minute = now.getUTCMinutes().toString().padStart(2, "0");
+        let second = now.getUTCSeconds().toString().padStart(2, "0");
+        let millisecond = now.getUTCMilliseconds().toString().padStart(3, "0");
+        let id = parseInt(`${year}${month}${day}${hour}${minute}${second}${millisecond}`);
+        return id;
       }
 
       // add task
@@ -138,8 +184,9 @@ function TaskList () {
         const showSubtasks = false;
         const showSubtaskAdder = false;
         const subtasks = [];
+        const timeAdded = getCurrentTimeID();
 
-        const newTask = { id, ...task, highlight, showSubtasks, showSubtaskAdder, subtasks};
+        const newTask = { id, ...task, highlight, showSubtasks, showSubtaskAdder, subtasks, timeAdded};
         setTasks([newTask, ...tasks]);
       }
 
@@ -212,9 +259,9 @@ function TaskList () {
         <>
             <div className="task-list">
                 <div className="container">
-                <TaskListHeader setAdder={() => setShowAdder(true)} changeSort={changeSortMethod}/>
+                <TaskListHeader setAdder={() => setShowAdder(true)} changeSort={changeSortMethod} sortMethod={sortMethod}/>
                 {showAdder && <TaskAdder addTask={addTask} unsetAdder={() => setShowAdder(false)} /> }
-                {tasks.length > 0 ? <Tasks tasks={sortTasks(tasks)} highlightTask={highlightTask} deleteTask={deleteTask}
+                {tasks.length > 0 ? <Tasks tasks={sortTasks()} highlightTask={highlightTask} deleteTask={deleteTask}
                  highlightSubtask={highlightSubtask} deleteSubtask={deleteSubtask} showSubtasks={showSubtasks}
                  addSubtask={addSubtask} toggleSubtaskAdder={toggleSubtaskAdder} />: <div className="no-tasks">Empty Task List</div>}
                 </div>
