@@ -54,7 +54,7 @@ const LogIn = ({setCurrentPage}) => {
 
     <div className="account-area">
         <div className="container">
-            <div className="logo">Simply<span>Tasks</span></div>
+            <div className="logo">Log<span>In</span></div>
             <div className="form">
             <form>
                 <input type="text" name="username" placeholder="Type your username" />

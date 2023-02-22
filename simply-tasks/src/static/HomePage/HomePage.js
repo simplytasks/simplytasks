@@ -25,7 +25,7 @@ const HomePage = ({setCurrentPage}) => {
                 <h1>Perfect for all your task managing needs</h1>
 
                 <div className="hero-cta">
-                    <a href="#hero-cta" className="make-account" onClick={() => setCurrentPage('log-in')} >Make an account</a>
+                    <a href="#hero-cta" className="make-account" onClick={() => setCurrentPage('create-account')} >Make an account</a>
                 </div>
             </div>
             <img src="/images/reminder.svg" alt='' className="hero-img" />
