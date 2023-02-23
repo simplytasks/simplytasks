@@ -104,26 +104,19 @@ function TaskList () {
 
       const sortTasks = (currentTasks, sortMethod) => {
         console.log('calling sortTasks()');
-        // for(let i = 0; i < currentTasks.length; i++){
-        //   console.log(currentTasks[i].content);
-        // }
-        let currentTasksCopy = [...currentTasks];
 
         if(sortMethod === 'Sort by: Highlighted'){
-          currentTasksCopy.sort(sortTasksByHighlight);
+          currentTasks.sort(sortTasksByHighlight);
       }
         else if (sortMethod === 'Sort by: Due Date'){
-          currentTasksCopy.sort(sortTasksByDueDate);
+          currentTasks.sort(sortTasksByDueDate);
         }
         else if (sortMethod === 'Sort by: Recently Added')
         {
-          currentTasksCopy.sort(sortTasksByTimeAdded);
+          currentTasks.sort(sortTasksByTimeAdded);
         }
-        
-        // for(let i = 0; i < currentTasksCopy.length; i++){
-        //   console.log(currentTasksCopy[i].content);
-        // }
-        return currentTasksCopy;
+
+        return currentTasks;
       }
 
       const changeSortMethod = () => {
@@ -194,16 +187,9 @@ function TaskList () {
 
         const newTask = { id, ...task, highlight, showSubtasks, showSubtaskAdder, subtasks, timeAdded};
 
-        let newTasks = [newTask, ...tasks.slice()];
+        let newTasks = [newTask, ...tasks];
         let newSortedTasks = sortTasks(newTasks, sortMethod.current);
-        console.log('newTasks');
-        for(let i = 0; i < newTasks.length; i++){
-          console.log(newTasks[i].content);
-        }
-        console.log('newSortedTasks');
-        for(let i = 0; i < newSortedTasks.length; i++){
-          console.log(newSortedTasks[i].content);
-        }
+
         setTasks(newSortedTasks);
       }
 
