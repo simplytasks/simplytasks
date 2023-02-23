@@ -1,4 +1,5 @@
 import { useState } from 'react'
+import { useRef } from 'react'
 
 import TaskListHeader from './TaskListHeader'
 import Tasks from './Tasks'
@@ -55,8 +56,8 @@ function TaskList () {
 
       // will show TaskAdder
       const [showAdder, setShowAdder] = useState(false);
-      // keeps track of how tasks will be sorted
-      const [sortMethod, setSortMethod] = useState('Sort by: Recently Added');
+      // keeps track of how tasks are currently being sorted
+      const sortMethod = useRef('Sort by: Recently Added');
       
       const sortTasksByTimeAdded = (task1, task2) =>{
         if(task1.timeAdded < task2.timeAdded) 
@@ -101,45 +102,45 @@ function TaskList () {
         return 0;
       }
 
-      // const areAnyTasksHighlighted = (currentTasksCopy) => {
-      //   let myBool = false;
-      //   currentTasksCopy.forEach(
-      //     (task) => {
-      //       if (task.highlight) myBool = true;
-      //     }
-      //   )
-      //   return myBool;
-      // }
-
-      const sortTasks = () => {
+      const sortTasks = (currentTasks, sortMethod) => {
         console.log('calling sortTasks()');
-        let currentTasksCopy = [...tasks];
+        // for(let i = 0; i < currentTasks.length; i++){
+        //   console.log(currentTasks[i].content);
+        // }
+        let currentTasksCopy = [...currentTasks];
 
         if(sortMethod === 'Sort by: Highlighted'){
-          // if (areAnyTasksHighlighted(currentTasksCopy)){
-            currentTasksCopy.sort(sortTasksByHighlight);
-          // }
-        }
+          currentTasksCopy.sort(sortTasksByHighlight);
+      }
         else if (sortMethod === 'Sort by: Due Date'){
           currentTasksCopy.sort(sortTasksByDueDate);
         }
-        else
-        // (sortMethod === 'Sort by: Recently Added')
+        else if (sortMethod === 'Sort by: Recently Added')
         {
           currentTasksCopy.sort(sortTasksByTimeAdded);
         }
-
-        tasks = currentTasksCopy; // I don't use setTasks() here to avoid an infinite render
+        
+        // for(let i = 0; i < currentTasksCopy.length; i++){
+        //   console.log(currentTasksCopy[i].content);
+        // }
         return currentTasksCopy;
       }
 
       const changeSortMethod = () => {
-        if(sortMethod === 'Sort by: Recently Added')
-          setSortMethod('Sort by: Due Date');
-        else if(sortMethod === 'Sort by: Due Date')
-          setSortMethod('Sort by: Highlighted');
-        else if(sortMethod === 'Sort by: Highlighted')
-          setSortMethod('Sort by: Recently Added');
+        let newSortMethod = '';
+        if(sortMethod.current === 'Sort by: Recently Added'){
+          newSortMethod = 'Sort by: Due Date';
+        }
+        else if(sortMethod.current === 'Sort by: Due Date'){
+          newSortMethod = 'Sort by: Highlighted';
+        }
+        else if(sortMethod.current === 'Sort by: Highlighted'){
+          newSortMethod = 'Sort by: Recently Added';
+        }
+
+        sortMethod.current = newSortMethod;
+        let currentTasks = [...tasks];
+        setTasks(sortTasks(currentTasks, newSortMethod));
       }
     
       // delete task
@@ -152,9 +153,18 @@ function TaskList () {
 
       // highlight task
       const highlightTask = (id) => {
-        setTasks(
-            tasks.map((task) => task.id === id ? { ...task, highlight: !task.highlight} : task)
-        )
+        console.log(sortMethod.current);
+        if (sortMethod.current !== 'Sort by: Highlighted'){
+          setTasks(
+              tasks.map((task) => task.id === id ? { ...task, highlight: !task.highlight} : task)
+          )
+        }
+        else{
+          let tasksCopy = tasks.map((task) => task.id === id ? { ...task, highlight: !task.highlight} : task);
+          let newTasks = sortTasks(tasksCopy, sortMethod.current);
+          setTasks(newTasks);
+
+        }
       }
 
       //this function returns an ID which specifies when it was created 
@@ -183,7 +193,18 @@ function TaskList () {
         const timeAdded = getCurrentTimeID();
 
         const newTask = { id, ...task, highlight, showSubtasks, showSubtaskAdder, subtasks, timeAdded};
-        setTasks([newTask, ...tasks]);
+
+        let newTasks = [newTask, ...tasks.slice()];
+        let newSortedTasks = sortTasks(newTasks, sortMethod.current);
+        console.log('newTasks');
+        for(let i = 0; i < newTasks.length; i++){
+          console.log(newTasks[i].content);
+        }
+        console.log('newSortedTasks');
+        for(let i = 0; i < newSortedTasks.length; i++){
+          console.log(newSortedTasks[i].content);
+        }
+        setTasks(newSortedTasks);
       }
 
       // SUBTASKS
@@ -255,9 +276,9 @@ function TaskList () {
         <>
             <div className="task-list">
                 <div className="container">
-                <TaskListHeader setAdder={() => setShowAdder(true)} changeSort={changeSortMethod} sortMethod={sortMethod}/>
+                <TaskListHeader setAdder={() => setShowAdder(true)} changeSort={changeSortMethod} sortMethod={sortMethod.current}/>
                 {showAdder && <TaskAdder addTask={addTask} unsetAdder={() => setShowAdder(false)} /> }
-                {tasks.length > 0 ? <Tasks tasks={sortTasks()} highlightTask={highlightTask} deleteTask={deleteTask}
+                {tasks.length > 0 ? <Tasks tasks={tasks} highlightTask={highlightTask} deleteTask={deleteTask}
                  highlightSubtask={highlightSubtask} deleteSubtask={deleteSubtask} showSubtasks={showSubtasks}
                  addSubtask={addSubtask} toggleSubtaskAdder={toggleSubtaskAdder} />: <div className="no-tasks">Empty Task List</div>}
                 </div>
