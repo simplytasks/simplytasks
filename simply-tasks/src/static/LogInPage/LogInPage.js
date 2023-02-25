@@ -26,7 +26,7 @@ import { initTasks } from '../../dynamic/components/User';
 //     }
 // })
 
-const LogIn = ({setCurrentPage}) => {
+const LogIn = ({setCurrentPage, setCurrentUser}) => {
 
     const handleSubmission = (e) => {
         e.preventDefault();
@@ -34,27 +34,23 @@ const LogIn = ({setCurrentPage}) => {
         if (username.value === ''){
             username.style.setProperty('--c', 'rgb(207, 93, 93)');
             setTimeout(() => username.style.setProperty('--c', 'gray'), 1500);
-        } else {
-            let count = 0;
+        } else {            
             let existingUser = true;
             const items =  getDocs(UsrColRef).then(async (snapshot) =>{
                 snapshot.docs.forEach((user) => {
-                    console.log(count + ": Current UserID: " + user.id + " - " + user.data().username);
-                    count++;
 
-                    // Check for new users
+                    //if user found in database - keep track of which user's document
                     if(user.data().username === username.value){
-                        console.log("Found User");
+                        setCurrentUser(user.id);
                         existingUser = false;
-                    }  
+                    }
                 })
                 
                 //Add new User to document
                 if(existingUser == true){
                     const docRef = await addDoc(UsrColRef, {username : username.value})
-                    
                     initTasks(docRef.id);
-                    
+                    setCurrentUser(docRef.id);
                     existingUser = true;
                 }
                 

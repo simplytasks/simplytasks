@@ -3,11 +3,11 @@ import TaskList from './components/TaskList.js'
 
 import './TaskPage.css';
 
-const TaskPage = ({setCurrentPage}) => {
+const TaskPage = ({setCurrentPage, currentUser}) => {
     return (
         <>
         <NavBar setCurrentPage={setCurrentPage} />
-        <TaskList />
+        <TaskList currentUser={currentUser}/>
       </>
     );
 }

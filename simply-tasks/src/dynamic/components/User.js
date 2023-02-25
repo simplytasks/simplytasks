@@ -1,6 +1,5 @@
 import { db } from "../../backend/firebase"
 import { addDoc, doc, collection, updateDoc} from "firebase/firestore"
-import { useState } from "react";
 
 
 //Initial Tasks for new users
@@ -8,7 +7,6 @@ export async function initTasks(uid) {
     let tempRef;
     
     const docRef = doc(db, "Users", uid); //Current User's document
-        
     const colRef = collection(docRef, "Tasks") //Current User's tasks
     //First default task
     tempRef = await addDoc(colRef, {
