@@ -319,7 +319,7 @@ TASK LIST
     margin: 0;
     border: 0;
     outline: none;
-    border-radius: 12px;
+    border-radius: 18px;
     
   }
   .react-calendar button:enabled:hover {
