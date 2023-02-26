@@ -320,7 +320,6 @@ TASK LIST
     border: 0;
     outline: none;
     border-radius: 18px;
-    
   }
   .react-calendar button:enabled:hover {
     cursor: default;
