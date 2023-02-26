@@ -3,9 +3,9 @@ import Calendar from 'react-calendar';
 
 import TaskListHeader from './TaskListHeader'
 
-const manyTasks = ['01-02-2023', '16-02-2023']; // dates with more than 5 tasks
-const someTasks = ['14-02-2023', '04-02-2023']; // dates with 3-5 tasks
-const fewTasks = ['30-01-2023', '24-02-2023', '26-02-2023']; // dates with 1 or 2 tasks
+const manyTasks = ['02/01/2023', '02/16/2023']; // dates with more than 5 tasks
+const someTasks = ['02/14/2023', '02/04/2023']; // dates with 3-5 tasks
+const fewTasks = ['01/30/2023', '02/24/2023', '02/26/2023']; // dates with 1 or 2 tasks
 
 export default HeatMap;
 // remove add task in the header here 
@@ -31,7 +31,7 @@ function HeatMap(){
                           if (month < 10){
                             month = '0'+month
                           }
-                          const realDate = day+'-'+month+'-'+date.getFullYear()
+                          const realDate = month+'/'+day+'/'+date.getFullYear()
                           if (manyTasks.find(val=>val===realDate)){
                             return 'highlight3'
                           }
