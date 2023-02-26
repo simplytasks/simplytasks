@@ -1,0 +1,369 @@
+@import url('https://fonts.googleapis.com/css2?family=IBM+Plex+Sans:wght@200;400;500;600;700&display=swap');
+
+ /* color scheme */
+ :root {
+  --primary-color: #268e8e;
+  --offwhite-color: #f4f3f3;
+  --secondary-color: #4cbfbf;
+  --gray-color: #3e4348;
+} 
+
+* {
+    margin: 0;
+    padding: 0;
+}
+
+/* strip links */
+a {
+    color: #444444;
+    text-decoration: none;
+}
+
+/* strip ul */
+ul {
+    list-style-type: none;
+    margin: 0;
+    padding: 0;
+}
+
+/* get rid of side space */
+.container {
+    width: 100%;
+}
+
+/* default rendering */
+body {
+  background: #e4e2e2;
+  margin: 0;
+  padding: 0;
+  height: 100%;
+  font-family: "IBM Plex Sans", sans-serif;
+  overflow-x: hidden;
+}
+
+/* NAVBAR */
+
+/* default */
+.navbar {
+    background: var(--offwhite-color);
+    padding: 1em;
+}
+
+/* render logo */
+.logo {
+   text-decoration: none;
+   font-weight: bold;
+   color: black;
+   font-size: 1.2em;
+}
+
+.logo span {
+    color: var(--primary-color);
+}
+
+/* .account-area .logo span {
+    color: var(--secondary-color);
+} */
+
+/* lay out the navbar (just like home page) */
+.navbar .container {
+     display: grid;
+     grid-template-columns: auto auto;
+}
+
+nav {
+    justify-content: end;
+    width: 100%;
+}
+
+nav ul {
+    display: flex;
+    margin-right: 0;
+    padding-right: 0;
+    float: right;
+}
+
+nav a {
+    font-size: 1em;
+    padding: 0em 1em;
+}
+
+nav li.log-out a {
+    color: var(--primary-color);
+    border: 0.3em solid var(--primary-color);
+    font-weight: bold;
+    border-radius: 5em;
+}
+
+nav li.log-out a:hover {
+    background-color: var(--primary-color);
+    color: var(--offwhite-color);
+}
+
+/*
+TASK LIST
+*/
+
+.task-list .X {
+    color: rgb(207, 93, 93);
+    cursor: pointer;
+}
+
+.task-list .container {
+    max-width: 33em;
+    margin: 10em auto;
+    min-height: 20em;
+    border: 1px solid var(--secondary-color);
+    padding: 2em;
+    border-radius: 0.7em;
+  }
+
+.task-list .header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 1.5em;
+  }
+
+  .task-list .logo {
+    margin-left: 0.4em;
+  }
+
+.btn {
+    display: inline-block;
+    background: var(--primary-color);
+    color: var(--offwhite-color);
+    border: none;
+    box-shadow: 0.3em 0.3em 0.3em var(--secondary-color);
+    padding: .625em 1.25em;
+    margin: .5m;
+    border-radius: 5px;    
+    cursor: pointer;
+    font-size: 0.92em;
+    font-family: inherit;   /* doesn't inherit otherwise */
+  }
+
+ .btn:active {  /* make interactive */
+    transform: scale(0.95);
+  }
+
+  .task {
+    background: var(--offwhite-color);
+    margin: 0.3em;
+    padding: .625em 1.25em;
+  }
+
+  .task.highlight {
+    border-left: .5em solid var(--secondary-color);
+  }
+
+  .task h3 {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    font-size: 1.1em;
+  }
+  .task h5 {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    font-size:.9em;
+    font-weight: normal;
+  }
+
+  @media only screen and (max-width: 600px) {   /* fix for small-scale */
+    .task-list .container {
+        max-width: 80%;
+      }
+  }
+
+  /* error msg for no tasks */
+
+
+.task-list .container {
+    text-align: center;
+}
+ .task-list .container .no-tasks {
+    text-transform: uppercase;
+    font-weight: bold;
+    color: gray;
+    letter-spacing: 0.1em;
+    margin-top: 5em;
+}
+
+/* task adder */
+
+.task-adder {
+  display: flex;
+  justify-content: space-between;
+  background: var(--offwhite-color);
+  margin: 0.3em;
+  padding: 0.95em;
+}
+
+.task-adder .✔ {
+  color: var(--primary-color);
+  cursor: pointer;
+  margin-bottom: .4em
+}
+
+.task-adder .left-side {
+  display: flex;
+  flex-direction: column;
+  float: left;
+  margin-left: .85em;
+}
+
+.task-adder .right-side {
+  float: right;
+  display: flex;
+  flex-direction: column;
+  margin-right: .33em;
+  font-size: 1.1em;
+}
+
+.task-adder .left-side input[type=text] {
+  font-size: 1.05em;
+  margin-bottom: .1em;
+}
+
+.task-adder .left-side input[type=text]::placeholder {
+  font-weight: 550;
+}
+
+.task-adder .left-side input[type=date] {
+  font-size: .9em;
+  width: 60%;
+}
+/* react calendar */
+
+
+.react-calendar .highlight3 {
+  /* font-weight: bold; */
+  /* background-color: var(--secondary-color); */
+  border: 2px solid var(--primary-color);
+}
+
+.react-calendar .highlight3:hover {
+  /* font-weight: bold; */
+  background-color: var(--primary-color);
+  color: white;
+  /* border: 2px solid var(--secondary-color); */
+}
+
+.react-calendar .highlight2 {
+  /* font-weight: bold; */
+  /* background-color: rgb(155, 224, 249); */
+  border: 2px solid var(--secondary-color);
+}
+
+.react-calendar .highlight2:hover {
+  /* font-weight: bold; */
+  background-color: var(--secondary-color);
+  color: white;
+  /* border: 2px solid var(--secondary-color); */
+}
+
+.react-calendar .highlight1 {
+  /* font-weight: bold; */
+  /* background-color: rgb(220, 224, 226); */
+  border: 2px solid rgb(175, 173, 173);
+}
+
+.react-calendar .highlight1:hover {
+  /* font-weight: bold; */
+  /* background-color: rgb(220, 224, 226); */
+  background-color: rgb(175, 173, 173);
+  color: white;
+}
+
+.react-calendar { 
+    width: 700px;
+    max-width: 100%;
+    background-color: var(--offwhite-color);
+    color: var(--gray-color);
+    border-radius: 8px;
+    box-shadow: 0 12px 24px rgba(141, 141, 141, 0.2);
+    /* font-family: Arial, Helvetica, sans-serif; */
+    line-height: 1.125em;
+   }
+
+   .react-calendar__navigation button {
+    color: var(--gray-color);
+    min-width: 44px;
+    background:none;
+    font-size: 16px;
+    margin-top: 8px;
+   }
+
+  .react-calendar--doubleView {
+    width: 700px;
+  }
+  .react-calendar--doubleView .react-calendar__viewContainer {
+    display: flex;
+    margin: -0.5em;
+  }
+  .react-calendar--doubleView .react-calendar__viewContainer > * {
+    width: 50%;
+    margin: 0.5em;
+  }
+  .react-calendar,
+  .react-calendar *,
+  .react-calendar *:before,
+  .react-calendar *:after {
+    -moz-box-sizing: border-box;
+    -webkit-box-sizing: border-box;
+    box-sizing: border-box;
+  }
+  .react-calendar button {
+    margin: 0;
+    border: 0;
+    outline: none;
+    border-radius: 18px;
+  }
+  .react-calendar button:enabled:hover {
+    cursor: default;
+  }
+  .react-calendar__navigation {
+    display: flex;
+    height: 44px;
+    margin-bottom: 1em;
+  }
+  .react-calendar__navigation button {
+    min-width: 44px;
+    /* background: none; */
+  }
+  .react-calendar__navigation button:enabled:hover,
+  .react-calendar__navigation button:enabled:focus {
+    background-color: #f0f0f0;
+  }
+  .react-calendar__navigation button[disabled] {
+    background-color: #f0f0f0;
+  }
+
+
+  .react-calendar__year-view .react-calendar__tile,
+  .react-calendar__decade-view .react-calendar__tile,
+  .react-calendar__century-view .react-calendar__tile {
+    padding: 2em 0.5em;
+  }
+  .react-calendar__tile {
+    max-width: 100%;
+    text-align: center;
+    padding: 0.75em 0.5em;
+    background: none;
+  }
+
+/*uncomment for button hover */
+
+  .react-calendar__tile:enabled:hover,
+  .react-calendar__tile:enabled:focus {
+    /* background-color: #e6e6e6; */
+    transition-duration: 0.4s;
+  }
+
+
+
+  .react-calendar--selectRange .react-calendar__tile--hover {
+    background-color: #e6e6e6;
+  }
