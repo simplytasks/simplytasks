@@ -122,6 +122,9 @@ function TaskList () {
       const changeSortMethod = () => {
         let newSortMethod = '';
         if(sortMethod.current === 'Sort by: Recently Added'){
+          newSortMethod = 'Sort by: Manual';
+        }
+        else if(sortMethod.current === 'Sort by: Manual'){
           newSortMethod = 'Sort by: Due Date';
         }
         else if(sortMethod.current === 'Sort by: Due Date'){
