@@ -277,6 +277,9 @@ fit everything in one column
     box-shadow: 0 12px 24px rgba(141, 141, 141, 0.2);
     /* font-family: Arial, Helvetica, sans-serif; */
     line-height: 1.125em;
+    padding-bottom: 10px;
+    padding-left: 10px;
+    padding-top: 10px;
    }
 
    .react-calendar__navigation button {
@@ -307,7 +310,7 @@ fit everything in one column
     box-sizing: border-box;
   }
   .react-calendar button {
-    margin: 0;
+    margin: 0em;
     border: 0;
     outline: none;
     border-radius: 18px;
@@ -332,6 +335,10 @@ fit everything in one column
     background-color: #f0f0f0;
   }
 
+  .react-calendar__month-view__weekdays {
+    border: none;
+    text-decoration: none;
+  } 
 
   .react-calendar__year-view .react-calendar__tile,
   .react-calendar__decade-view .react-calendar__tile,
