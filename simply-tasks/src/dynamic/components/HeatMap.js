@@ -3,17 +3,26 @@ import Calendar from 'react-calendar';
 
 import TaskListHeader from './TaskListHeader'
 
-// read tasks from TaskList
-// loop through tasks in TaskList, check count and add to manyTasks, someTasks and fewTasks 
-
-const manyTasks = ['02/01/2023', '02/16/2023']; // dates with more than 5 tasks
-const someTasks = ['02/14/2023', '02/04/2023']; // dates with 3-5 tasks
-const fewTasks = ['01/30/2023', '02/24/2023', '02/26/2023']; // dates with 1 or 2 tasks
-
 export default HeatMap;
 // remove add task in the header here 
-function HeatMap(){
+function HeatMap({tasks}){
+
     const [date, setDate] = useState(new Date()); 
+
+    // const dates = tasks.map(task => task.date); // extract dates from tasks
+
+    const extractedDates = tasks
+    .map(task => task.date) // get all dates
+    .filter((date, index, array) => array.indexOf(date) === index); // filter out duplicates
+  
+    const countDates = extractedDates
+      .map(date => ({
+        date: date,
+        count: tasks.filter(item => item.date === date).length
+      }));
+
+    // console.log({dates}); // debugging
+    console.log({countDates});
 
     return (
         <>
@@ -35,13 +44,13 @@ function HeatMap(){
                             month = '0'+month
                           }
                           const realDate = month+'/'+day+'/'+date.getFullYear()
-                          if (manyTasks.find(val=>val===realDate)){
+                          if (countDates.find(tuple=>(tuple.date===realDate) && tuple.count >= 3)){
                             return 'highlight3'
                           }
-                          else if (someTasks.find(val=>val===realDate)){
+                          else if (countDates.find(tuple=>(tuple.date===realDate) && tuple.count === 2)){
                             return 'highlight2'
                           }
-                          else if (fewTasks.find(val=>val===realDate)){
+                          else if (countDates.find(tuple=>tuple.date===realDate)){
                             return 'highlight1'
                           }
                         }

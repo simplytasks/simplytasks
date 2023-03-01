@@ -4,6 +4,7 @@ import { useRef } from 'react'
 import TaskListHeader from './TaskListHeader'
 import Tasks from './Tasks'
 import TaskAdder from './TaskAdder'
+import HeatMap from './HeatMap'
 
 export default TaskList;
 
@@ -51,7 +52,97 @@ function TaskList () {
           showSubtaskAdder: false,
           subtasks: [],
           timeAdded: 3
-        }
+        },
+        {
+          id: 3,
+          content: 'eg task on 22nd feb, 2023',
+          date: '02/22/2023',
+          hightlight: false,
+          showSubtasks: false,
+          showSubtaskAdder: false,
+          subtasks: [],
+          timeAdded: 4
+        },
+        {
+          id: 4,
+          content: 'eg task on 7th feb, 2023',
+          date: '02/07/2023',
+          hightlight: false,
+          showSubtasks: false,
+          showSubtaskAdder: false,
+          subtasks: [],
+          timeAdded: 5
+        },
+        {
+          id: 5,
+          content: 'another task on 7th feb, 2023',
+          date: '02/07/2023',
+          hightlight: false,
+          showSubtasks: false,
+          showSubtaskAdder: false,
+          subtasks: [],
+          timeAdded: 6
+        },
+        {
+          id: 6,
+          content: 'third task on 7th feb, 2023',
+          date: '02/07/2023',
+          hightlight: false,
+          showSubtasks: false,
+          showSubtaskAdder: false,
+          subtasks: [],
+          timeAdded: 7
+        },
+        {
+          id: 7,
+          content: 'a task on 10th feb',
+          date: '02/10/2023',
+          hightlight: false,
+          showSubtasks: false,
+          showSubtaskAdder: false,
+          subtasks: [],
+          timeAdded: 8
+        },
+        {
+          id: 8,
+          content: 'second task on 10th feb',
+          date: '02/10/2023',
+          hightlight: false,
+          showSubtasks: false,
+          showSubtaskAdder: false,
+          subtasks: [],
+          timeAdded: 9
+        },
+        {
+          id: 9,
+          content: 'christmas in feb',
+          date: '02/25/2023',
+          hightlight: false,
+          showSubtasks: false,
+          showSubtaskAdder: false,
+          subtasks: [],
+          timeAdded: 10
+        },
+        {
+          id: 10,
+          content: 'christmas in feb',
+          date: '02/25/2023',
+          hightlight: false,
+          showSubtasks: false,
+          showSubtaskAdder: false,
+          subtasks: [],
+          timeAdded: 11
+        },
+        {
+          id: 11,
+          content: 'christmas in feb',
+          date: '02/25/2023',
+          hightlight: false,
+          showSubtasks: false,
+          showSubtaskAdder: false,
+          subtasks: [],
+          timeAdded: 12
+        },
       ]);
 
       // will show TaskAdder
@@ -261,13 +352,14 @@ function TaskList () {
     return (
         <>
             <div className="task-list">
-                <div className="container">
+                {/* <div className="container">
                 <TaskListHeader setAdder={() => setShowAdder(true)} changeSort={changeSortMethod} sortMethod={sortMethod.current}/>
                 {showAdder && <TaskAdder addTask={addTask} unsetAdder={() => setShowAdder(false)} /> }
                 {tasks.length > 0 ? <Tasks tasks={tasks} highlightTask={highlightTask} deleteTask={deleteTask}
                  highlightSubtask={highlightSubtask} deleteSubtask={deleteSubtask} showSubtasks={showSubtasks}
                  addSubtask={addSubtask} toggleSubtaskAdder={toggleSubtaskAdder} />: <div className="no-tasks">Empty Task List</div>}
-                </div>
+                </div> */}
+                  <HeatMap tasks={tasks}/>
             </ div>
         </>
     );
