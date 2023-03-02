@@ -239,8 +239,6 @@ TASK LIST
 
 
 /*
-Make buttons smaller (especially edges)
-Try using square instead of rounded
 remove text decoration (dots) under day names
 fit everything in one column
 */
@@ -335,10 +333,31 @@ fit everything in one column
     background-color: #f0f0f0;
   }
 
-  .react-calendar__month-view__weekdays {
-    border: none;
-    text-decoration: none;
-  } 
+/* MON, TUE, ... , SUN */
+
+  .react-calendar__month-view__weekdays { 
+    text-align: center;
+    text-transform: uppercase;
+    font-weight: bold;
+    font-size: 1em;
+  }
+
+/* remove dots below the day names */
+
+  .react-calendar__month-view__weekdays__weekday abbr{
+    text-decoration: none!important;
+  }
+
+  /* if you want a special color for the weekends */
+  /* .react-calendar__month-view__days__day--weekend {
+    color: #d10000;
+  } */
+
+  /* neighboring month days look faded */
+
+  .react-calendar__month-view__days__day--neighboringMonth {
+    color: #757575;
+  }
 
   .react-calendar__year-view .react-calendar__tile,
   .react-calendar__decade-view .react-calendar__tile,
