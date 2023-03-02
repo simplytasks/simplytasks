@@ -10,7 +10,7 @@ const TaskAdder = ({addTask, unsetAdder}) => {
 
     const submitTask = (e) => {
         const contentPlaceholder = document.querySelector('input[type=text]');
-
+            
         if (content === '') {
             contentPlaceholder.style.setProperty('--c', 'rgb(207, 93, 93)');
             setTimeout(() => contentPlaceholder.style.setProperty('--c', 'gray'), 1500);
@@ -25,12 +25,17 @@ const TaskAdder = ({addTask, unsetAdder}) => {
             setInputDate(today);
         }
     }
-
+    const keyPressed = (e) => {
+        if (e.key === 'Enter') {
+            e.preventDefault()
+            submitTask()
+        }
+    }
     return (
         <form className='task-adder'>
             <div className='left-side'>
                 <input type='text' placeholder='Type your new task'
-                 value={content} onChange={(e) => setContent(e.target.value)} />
+                 value={content} onKeyDown={keyPressed} onChange={(e) => setContent(e.target.value)} />
                 <input type='date' min={today}
                 value={inputDate} onChange={(e) => setInputDate(e.target.value) } />
             </div>
