@@ -14,10 +14,10 @@ function App() {
     return <HomePage setCurrentPage={setCurrentPage}/>;
   } else if (currentPage === 'log-in'){
     return <LogInPage setCurrentPage={setCurrentPage}
-    setCurrentUser={setCurrentUser} />;
+    setCurrentUser={setCurrentUser} currentUser={currentUser} />;
   } else if (currentPage === 'create-account'){
     return <CreateAccountPage setCurrentPage={setCurrentPage}
-    setCurrentUser={setCurrentUser} />;
+    setCurrentUser={setCurrentUser} currentUser={currentUser} />;
   } else {
     return <TaskPage setCurrentPage={setCurrentPage} currentUser={currentUser} />
   }
