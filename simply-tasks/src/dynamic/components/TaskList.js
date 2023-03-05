@@ -5,6 +5,7 @@ import TaskListHeader from './TaskListHeader'
 import Tasks from './Tasks'
 import TaskAdder from './TaskAdder'
 import HeatMap from './HeatMap'
+import Button from './Button'
 
 export default TaskList;
 
@@ -149,6 +150,8 @@ function TaskList () {
       const [showAdder, setShowAdder] = useState(false);
       // keeps track of how tasks are currently being sorted
       const sortMethod = useRef('Sort by: Recently Added');
+      // calendar mode vs task list mode
+      const [showCalendar, setShowCalendar] = useState(false); 
       
       const sortTasksByTimeAdded = (task1, task2) =>{
         if(task1.timeAdded < task2.timeAdded) 
@@ -351,15 +354,15 @@ function TaskList () {
 
     return (
         <>
+            <div className="toggle-calendar"><Button contents="icon" handleClick={() => showCalendar ? setShowCalendar(false) : setShowCalendar(true)}/></div>
             <div className="task-list">
-                {/* <div className="container">
+                {showCalendar === false ? <div className="container">
                 <TaskListHeader setAdder={() => setShowAdder(true)} changeSort={changeSortMethod} sortMethod={sortMethod.current}/>
                 {showAdder && <TaskAdder addTask={addTask} unsetAdder={() => setShowAdder(false)} /> }
                 {tasks.length > 0 ? <Tasks tasks={tasks} highlightTask={highlightTask} deleteTask={deleteTask}
                  highlightSubtask={highlightSubtask} deleteSubtask={deleteSubtask} showSubtasks={showSubtasks}
                  addSubtask={addSubtask} toggleSubtaskAdder={toggleSubtaskAdder} />: <div className="no-tasks">Empty Task List</div>}
-                </div> */}
-                  <HeatMap tasks={tasks}/>
+                </div> : <HeatMap tasks={tasks}/> } 
             </ div>
         </>
     );

@@ -278,6 +278,7 @@ fit everything in one column
     padding-bottom: 10px;
     padding-left: 10px;
     padding-top: 10px;
+    padding-right: 10px;
    }
 
    .react-calendar__navigation button {
@@ -340,6 +341,7 @@ fit everything in one column
     text-transform: uppercase;
     font-weight: bold;
     font-size: 1em;
+    padding-bottom: 10px;
   }
 
 /* remove dots below the day names */

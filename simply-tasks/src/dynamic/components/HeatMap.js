@@ -1,7 +1,7 @@
 import React, { useState } from 'react'
 import Calendar from 'react-calendar';
 
-import TaskListHeader from './TaskListHeader'
+import HeatMapHeader from './HeatMapHeader';
 
 export default HeatMap;
 // remove add task in the header here 
@@ -28,7 +28,7 @@ function HeatMap({tasks}){
         <>
             <div className="task-list">
                 <div className="container">
-                <TaskListHeader />
+                <HeatMapHeader />
 
                 <div className='calendar'>
 
