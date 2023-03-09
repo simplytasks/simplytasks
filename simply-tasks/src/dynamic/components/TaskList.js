@@ -85,14 +85,15 @@ function TaskList () {
         if(task2.date === '') 
           return -1;
 
+
         const task1Year = task1.date.substr(6, 10);
         const task2Year = task2.date.substr(6, 10);
 
         const task1Month = task1.date.substr(0, 2).padStart(2, "0");
         const task2Month = task2.date.substr(0, 2).padStart(2, "0");
 
-        const task1Day = task1.date.substr(4, 6).padStart(2, "0");
-        const task2Day = task2.date.substr(4, 6).padStart(2, "0");
+        const task1Day = task1.date.substr(3, 5).padStart(2, "0");
+        const task2Day = task2.date.substr(3, 5).padStart(2, "0");
 
         const score1 = parseInt(`${task1Year}${task1Month}${task1Day}`);
         const score2 = parseInt(`${task2Year}${task2Month}${task2Day}`); 
