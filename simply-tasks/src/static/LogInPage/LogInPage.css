@@ -101,6 +101,23 @@ nav li.return-to-home a:hover {
     color: var(--offwhite-color);
 }
 
+/*I think it looks ugly to match styling to the "return to home"
+ so I'm gonna comment this stuff out. You can change it here:
+ ~ Issa*/
+
+/*
+nav li.switch-create-account a {
+    color: var(--primary-color);
+    border: 0.3em solid var(--primary-color);
+    font-weight: bold;
+    border-radius: 5em;
+}
+
+nav li.switch-create-account a:hover {
+    background-color: var(--primary-color);
+    color: var(--offwhite-color);
+}
+*/
 
 /* style account-area */
 

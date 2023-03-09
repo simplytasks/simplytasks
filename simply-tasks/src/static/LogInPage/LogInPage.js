@@ -1,40 +1,44 @@
 import './LogInPage.css';
+import { UsrColRef } from "../../backend/firebase"
+import { getDocs, addDoc, getDoc } from "firebase/firestore"
 
-// const form = document.querySelector('form');
-// const username = document.querySelector('input[type=text]');
-// // const submit = document.querySelector('input[type=submit]');
+const LogIn = ({setCurrentPage, setCurrentUser}) => {
 
-// form.addEventListener('submit', (e) => {
-//     e.preventDefault();
-
-//     // user didn't input username
-//     if (username.value === ''){
-//         username.style.setProperty('--c', 'rgb(207, 93, 93)');
-
-//         setTimeout(() => username.style.setProperty('--c', 'gray'), 3000);
-//     } else {
-
-// 	// can add the username here to the system
-// 	console.log(username.value);
-
-// 	// for now just do simple redirection
-// 	// window.location.href = '../index.html'; // can reactify this ....
-//     }
-// })
-
-
-
-const LogIn = ({setCurrentPage}) => {
-
-    const handleSubmission = (e) => {
+    const handleSubmission = async (e) => {
         e.preventDefault();
         const username = document.querySelector('input[type=text]');
         if (username.value === ''){
             username.style.setProperty('--c', 'rgb(207, 93, 93)');
             setTimeout(() => username.style.setProperty('--c', 'gray'), 1500);
-        } else {
-            console.log(username.value); // grab value of username for database, rerouted to specific user page
-            setCurrentPage('user');
+        } else {            
+            let newUser = true; //assume new user
+            const items =  getDocs(UsrColRef).then(async (snapshot) =>{
+                snapshot.docs.forEach((user) => {
+
+                    //if user found in database - keep track of which user's document - not a new User
+                    if(user.data().username === username.value){
+                        setCurrentUser(user.id);
+                        newUser = false;
+                    }
+                })
+
+                //If new user - we need to tell user to go to create account page
+                if(newUser == true){
+
+                    username.value = ''; // allow to see placeholder
+                    username.placeholder = 'No Username found';
+                    username.style.setProperty('--c', 'rgb(207, 93, 93)');
+                    setTimeout(() =>
+                        {username.style.setProperty('--c', 'gray'); username.placeholder = 'Create an account'}, 1500
+                    );
+                    newUser = true;
+                } else {
+                    setCurrentPage('user');
+                }
+
+            }).catch((error) =>{
+                console.log(error);
+            });
         }
     }
 
@@ -46,6 +50,7 @@ const LogIn = ({setCurrentPage}) => {
 
             <nav>
                 <ul>
+                    <li className="switch-create-account"><a href="#create-account" onClick={() => setCurrentPage('create-account')}>Create Account</a></li>
                     <li className="return-to-home"><a href="#return-to-home" onClick={() => setCurrentPage('home')}>Return to Home</a></li>
                 </ul>
             </nav>
