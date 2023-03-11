@@ -6,6 +6,10 @@ import Tasks from './Tasks'
 import TaskAdder from './TaskAdder'
 import HeatMap from './HeatMap'
 import Button from './Button'
+import {FaCalendarAlt} from 'react-icons/fa'
+import {FaTasks} from 'react-icons/fa'
+
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css"></link>
 
 export default TaskList;
 
@@ -354,7 +358,8 @@ function TaskList () {
 
     return (
         <>
-            <div className="toggle-calendar"><Button contents="icon" handleClick={() => showCalendar ? setShowCalendar(false) : setShowCalendar(true)}/></div>
+          
+            <div className="toggle-calendar"><Button contents = {showCalendar === false ? <FaCalendarAlt/> : <FaTasks/>} handleClick={() => showCalendar ? setShowCalendar(false) : setShowCalendar(true)}> </Button></div>
             <div className="task-list">
                 {showCalendar === false ? <div className="container">
                 <TaskListHeader setAdder={() => setShowAdder(true)} changeSort={changeSortMethod} sortMethod={sortMethod.current}/>
