@@ -1,39 +1,22 @@
 import './LogInPage.css';
 
-// const form = document.querySelector('form');
-// const username = document.querySelector('input[type=text]');
-// // const submit = document.querySelector('input[type=submit]');
+const LogIn = ({setCurrentPage, setUser}) => {
 
-// form.addEventListener('submit', (e) => {
-//     e.preventDefault();
-
-//     // user didn't input username
-//     if (username.value === ''){
-//         username.style.setProperty('--c', 'rgb(207, 93, 93)');
-
-//         setTimeout(() => username.style.setProperty('--c', 'gray'), 3000);
-//     } else {
-
-// 	// can add the username here to the system
-// 	console.log(username.value);
-
-// 	// for now just do simple redirection
-// 	// window.location.href = '../index.html'; // can reactify this ....
-//     }
-// })
-
-
-
-const LogIn = ({setCurrentPage}) => {
-
-    const handleSubmission = (e) => {
+    const handleSubmission = async (e) => {
         e.preventDefault();
         const username = document.querySelector('input[type=text]');
         if (username.value === ''){
             username.style.setProperty('--c', 'rgb(207, 93, 93)');
             setTimeout(() => username.style.setProperty('--c', 'gray'), 1500);
         } else {
-            console.log(username.value); // grab value of username for database, rerouted to specific user page
+            /* check user exists */
+            // const response = await fetch(`http://localhost:3001/users`)
+            // const data = await response.json();
+            // console.log(data);
+            // console.log(data.includes(username.value))
+
+            setUser(username.value);
+            console.log('logging in for ' + username.value)
             setCurrentPage('user');
         }
     }

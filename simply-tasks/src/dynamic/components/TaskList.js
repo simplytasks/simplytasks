@@ -1,4 +1,4 @@
-import { useState } from 'react'
+import { useState, useEffect } from 'react'
 import { useRef } from 'react'
 
 import TaskListHeader from './TaskListHeader'
@@ -8,51 +8,32 @@ import TaskAdder from './TaskAdder'
 export default TaskList;
 
 
-function TaskList () {
+function TaskList ({user}) {
 
-    //tasks is not a constant so I can edit it in certain functions without causing an infinite render
-    let [tasks, setTasks] = useState([
-        {
-          id: 0,
-          content: '+0',
-          date: '02/27/2023',
-          highlight: false,
-          showSubtasks: false,
-          showSubtaskAdder: false,
-          subtasks: [
-            {
-              id: 0,
-              content: 'an example subtask',
-              highlight: false
-            }
-          ],
-          timeAdded: 1
-        },
-        {
-          id: 1,
-          content: '+30',
-          date: '03/27/2023',
-          highlight: false,
-          showSubtasks: false,
-          showSubtaskAdder: false,
-          subtasks: [{
-            id: 0,
-            content: 'a second example subtask',
-            highlight: true
-          }],
-          timeAdded: 2
-        },
-        {
-          id: 2,
-          content: '+360',
-          date: '02/22/2024',
-          hightlight: false,
-          showSubtasks: false,
-          showSubtaskAdder: false,
-          subtasks: [],
-          timeAdded: 3
-        }
-      ]);
+  // pass user down and have it change the task list 
+
+  useEffect(
+    () => {
+
+    const fetchTasks = async () => {
+      const response = await fetch(`http://localhost:3001/${user}`);
+      const data = await response.json();
+      
+      return data;
+    }
+    
+      const getTasks = async () => {
+        const usersTasks = await fetchTasks();
+        setTasks(usersTasks);
+      }
+
+      getTasks();
+    }, [user])
+
+
+    // fetch tasks from server 
+
+    let [tasks, setTasks] = useState([]);
 
       // will show TaskAdder
       const [showAdder, setShowAdder] = useState(false);
@@ -103,7 +84,6 @@ function TaskList () {
       }
 
       const sortTasks = (currentTasks, sortMethod) => {
-        console.log('calling sortTasks()');
 
         if(sortMethod === 'Sort by: Highlighted'){
           currentTasks.sort(sortTasksByHighlight);
@@ -135,30 +115,6 @@ function TaskList () {
         let currentTasks = [...tasks];
         setTasks(sortTasks(currentTasks, newSortMethod));
       }
-    
-      // delete task
-      const deleteTask = (e, id) => {
-        e.stopPropagation();
-        setTasks(
-          tasks.filter((task) => task.id !== id)
-        )
-      }
-
-      // highlight task
-      const highlightTask = (id) => {
-        console.log(sortMethod.current);
-        if (sortMethod.current !== 'Sort by: Highlighted'){
-          setTasks(
-              tasks.map((task) => task.id === id ? { ...task, highlight: !task.highlight} : task)
-          )
-        }
-        else{
-          let tasksCopy = tasks.map((task) => task.id === id ? { ...task, highlight: !task.highlight} : task);
-          let newTasks = sortTasks(tasksCopy, sortMethod.current);
-          setTasks(newTasks);
-
-        }
-      }
 
       //this function returns an ID which specifies when it was created 
       //and is used to sort the tasks by time created
@@ -174,20 +130,58 @@ function TaskList () {
         return id;
       }
 
+    
+      // TASK MANAGEMENT
+
+      // delete task
+      const deleteTask = async (e, id) => {
+        await fetch(`http://localhost:3001/${user}/${id}`, {
+          method: 'DELETE'
+        }
+        )
+        e.stopPropagation();
+        setTasks(
+          tasks.filter((task) => task.id !== id)
+        )
+      }
+
+      // highlight task
+      const highlightTask = (id) => {
+        if (sortMethod.current !== 'Sort by: Highlighted'){
+          setTasks(
+              tasks.map((task) => task.id === id ? { ...task, highlight: !task.highlight} : task)
+          )
+        }
+        else {
+          let tasksCopy = tasks.map((task) => task.id === id ? { ...task, highlight: !task.highlight} : task);
+          let newTasks = sortTasks(tasksCopy, sortMethod.current);
+          setTasks(newTasks);
+
+        }
+      }
+
       // add task
-      const addTask = (task) => {
-        // TODO: random number, replace with the database ID 
-        // this will break at some point if enough tasks are added
-        const id = Math.floor(Math.random() * 11111) + 3;
+
+      const addTask = async ({content, date}) => {
         const highlight = false;
         const showSubtasks = false;
         const showSubtaskAdder = false;
         const subtasks = [];
         const timeAdded = getCurrentTimeID();
 
-        const newTask = { id, ...task, highlight, showSubtasks, showSubtaskAdder, subtasks, timeAdded};
+        const newTask = {content, date, highlight, showSubtasks, showSubtaskAdder, subtasks, timeAdded};
 
-        let newTasks = [newTask, ...tasks];
+        const response = await fetch(`http://localhost:3001/${user}`, {
+          method: 'POST',
+          headers: {
+            'Content-type': 'application/json'
+          },
+          body: JSON.stringify(newTask)
+        })
+
+        const taskWithID = await response.json();
+
+        let newTasks = [taskWithID, ...tasks];
         let newSortedTasks = sortTasks(newTasks, sortMethod.current);
 
         setTasks(newSortedTasks);

@@ -8,28 +8,45 @@ const CreateAccount = ({setCurrentPage}) => {
     const [usernameValue, setUsernameValue] = useState('');
     const [placeholder, setPlaceholder] = useState('Type a new username')
 
-    const handleSubmission = (e) => {
+    const handleSubmission = async (e) => {
         e.preventDefault();
         const username = document.querySelector('input[type=text]');
         if (username.value === ''){
             username.style.setProperty('--c', 'rgb(207, 93, 93)');
             setTimeout(() => username.style.setProperty('--c', 'gray'), 1500);
         } else {
-            console.log(username.value); // grab value of username for database
 
+            let response = await fetch(`http://localhost:3001/users`)
+            const userData = await response.json() 
 
-            if (username.value){    // if username.value is in data base
-                // right now occurs for any username.value
-                setUsernameValue(''); // allow to see placeholder
+            if (userData.includes(username.value)){    // if username.value is in data base
+                setUsernameValue('');
                 setPlaceholder('username taken');
                 username.style.setProperty('--c', 'rgb(207, 93, 93)');
                 setTimeout(() => 
                 {username.style.setProperty('--c', 'gray'); setPlaceholder('Type a new username')}, 1500
                 );
             } else {
-                // if value not in data base
-                // currently unreachable
-                setCurrentPage('log-in');
+
+                console.log(JSON.stringify(username.value));
+                console.log('pre-request')
+                response = await fetch(`http://localhost:3001/users`, {
+                    method: 'POST',
+                    headers: {
+                      'Content-type': 'application/json'
+                    },
+                    body: JSON.stringify(username.value)
+                  })
+                const createdUsername = await response.json()
+                console.log('username created' + createdUsername);
+
+                setUsernameValue("");
+                setPlaceholder('account created')
+                username.style.setProperty('--c', '#268e8e');
+                setTimeout(() => {
+                    setCurrentPage('log-in');
+                }, 1000);
+
             }
         }
     }
