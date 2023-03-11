@@ -1,7 +1,7 @@
 {
   "name": "simply-tasks",
-  "version": "0.1.0",
-  "main": "home-page/home-page.html",
+    "version": "0.1.0",
+    "homepage": "https://simplytasks.github.io",
   "private": true,
   "dependencies": {
     "@babel/core": "^7.16.0",
@@ -59,7 +59,9 @@
     "webpack-manifest-plugin": "^4.0.2",
     "workbox-webpack-plugin": "^6.4.1"
   },
-  "scripts": {
+    "scripts": {
+        "predeploy": "npm run build",
+        "deploy": "gh-pages -d build",
     "start": "node scripts/start.js",
     "build": "node scripts/build.js",
     "test": "node scripts/test.js"
@@ -135,5 +137,8 @@
     "presets": [
       "react-app"
     ]
+  },
+  "devDependencies": {
+    "gh-pages": "^5.0.0"
   }
 }

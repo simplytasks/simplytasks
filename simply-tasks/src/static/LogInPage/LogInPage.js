@@ -46,7 +46,7 @@ const LogIn = ({setCurrentPage}) => {
 
             <nav>
                 <ul>
-                    <li className="return-to-home"><a href="#return-to-home" onClick={() => setCurrentPage('home')}>Return to Home</a></li>
+                    <li className="return-to-home"><a href="#!" onClick={() => setCurrentPage('home')}>Return to Home</a></li>
                 </ul>
             </nav>
         </div>

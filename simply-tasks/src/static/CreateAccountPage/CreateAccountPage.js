@@ -41,8 +41,9 @@ const CreateAccount = ({setCurrentPage}) => {
             <div className="logo">Simply<span>Tasks</span></div>
 
             <nav>
-                <ul>
-                    <li className="return-to-home"><a href="#return-to-home" onClick={() => setCurrentPage('home')}>Return to Home</a></li>
+            <ul>
+            {// eslint-disable-next-line
+            }<li className="return-to-home"><a href="" onClick={() => setCurrentPage('home')}>Return to Home</a></li>
                 </ul>
             </nav>
         </div>

@@ -6,8 +6,9 @@ function NavBar({setCurrentPage}) {
   
           <nav>
               <ul>
-                  <li className="log-out">
-                    <a href="home-page/home-page.html" onClick={()=>setCurrentPage('home')}>Log Out</a>
+            <li className="log-out">
+            {// eslint-disable-next-line
+            }<a href="" onClick={()=>setCurrentPage('home')}>Log Out</a>
                   </li>
               </ul>
           </nav>
