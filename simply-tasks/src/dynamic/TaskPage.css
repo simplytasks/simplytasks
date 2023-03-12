@@ -100,6 +100,19 @@ nav li.log-out a:hover {
     color: var(--offwhite-color);
 }
 
+nav li.toggle-calendar a { 
+  color: var(--primary-color);
+  border: 0.3em solid var(--primary-color);
+  font-weight: bold;
+  border-radius: 5em;
+  margin-right: .5em;
+}
+
+nav li.toggle-calendar a:hover {
+  background-color: var(--primary-color);
+  color: var(--offwhite-color);
+}
+
 /*
 TASK LIST
 */

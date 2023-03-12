@@ -12,7 +12,7 @@ const HomePage = ({setCurrentPage}) => {
                 <ul>
                     <li><a href="#features-section">Features</a></li>
                     <li><a href="#testimonials-section">Testimonials</a></li>
-                    <li className="log-in"><a href="#log-in" onClick={() => setCurrentPage('log-in')}>Log In</a></li>
+                    <li className="log-in"><a href="#!" onClick={() => setCurrentPage('log-in')}>Log In</a></li>
                 </ul>
             </nav>
         </div>
@@ -25,7 +25,7 @@ const HomePage = ({setCurrentPage}) => {
                 <h1>Perfect for all your task managing needs</h1>
 
                 <div className="hero-cta">
-                    <a href="#hero-cta" className="make-account" onClick={() => setCurrentPage('create-account')} >Make an account</a>
+                    <a href="#!" className="make-account" onClick={() => setCurrentPage('create-account')} >Make an account</a>
                 </div>
             </div>
             <img src="/images/reminder.svg" alt='' className="hero-img" />
@@ -36,9 +36,9 @@ const HomePage = ({setCurrentPage}) => {
         <div className="container">
             <ul className="features-list">
                 <li>Add, highlight, and remove tasks!</li>
-                <li>Create sub-tasks specific to any task!</li>
-                <li>Sort your tasks by date or highlight!</li>
-                <li>Drag and drop to re-organize your tasks!</li>
+                <li>Create subtasks specific to any task!</li>
+                <li>Sort your tasks by date, highlight, time added, or manually!</li>
+                <li>Drag and drop to re-organize your tasks manually!</li>
                 <li>View your tasks in a calender view!</li>
                 <li>Never worry about losing your tasks!</li>
             </ul>

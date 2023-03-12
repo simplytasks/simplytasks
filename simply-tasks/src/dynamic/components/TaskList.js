@@ -22,58 +22,13 @@ import {
 export default TaskList;
 
 
-function TaskList () {
-
-    //tasks is not a constant so I can edit it in certain functions without causing an infinite render
-    
-
-    let [tasks, setTasks] = useState([
-        {
-          id: 1,
-          content: '+0',
-          date: '02/27/2023',
-          highlight: false,
-          showSubtasks: false,
-          showSubtaskAdder: false,
-          subtasks: [
-            {
-              id: 0,
-              content: 'an example subtask',
-              highlight: false
-            }
-          ],
-          timeAdded: 1
-        },
-        {
-          id: 2,
-          content: '+30',
-          date: '03/27/2023',
-          highlight: false,
-          showSubtasks: false,
-          showSubtaskAdder: false,
-          subtasks: [{
-            id: 0,
-            content: 'a second example subtask',
-            highlight: true
-          }],
-          timeAdded: 2
-        },
-        {
-          id: 3,
-          content: '+360',
-          date: '02/22/2024',
-          hightlight: false,
-          showSubtasks: false,
-          showSubtaskAdder: false,
-          subtasks: [],
-          timeAdded: 3
-        }
-      ]);
+function TaskList ({tasks, setTasks}) {
 
       // will show TaskAdder
       const [showAdder, setShowAdder] = useState(false); 
       // keeps track of how tasks are currently being sorted
       const sortMethod = useRef('Sort by: Recently Added');
+      
       
       const sortTasksByTimeAdded = (task1, task2) =>{
         if(task1.timeAdded < task2.timeAdded) 
@@ -101,14 +56,15 @@ function TaskList () {
         if(task2.date === '') 
           return -1;
 
+
         const task1Year = task1.date.substr(6, 10);
         const task2Year = task2.date.substr(6, 10);
 
         const task1Month = task1.date.substr(0, 2).padStart(2, "0");
         const task2Month = task2.date.substr(0, 2).padStart(2, "0");
 
-        const task1Day = task1.date.substr(4, 6).padStart(2, "0");
-        const task2Day = task2.date.substr(4, 6).padStart(2, "0");
+        const task1Day = task1.date.substr(3, 5).padStart(2, "0");
+        const task2Day = task2.date.substr(3, 5).padStart(2, "0");
 
         const score1 = parseInt(`${task1Year}${task1Month}${task1Day}`);
         const score2 = parseInt(`${task2Year}${task2Month}${task2Day}`); 
@@ -330,7 +286,6 @@ function TaskList () {
 
     return (
         <>
-            <div className="task-list">
                 <div className="container">
                 <TaskListHeader setAdder={() => setShowAdder(true)} changeSort={changeSortMethod} sortMethod={sortMethod.current}/>
                 {showAdder && <TaskAdder addTask={addTask} unsetAdder={() => setShowAdder(false)} /> }
