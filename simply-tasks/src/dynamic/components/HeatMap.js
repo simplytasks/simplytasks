@@ -9,7 +9,6 @@ function HeatMap({tasks}){
 
     const [date, setDate] = useState(new Date()); 
 
-    // const dates = tasks.map(task => task.date); // extract dates from tasks
 
     const extractedDates = tasks
     .map(task => task.date) // get all dates
@@ -20,9 +19,6 @@ function HeatMap({tasks}){
         date: date,
         count: tasks.filter(item => item.date === date).length
       }));
-
-    // console.log({dates}); // debugging
-    // console.log({countDates});
 
     return (
         <>

@@ -26,10 +26,7 @@ const Task = ({task, deleteTask, highlightTask, deleteSubtask,
             transition,
         };
 
-     
-
-    // onDoubleClick conflict with Click so add separate mechanism for show subtasks
-    // which honestly looks amazing
+    
     return (
         <>
 

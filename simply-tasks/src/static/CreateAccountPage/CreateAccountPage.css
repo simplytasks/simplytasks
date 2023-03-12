@@ -157,34 +157,3 @@ nav li.return-to-home a:hover {
 .account-area .container .form input[type=submit]:active {
     transform: scale(0.95);   
 }
-
-/* @media only screen and (max-width: 736px) {
-
-    .account-area .form {
-        width: 100%;
-        margin: auto;
-        padding: auto;
-        display: flex;
-        justify-content: center;
-        align-items: center;
-    }
-    .account-area .container .form input {
-        width:67%;
-        font-size: .6em;
-    }
-
-    .account-area .container .form input[type=submit] {
-        width: 35%;
-    }
-}
-
-@media only screen and (max-width: 580px) {
-    .account-area .container .form input {
-        width: 90.5%;
-        font-size: .5em;
-    }
-
-    .account-area .container .form input[type=submit] {
-        width: 40%;
-    }
-} */

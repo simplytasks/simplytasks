@@ -10,8 +10,6 @@ function App() {
   const [currentPage, setCurrentPage] = useState('home')
   const [user, setUser] = useState('')
 
-  
-
   if (currentPage === 'home'){
     return <HomePage setCurrentPage={setCurrentPage} />;
   } else if (currentPage === 'log-in'){

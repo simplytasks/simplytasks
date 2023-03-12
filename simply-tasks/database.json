@@ -1,6 +1,8 @@
 {
   "users": [
-    "arteen"
+    "arteen",
+    "test"
   ],
-  "arteen": []
+  "arteen": [],
+  "test": []
 }

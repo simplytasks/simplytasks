@@ -14,7 +14,7 @@ const SubtaskAdder = ({taskID, addSubtask}) => {
             setContent('');
         }
     }
-    const keyPressed = (e) => { //enter button
+    const keyPressed = (e) => {
         if (e.key === 'Enter'){
              e.preventDefault()
              submitSubtask()

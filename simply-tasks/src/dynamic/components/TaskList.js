@@ -24,8 +24,6 @@ export default TaskList;
 
 function TaskList ({user, tasks, setTasks}) {
 
-  // pass user down and have it change the task list 
-
   const fetchTasks = async () => {
     const response = await fetch(`http://localhost:3002/${user}`);
     const data = await response.json();
@@ -51,9 +49,8 @@ function TaskList ({user, tasks, setTasks}) {
       getTasks();
     }, [user])
 
-      // will show TaskAdder
+      
       const [showAdder, setShowAdder] = useState(false); 
-      // keeps track of how tasks are currently being sorted
       const sortMethod = useRef('Sort by: Recently Added');
       
       
@@ -197,9 +194,7 @@ function TaskList ({user, tasks, setTasks}) {
 
         }
       }
-
-      // add task
-
+      
       const addTask = async ({content, date}) => {
         const highlight = false;
         const showSubtasks = false;
