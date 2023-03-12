@@ -249,6 +249,22 @@ function TaskList ({currentUser, setCurrentPage}) {
 
     const showSubtasks = async (e, id) => {
         e.stopPropagation();
+
+        const docRef = await getDoc(doc(db, "Users", currentUser, "Tasks", id));
+        if(!docRef.exists()){
+            console.log("Document not found");
+            return;
+        }
+
+        const data = docRef.data()
+        const showSubtasks = data.showSubtasks;
+
+        await updateDoc(doc(db, "Users", currentUser, "Tasks", id), {
+            showSubtasks: !showSubtasks,
+        });
+
+        doProcess(true);
+
         setTasks(
             tasks.map((task) => task.id === id ? {...task, showSubtasks: !task.showSubtasks, showSubtaskAdder: false} : task)
         )
@@ -258,7 +274,8 @@ function TaskList ({currentUser, setCurrentPage}) {
         e.stopPropagation();
         console.log("deleting document: " + subtaskID );
         await deleteDoc(doc(db, "Users", currentUser, "Tasks", taskID, "subtaskscol", subtaskID));
-        await updateDoc(doc(db, "Users", currentUser, "Tasks", taskID), {showSubtasks: false});
+        // await updateDoc(doc(db, "Users", currentUser, "Tasks", taskID), {showSubtasks: false});
+
         doProcess(true) //process db
     }
 
@@ -321,6 +338,21 @@ function TaskList ({currentUser, setCurrentPage}) {
     }
 
     const toggleSubtaskAdder = async (taskID) => {
+
+        const docRef = await getDoc(doc(db, "Users", currentUser, "Tasks", taskID));
+        if(!docRef.exists()){
+            console.log("Document not found");
+            return;
+        }
+
+        const data = docRef.data()
+        const showSubtaskAdder = data.showSubtaskAdder;
+
+        await updateDoc(doc(db, "Users", currentUser, "Tasks", taskID), {
+            showSubtaskAdder: !showSubtaskAdder,
+        });
+        doProcess(true);
+
         const updatedTasks = [...tasks];
         updatedTasks.forEach(
             (task) => {
