@@ -36,7 +36,7 @@ const Task = ({task, deleteTask, highlightTask, deleteSubtask,
         <div ref={setNodeRef} style={style} className={`task ${task.highlight ? 'highlight' : ''}`} onClick={()=>highlightTask(task.id)}>
             
             <h3>{task.content} <div>
-                <FaListUl {...attributes} {...listeners}/> 
+                <FaListUl className="drag-and-drop" {...attributes} {...listeners}/> 
                 <FaTimes className='X' onClick={(e) => deleteTask(e, task.id)} />
                 </div>
                 </h3>

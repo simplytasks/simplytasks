@@ -310,7 +310,6 @@ function TaskList ({tasks, setTasks}) {
         </DndContext>
                 
                </div>
-            </ div>
         </>
     );
 }

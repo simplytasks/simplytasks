@@ -184,6 +184,12 @@ TASK LIST
     justify-content: space-between;
     font-size: 1.1em;
   }
+
+  .task .drag-and-drop {
+    font-size: .85em;
+    margin-bottom: .1em;
+    margin-right: .2em;
+  }
   .task h5 {
     display: flex;
     align-items: center;
