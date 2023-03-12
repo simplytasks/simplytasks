@@ -265,9 +265,9 @@ function TaskList ({currentUser, setCurrentPage}) {
 
         doProcess(true);
 
-        setTasks(
-            tasks.map((task) => task.id === id ? {...task, showSubtasks: !task.showSubtasks, showSubtaskAdder: false} : task)
-        )
+        // setTasks(
+        //     tasks.map((task) => task.id === id ? {...task, showSubtasks: !task.showSubtasks, showSubtaskAdder: false} : task)
+        // )
     }
 
     const deleteSubtask = async(e, taskID, subtaskID) => {
