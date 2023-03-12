@@ -4,6 +4,20 @@ import { useRef } from 'react'
 import TaskListHeader from './TaskListHeader'
 import Tasks from './Tasks'
 import TaskAdder from './TaskAdder'
+import {
+  DndContext,
+  closestCenter,
+  KeyboardSensor,
+  PointerSensor,
+  useSensor,
+  useSensors, MeasuringStrategy,
+} from '@dnd-kit/core';
+import {
+  arrayMove,
+  SortableContext,
+  sortableKeyboardCoordinates,
+  verticalListSortingStrategy,
+} from '@dnd-kit/sortable';
 
 export default TaskList;
 
@@ -11,9 +25,11 @@ export default TaskList;
 function TaskList () {
 
     //tasks is not a constant so I can edit it in certain functions without causing an infinite render
+    
+
     let [tasks, setTasks] = useState([
         {
-          id: 0,
+          id: 1,
           content: '+0',
           date: '02/27/2023',
           highlight: false,
@@ -29,7 +45,7 @@ function TaskList () {
           timeAdded: 1
         },
         {
-          id: 1,
+          id: 2,
           content: '+30',
           date: '03/27/2023',
           highlight: false,
@@ -43,7 +59,7 @@ function TaskList () {
           timeAdded: 2
         },
         {
-          id: 2,
+          id: 3,
           content: '+360',
           date: '02/22/2024',
           hightlight: false,
@@ -55,7 +71,7 @@ function TaskList () {
       ]);
 
       // will show TaskAdder
-      const [showAdder, setShowAdder] = useState(false);
+      const [showAdder, setShowAdder] = useState(false); 
       // keeps track of how tasks are currently being sorted
       const sortMethod = useRef('Sort by: Recently Added');
       
@@ -120,17 +136,18 @@ function TaskList () {
       }
 
       const changeSortMethod = () => {
+
+        console.log("i am trying to chang sort");
         let newSortMethod = '';
         if(sortMethod.current === 'Sort by: Recently Added'){
-          newSortMethod = 'Sort by: Manual';
-        }
-        else if(sortMethod.current === 'Sort by: Manual'){
           newSortMethod = 'Sort by: Due Date';
         }
         else if(sortMethod.current === 'Sort by: Due Date'){
           newSortMethod = 'Sort by: Highlighted';
         }
         else if(sortMethod.current === 'Sort by: Highlighted'){
+          newSortMethod = 'Sort by: Recently Added';
+        } else if(sortMethod.current === 'Sort by: Manual'){
           newSortMethod = 'Sort by: Recently Added';
         }
 
@@ -261,16 +278,83 @@ function TaskList () {
         setTasks(updatedTasks);
       }
 
+
+      const sensors = useSensors(
+        useSensor(PointerSensor),
+        useSensor(KeyboardSensor, {
+            coordinateGetter: sortableKeyboardCoordinates,
+        })
+    );
+
+
+    function handleDragEnd(event) {
+      const {active, over} = event;
+
+      //console.log("check1",active,over);
+
+      if (active.id !== over.id) {
+
+        
+
+          setTasks((items) => {
+              console.log("D", items)
+              const oldIndex = items.findIndex((o) => {
+                  if(o.id == active.id){
+                      return true
+                  } else {
+                      return false;
+                  }
+              });
+              const newIndex =  items.findIndex((n) => {
+                  if(n.id == over.id){
+                      return true
+                  } else {
+                      return false;
+                  }
+              });
+              console.log("checkB",oldIndex, newIndex);
+              return arrayMove(tasks, oldIndex, newIndex); //swap 0 and 2
+          });
+
+
+
+      }
+  }
+
+  const handleDragStart = () =>{
+   
+    sortMethod.current = "Sort by: Manual";
+    ///changeSortMethod()
+
+  }
+
     return (
         <>
             <div className="task-list">
                 <div className="container">
                 <TaskListHeader setAdder={() => setShowAdder(true)} changeSort={changeSortMethod} sortMethod={sortMethod.current}/>
                 {showAdder && <TaskAdder addTask={addTask} unsetAdder={() => setShowAdder(false)} /> }
+
+                <DndContext
+            sensors={sensors}
+            collisionDetection={closestCenter}
+            onDragEnd={handleDragEnd}
+            onDragStart={handleDragStart}
+        >
+            <SortableContext
+                items={tasks}
+                strategy={verticalListSortingStrategy}
+            >
                 {tasks.length > 0 ? <Tasks tasks={tasks} highlightTask={highlightTask} deleteTask={deleteTask}
                  highlightSubtask={highlightSubtask} deleteSubtask={deleteSubtask} showSubtasks={showSubtasks}
                  addSubtask={addSubtask} toggleSubtaskAdder={toggleSubtaskAdder} />: <div className="no-tasks">Empty Task List</div>}
-                </div>
+       
+
+
+            </SortableContext>
+        </DndContext>
+                
+               </div>
             </ div>
         </>
     );
