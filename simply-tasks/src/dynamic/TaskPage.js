@@ -1,4 +1,4 @@
-import NavBar from './components/Navbar.js'
+import NavBar from './components/NavBar.js'
 import TaskList from './components/TaskList.js'
 
 import './TaskPage.css';
