@@ -5,7 +5,7 @@ import HeatMap from './components/HeatMap'
 
 import './TaskPage.css';
 
-const TaskPage = ({setCurrentPage}) => {
+const TaskPage = ({setCurrentPage, currentUser}) => {
 
     // calendar mode vs task list mode
     const [showCalendar, setShowCalendar] = useState(false); 
@@ -16,7 +16,8 @@ const TaskPage = ({setCurrentPage}) => {
         <>
         <NavBar setCurrentPage={setCurrentPage} showCalendar={showCalendar} setShowCalendar={setShowCalendar} />
         <div className="task-list">
-        {showCalendar == false ? <TaskList tasks={tasks} setTasks={setTasks} /> : <HeatMap tasks={tasks}/> } 
+        {showCalendar == false ? <TaskList currentUser={currentUser} setCurrentPage={setCurrentPage}
+                                           tasks={tasks} setTasks={setTasks} /> : <HeatMap tasks={tasks}/> }
         </div>
       </>
     );

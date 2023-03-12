@@ -58,25 +58,9 @@ function TaskList ({currentUser, setCurrentPage, tasks, setTasks}) {
                 // console.log(task.data());
                 let taskData = task.data();
 
-                // //We have to add an array member to the subtask we pull from the data
-                // // because firebase doesn't store arrays in JS as part of the database.
-                // // Instead, it's stored as a subcollection. This is the most elegant
-                // // way of pulling the data from the subcollection and making it work with
-                // // how the front end already works.
-                // // ~ Issa
-                //
+
                 taskData.subtasks = [];
                 if(taskData.hasSubtasks) {
-                    // const unsub2 = await onSnapshot(collection(doc(db, "Users", currentUser, "Tasks", task.id), "subtaskscol"), (Subtasks) => {
-                    //     Subtasks.docs.forEach( (subtask) => {
-                    //         let subtaskData = subtask.data();
-                    //         if(!taskData.subtasks.includes(subtaskData)){
-                    //             taskData.subtasks.push(subtaskData);
-                    //         }
-                    //         console.log(taskData.subtasks);
-                    //     })
-                    //
-                    // })
 
                     const unsub2 = await onSnapshot(
                         collection(doc(db, "Users", currentUser, "Tasks", task.id), "subtaskscol"), (Subtasks) => {
