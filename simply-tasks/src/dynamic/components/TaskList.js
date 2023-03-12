@@ -31,15 +31,19 @@ function TaskList ({currentUser, setCurrentPage, tasks, setTasks}) {
     // Should we process the backend
     const [process, doProcess] = useState(false);
 
-    const processTasks = async () => {
-
-        if(!currentUser){
+    //Run when we first log in
+    useEffect(() => {
+        if(currentUser == ""){
             console.log("Current User Not Set");
             setCurrentPage('log-in'); //if we have bad user and somehow made it through,
             // we should go back to login page
         }
 
         console.log("Current user: " + currentUser);
+    }, [])
+
+  //Run on changes
+    useEffect(() => {
 
         //get the current user in the database
         const docRef = doc(db, "Users", currentUser);
@@ -50,44 +54,47 @@ function TaskList ({currentUser, setCurrentPage, tasks, setTasks}) {
         // then loop through subtasks collection
         // and add to temp
 
+        const unsubList = []; // we want to be able to kill all our event listeners at the end of every update
+        // we don't want these persisting.
 
-        const unsub = await onSnapshot(colRef, (Tasks) => {
+        const unsub = onSnapshot(colRef, (Tasks) => {
+            //loop through all tasks in db and store in local array
             let temp = [];
 
-            Tasks.docs.forEach(async (task) => {
-                // console.log(task.data());
+            Tasks.docs.forEach((task) => {
                 let taskData = task.data();
-
 
                 taskData.subtasks = [];
                 if(taskData.hasSubtasks) {
-
-                    const unsub2 = await onSnapshot(
+                    //if our task has subtasks, we need to get those too
+                    const unsub2 = onSnapshot(
                         collection(doc(db, "Users", currentUser, "Tasks", task.id), "subtaskscol"), (Subtasks) => {
                             Subtasks.docs.forEach((subtask) => {
                                 let subtaskData = subtask.data();
                                 // Use findIndex() to check if the subtaskData already exists in the array
                                 let index = taskData.subtasks.findIndex((item) => item === subtaskData);
                                 // If index is -1, it means it does not exist
-                                if (index === -1) {
+                                // It is a new subtask, and we want to add it to the array.
+                                if (index == -1) {
                                     taskData.subtasks.push(subtaskData);
                                 }
                             });
-                        });
+                        }
+                    );
+                    unsubList.push(unsub2);
                 }
+                //add tasks and subtasks to a local array object with correct structure
                 temp.push(taskData);
             });
 
-            const final = sortTasks(temp, sortMethod.current);
-            setTasks(final);
+            const final = sortTasks(temp, sortMethod.current); //sort it
+            setTasks(final); //final tasks array
 
             doProcess(false); //we're done processing
         });
-    }
+        unsubList.push(unsub);
 
-  //Runs on changes
-    useEffect(() => {
-        processTasks();
+        return () => unsubList.forEach((unsub) => unsub());
     },[process]);
 
 
@@ -249,16 +256,38 @@ function TaskList ({currentUser, setCurrentPage, tasks, setTasks}) {
 
     const showSubtasks = async (e, id) => {
         e.stopPropagation();
-        setTasks(
-            tasks.map((task) => task.id === id ? {...task, showSubtasks: !task.showSubtasks, showSubtaskAdder: false} : task)
-        )
+
+        const docRef = await getDoc(doc(db, "Users", currentUser, "Tasks", id))
+        if(!docRef.exists()){
+            console.log("Document not found");
+            return;
+        }
+        const data = docRef.data()
+        let showSubtasks = data.showSubtasks;
+
+        tasks.map( (task) => {
+            if(task.id === id) {
+                task.showSubtasks = showSubtasks ? true : false;
+            }
+        })
+
+        await updateDoc(doc(db, "Users", currentUser, "Tasks", id), {
+            showSubtasks: !showSubtasks,
+            showSubtaskAdder: false
+        });
+
+
+        // setTasks(
+        //     tasks.map((task) => task.id === id ? {...task, showSubtasks: !task.showSubtasks, showSubtaskAdder: false} : task)
+        // )
     }
 
     const deleteSubtask = async(e, taskID, subtaskID) => {
         e.stopPropagation();
         console.log("deleting document: " + subtaskID );
         await deleteDoc(doc(db, "Users", currentUser, "Tasks", taskID, "subtaskscol", subtaskID));
-        await updateDoc(doc(db, "Users", currentUser, "Tasks", taskID), {showSubtasks: false});
+
+        // await updateDoc(doc(db, "Users", currentUser, "Tasks", taskID), { showSubtasks: true });
         doProcess(true) //process db
     }
 
@@ -277,9 +306,6 @@ function TaskList ({currentUser, setCurrentPage, tasks, setTasks}) {
             highlight: !highlight,
         });
 
-        //collapse task when we highlight subtask - workaround for not being able to showSubtasks
-        await updateDoc(doc(db, "Users", currentUser, "Tasks", taskID), {showSubtasks: false});
-
         doProcess(true) //process db
 
         //TODO: Delete
@@ -294,7 +320,6 @@ function TaskList ({currentUser, setCurrentPage, tasks, setTasks}) {
         //         }
         //     }
         // )
-
         // setTasks(updatedTasks);
     }
 
@@ -315,12 +340,26 @@ function TaskList ({currentUser, setCurrentPage, tasks, setTasks}) {
         await updateDoc(doc(db, "Users", currentUser, "Tasks", taskID, "subtaskscol", tempRef.id), {id: tempRef.id});
 
         //tell backend this task has a subtask to render
-        await updateDoc(doc(db, "Users", currentUser, "Tasks", taskID), {hasSubtasks: true, showSubtasks: false});
+        await updateDoc(doc(db, "Users", currentUser, "Tasks", taskID), {hasSubtasks: true});
 
         doProcess(true) //process db
     }
 
     const toggleSubtaskAdder = async (taskID) => {
+
+        const docRef = await getDoc(doc(db, "Users", currentUser, "Tasks", taskID))
+        if(!docRef.exists()){
+            console.log("Document not found");
+            return;
+        }
+
+        const data = docRef.data()
+        const showSubtaskAdder = data.showSubtaskAdder;
+
+        await updateDoc(doc(db, "Users", currentUser, "Tasks", taskID), {
+            showSubtaskAdder: !showSubtaskAdder,
+        });
+
         const updatedTasks = [...tasks];
         updatedTasks.forEach(
             (task) => {
