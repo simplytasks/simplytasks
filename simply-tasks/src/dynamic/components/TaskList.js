@@ -156,11 +156,13 @@ function TaskList ({user, tasks, setTasks}) {
 
       // delete task
       const deleteTask = async (e, id) => {
+        e.stopPropagation();
+        
         await fetch(`http://localhost:3002/${user}/${id}`, {
           method: 'DELETE'
         }
         )
-        e.stopPropagation();
+      
         setTasks(
           tasks.filter((task) => task.id !== id)
         )

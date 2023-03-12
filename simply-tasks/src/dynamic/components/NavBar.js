@@ -1,7 +1,3 @@
-import Button from './Button'
-import {FaCalendarAlt} from 'react-icons/fa'
-import {FaTasks} from 'react-icons/fa'
-
 function NavBar({setCurrentPage, setShowCalendar, showCalendar}) {
 
     return (

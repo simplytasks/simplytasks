@@ -2,16 +2,5 @@
   "users": [
     "arteen"
   ],
-  "arteen": [
-    {
-      "content": "example",
-      "date": "03/12/2023",
-      "highlight": false,
-      "showSubtasks": false,
-      "showSubtaskAdder": false,
-      "subtasks": [],
-      "timeAdded": 20230312211753,
-      "id": 1
-    }
-  ]
+  "arteen": []
 }
