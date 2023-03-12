@@ -4,24 +4,14 @@
   ],
   "arteen": [
     {
-      "content": "fdsdfdsafa",
-      "date": "03/10/2023",
+      "content": "example",
+      "date": "03/12/2023",
       "highlight": false,
       "showSubtasks": false,
       "showSubtaskAdder": false,
       "subtasks": [],
-      "timeAdded": 20230310193746,
+      "timeAdded": 20230312211753,
       "id": 1
-    },
-    {
-      "content": "fadfsadfafd",
-      "date": "03/10/2023",
-      "highlight": false,
-      "showSubtasks": false,
-      "showSubtaskAdder": false,
-      "subtasks": [],
-      "timeAdded": 20230310193747,
-      "id": 2
     }
   ]
 }

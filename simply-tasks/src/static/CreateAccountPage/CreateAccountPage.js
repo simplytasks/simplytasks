@@ -1,12 +1,32 @@
 import './CreateAccountPage.css';
-import {useState} from 'react';
+import {useState, useEffect} from 'react';
 
 
 
 const CreateAccount = ({setCurrentPage}) => {
 
     const [usernameValue, setUsernameValue] = useState('');
-    const [placeholder, setPlaceholder] = useState('Type a new username')
+    const [placeholder, setPlaceholder] = useState('type a new username')
+    const [users, setUsers] = useState([]);
+
+    const fetchUsers = async () => {
+        const response = await fetch(`http://localhost:3002/users`);
+        const data = await response.json();
+        
+        return data;
+      }
+    
+      useEffect(
+        () => {
+        
+          const getUsers = async () => {
+            const users = await fetchUsers();
+            setUsers(users);
+          }
+    
+          getUsers();
+        }, [])
+
 
     const handleSubmission = async (e) => {
         e.preventDefault();
@@ -16,8 +36,8 @@ const CreateAccount = ({setCurrentPage}) => {
             setTimeout(() => username.style.setProperty('--c', 'gray'), 1500);
         } else {
 
-            let response = await fetch(`http://localhost:3001/users`)
-            const userData = await response.json() 
+            let userData = await fetchUsers();
+            // console.log(userData);
 
             if (userData.includes(username.value)){    // if username.value is in data base
                 setUsernameValue('');
@@ -28,17 +48,19 @@ const CreateAccount = ({setCurrentPage}) => {
                 );
             } else {
 
-                console.log(JSON.stringify(username.value));
-                console.log('pre-request')
-                response = await fetch(`http://localhost:3001/users`, {
+                userData.push(usernameValue);
+
+                const res = await fetch(`http://localhost:3002/${usernameValue}`, {
                     method: 'POST',
                     headers: {
                       'Content-type': 'application/json'
                     },
-                    body: JSON.stringify(username.value)
-                  })
-                const createdUsername = await response.json()
-                console.log('username created' + createdUsername);
+                    body: JSON.stringify([])
+                  });
+
+                const data = await res.json()
+                console.log(data)
+                setUsers(data)
 
                 setUsernameValue("");
                 setPlaceholder('account created')

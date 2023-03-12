@@ -26,15 +26,22 @@ function TaskList ({user, tasks, setTasks}) {
 
   // pass user down and have it change the task list 
 
+  const fetchTasks = async () => {
+    const response = await fetch(`http://localhost:3002/${user}`);
+    const data = await response.json();
+    
+    return data;
+  }
+
+  const fetchTask = async (id) => {
+    const response = await fetch(`http://localhost:3002/${user}/${id}`);
+    const data = await response.json();
+    
+    return data;
+  }
+
   useEffect(
     () => {
-
-    const fetchTasks = async () => {
-      const response = await fetch(`http://localhost:3001/${user}`);
-      const data = await response.json();
-      
-      return data;
-    }
     
       const getTasks = async () => {
         const usersTasks = await fetchTasks();
@@ -112,7 +119,6 @@ function TaskList ({user, tasks, setTasks}) {
 
       const changeSortMethod = () => {
 
-        console.log("i am trying to chang sort");
         let newSortMethod = '';
         if(sortMethod.current === 'Sort by: Recently Added'){
           newSortMethod = 'Sort by: Due Date';
@@ -150,7 +156,7 @@ function TaskList ({user, tasks, setTasks}) {
 
       // delete task
       const deleteTask = async (e, id) => {
-        await fetch(`http://localhost:3001/${user}/${id}`, {
+        await fetch(`http://localhost:3002/${user}/${id}`, {
           method: 'DELETE'
         }
         )
@@ -161,14 +167,29 @@ function TaskList ({user, tasks, setTasks}) {
       }
 
       // highlight task
-      const highlightTask = (id) => {
+      const highlightTask = async (id) => {
+
+        const taskToToggleHighlight = await fetchTask(id)
+        const updatedTask = {...taskToToggleHighlight, highlight: ! taskToToggleHighlight.highlight}
+        const res = await fetch(`http://localhost:3002/${user}/${id}`,{
+          method: 'PUT',
+          headers: {
+            'Content-type' : 'application/json'
+          },
+          body: JSON.stringify(updatedTask)
+        }
+        )
+
+        const data = await res.json()
+
+        let tasksCopy = tasks.map((task) => task.id === id ? { ...task, highlight: data.highlight} : task);
         if (sortMethod.current !== 'Sort by: Highlighted'){
           setTasks(
-              tasks.map((task) => task.id === id ? { ...task, highlight: !task.highlight} : task)
+              tasksCopy
           )
         }
         else {
-          let tasksCopy = tasks.map((task) => task.id === id ? { ...task, highlight: !task.highlight} : task);
+          
           let newTasks = sortTasks(tasksCopy, sortMethod.current);
           setTasks(newTasks);
 
@@ -186,7 +207,7 @@ function TaskList ({user, tasks, setTasks}) {
 
         const newTask = {content, date, highlight, showSubtasks, showSubtaskAdder, subtasks, timeAdded};
 
-        const response = await fetch(`http://localhost:3001/${user}`, {
+        const response = await fetch(`http://localhost:3002/${user}`, {
           method: 'POST',
           headers: {
             'Content-type': 'application/json'
@@ -211,44 +232,93 @@ function TaskList ({user, tasks, setTasks}) {
         )
       }
 
-      const deleteSubtask = (e, taskID, subtaskID) => {
+      const deleteSubtask = async (e, taskID, subtaskID) => {
+
         e.stopPropagation();
+
+        const task = await fetchTask(taskID);
+        let UPsubtasks = task.subtasks.filter(
+          (subtask) => subtask.id !== subtaskID
+        );
+        const updatedTask = {...task, subtasks: UPsubtasks}
+        const res = await fetch(`http://localhost:3002/${user}/${taskID}`,{
+          method: 'PUT',
+          headers: {
+            'Content-type' : 'application/json'
+          },
+          body: JSON.stringify(updatedTask)
+        }
+        )
+
+        const data = await res.json()
+
         const updatedTasks = [...tasks];
         updatedTasks.forEach(
           (task) => {
             if (task.id === taskID){
-              task.subtasks = task.subtasks.filter((subtask) => subtask.id !== subtaskID);
+              task.subtasks = data.subtasks;
             }
           }
         )
         setTasks(updatedTasks);
       }
 
-      const highlightSubtask = (taskID, subtaskID) => {
+      const highlightSubtask = async (taskID, subtaskID) => {
+
+        const task = await fetchTask(taskID);
+        let UPsubtasks = task.subtasks.map(
+          (subtask) => subtask.id === subtaskID ? {...subtask, highlight: !subtask.highlight} : subtask
+        );
+        const updatedTask = {...task, subtasks: UPsubtasks}
+        const res = await fetch(`http://localhost:3002/${user}/${taskID}`,{
+          method: 'PUT',
+          headers: {
+            'Content-type' : 'application/json'
+          },
+          body: JSON.stringify(updatedTask)
+        }
+        )
+
+        const data = await res.json()
+        
         const updatedTasks = [...tasks];
         updatedTasks.forEach(
           (task) => {
             if (task.id === taskID){
-              task.subtasks = task.subtasks.map(
-                (subtask) => subtask.id === subtaskID ? { ...subtask, highlight: !subtask.highlight }: subtask
-              )
+              task.subtasks = data.subtasks
             }
           }
         )
         setTasks(updatedTasks);
       }
 
-      const addSubtask = (content, taskID) => {
+      const addSubtask = async (content, taskID) => {
 
         const id = Math.floor(Math.random() * 11111) + 3;
         const highlight = false;
-        const newSubtask = {id, content, highlight};
+        const newSubtask = {content, highlight, id};
+        
+
+        const task = await fetchTask(taskID)
+        let UPsubtasks = task.subtasks;
+        UPsubtasks.push(newSubtask);
+        const updatedTask = {...task, subtasks: UPsubtasks}
+        const res = await fetch(`http://localhost:3002/${user}/${taskID}`,{
+          method: 'PUT',
+          headers: {
+            'Content-type' : 'application/json'
+          },
+          body: JSON.stringify(updatedTask)
+        }
+        )
+
+        const data = await res.json();
 
         const updatedTasks = [...tasks];
         updatedTasks.forEach(
           (task) => {
             if (task.id === taskID){
-              task.subtasks = [...task.subtasks, newSubtask]
+              task.subtasks = [...data.subtasks]
             }
           }
         )
