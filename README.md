@@ -11,7 +11,7 @@ Our project was a task manager with the following features:
  
  The following segments of the app were implemented by each group member:
  
-  - Arteen Abrishami: UI Design; Home Page; Log In Page; Create Account Page; Task Page with Task list to add, remove, highlight tasks; Subtasks for each individual task in Task List with add, remove, highlight functionality
+  - Arteen Abrishami: UI Design; Home Page; Log In Page; Create Account Page; Task Page with Task List and functionality to add, remove, highlight tasks; Subtasks for each individual task in Task List with add, remove, highlight functionality
   - Byron Karlen: Sort task button with ability to sort tasks by Time Added, Due Date, or by Highlight
   - Nakul Khambati: Calender heat-map view of tasks with different colors based on number of tasks due on any given date
   - Karim Amr: Drag-and-drop and manual sort functionality to enable user re-organization of tasks
