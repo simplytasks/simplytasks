@@ -7,7 +7,7 @@ const TaskPage = ({setCurrentPage, currentUser}) => {
     return (
         <>
         <NavBar setCurrentPage={setCurrentPage} />
-        <TaskList currentUser={currentUser}/>
+        <TaskList currentUser={currentUser} setCurrentPage={setCurrentPage}/>
       </>
     );
 }

@@ -7,7 +7,6 @@ const Tasks = ({tasks, deleteTask, highlightTask, deleteSubtask,
         <div className="tasks">
             {
             tasks.map((task) =>(
-            // replace keys with database info in long run
             <Task key={task.id} task={task} deleteTask={deleteTask} highlightTask={highlightTask}
              deleteSubtask={deleteSubtask} highlightSubtask={highlightSubtask} showSubtasks={showSubtasks}
              addSubtask={addSubtask} toggleSubtaskAdder={toggleSubtaskAdder} />

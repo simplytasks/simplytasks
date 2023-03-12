@@ -6,45 +6,102 @@ import TaskAdder from './TaskAdder'
 
 import { UsrColRef, db } from "../../backend/firebase"
 import { doc, query, collection, getDocs, onSnapshot,
-  addDoc, updateDoc, deleteDoc, getDoc } from "firebase/firestore"
+  addDoc, updateDoc, deleteDoc, getDoc, collectionGroup } from "firebase/firestore"
+import subtask from "./Subtask";
 
 export default TaskList;
 
 
-function TaskList ({currentUser}) {
-  const [tasks, setTasks] = useState([]);
+function TaskList ({currentUser, setCurrentPage}) {
+    const [tasks, setTasks] = useState([]);
 
-  //Runs on changes to database
-  useEffect(() => {
-    if(!currentUser){
-      console.log("Current User Not Set")
-      return;
+    // Should we process the backend
+    const [process, doProcess] = useState(false);
+
+    const processTasks = async () => {
+
+        if(!currentUser){
+            console.log("Current User Not Set");
+            setCurrentPage('log-in'); //if we have bad user and somehow made it through,
+            // we should go back to login page
+        }
+
+        console.log("Current user: " + currentUser);
+
+        //get the current user in the database
+        const docRef = doc(db, "Users", currentUser);
+        //get the Tasks collection on current user
+        const colRef = collection(docRef, "Tasks");
+
+        //if task has a subtask (hasSubtask)
+        // then loop through subtasks collection
+        // and add to temp
+
+
+        const unsub = await onSnapshot(colRef, (Tasks) => {
+            let temp = [];
+
+            Tasks.docs.forEach(async (task) => {
+                // console.log(task.data());
+                let taskData = task.data();
+
+                // //We have to add an array member to the subtask we pull from the data
+                // // because firebase doesn't store arrays in JS as part of the database.
+                // // Instead, it's stored as a subcollection. This is the most elegant
+                // // way of pulling the data from the subcollection and making it work with
+                // // how the front end already works.
+                // // ~ Issa
+                //
+                taskData.subtasks = [];
+                if(taskData.hasSubtasks) {
+                    // const unsub2 = await onSnapshot(collection(doc(db, "Users", currentUser, "Tasks", task.id), "subtaskscol"), (Subtasks) => {
+                    //     Subtasks.docs.forEach( (subtask) => {
+                    //         let subtaskData = subtask.data();
+                    //         if(!taskData.subtasks.includes(subtaskData)){
+                    //             taskData.subtasks.push(subtaskData);
+                    //         }
+                    //         console.log(taskData.subtasks);
+                    //     })
+                    //
+                    // })
+
+                    const unsub2 = await onSnapshot(
+                        collection(doc(db, "Users", currentUser, "Tasks", task.id), "subtaskscol"), (Subtasks) => {
+                            Subtasks.docs.forEach((subtask) => {
+                                let subtaskData = subtask.data();
+                                // Use findIndex() to check if the subtaskData already exists in the array
+                                let index = taskData.subtasks.findIndex((item) => item === subtaskData);
+                                // If index is -1, it means it does not exist
+                                if (index === -1) {
+                                    taskData.subtasks.push(subtaskData);
+                                }
+                            });
+                        });
+                }
+                temp.push(taskData);
+            });
+
+            const final = sortTasks(temp, sortMethod.current);
+            setTasks(final);
+
+            doProcess(false); //we're done processing
+        });
     }
 
-    console.log("Current user: " + currentUser)
-
-    //get the current user in the database
-    const docRef = doc(db, "Users", currentUser);
-    //get the Tasks collection on current user
-    const colRef = collection(docRef, "Tasks");
-
-    const unsub = onSnapshot(colRef, (Tasks) => {
-      let temp = []
-      Tasks.docs.forEach((task) => {
-        temp.push(task.data());
-      })
-
-      setTasks(temp);
-    })
-  },[currentUser]);
+  //Runs on changes
+    useEffect(() => {
+        processTasks();
+    },[process]);
 
 
   // will show TaskAdder
-  const [showAdder, setShowAdder] = useState(false);
+    const [showAdder, setShowAdder] = useState(false);
   // keeps track of how tasks are currently being sorted
-  const sortMethod = useRef('Sort by: Recently Added');
+    const sortMethod = useRef('Sort by: Recently Added');
 
-  const sortTasksByTimeAdded = (task1, task2) =>{
+  //==========Sorting================
+
+    const sortTasksByTimeAdded = (task1, task2) =>{
     if(task1.timeAdded < task2.timeAdded)
         return 1;
     else
@@ -88,7 +145,7 @@ function TaskList ({currentUser}) {
     }
 
     const sortTasks = (currentTasks, sortMethod) => {
-        console.log('calling sortTasks()');
+        // console.log('calling sortTasks()');
 
         if(sortMethod === 'Sort by: Highlighted'){
             currentTasks.sort(sortTasksByHighlight);
@@ -121,17 +178,40 @@ function TaskList ({currentUser}) {
         setTasks(sortTasks(currentTasks, newSortMethod));
     }
 
-  // delete task
-  const deleteTask = async (e, id) => {
-    e.stopPropagation();
+    //this function returns an ID which specifies when it was created
+    //and is used to sort the tasks by time created
+    function getCurrentTimeID() {
+      let now = new Date();
+      let year = now.getUTCFullYear().toString();
+      let month = (now.getUTCMonth() + 1).toString().padStart(2, "0");
+      let day = now.getUTCDate().toString().padStart(2, "0");
+      let hour = now.getUTCHours().toString().padStart(2, "0");
+      let minute = now.getUTCMinutes().toString().padStart(2, "0");
+      let second = now.getUTCSeconds().toString().padStart(2, "0");
+      let id = parseInt(`${year}${month}${day}${hour}${minute}${second}`);
+      return id;
+    }
 
-    await deleteDoc(doc(db, "Users", currentUser, "Tasks", id));
-  }
+ //===========Actions================
 
+    const deleteTask = async (e, id) => {
+        e.stopPropagation();
 
-  // highlight task
-  // can add sort feature based on highlights
-  const highlightTask = async (id) => {
+        const subcollectionRef = collection(doc(db, "Users", currentUser, "Tasks", id), "subtaskscol");
+
+        // Get all the documents in the subcollection
+        const subcollectionSnapshot = await getDocs(subcollectionRef);
+
+        // Loop through and delete each document
+        subcollectionSnapshot.forEach((doc) => {
+            deleteDoc(doc.ref);
+        });
+
+        await deleteDoc(doc(db, "Users", currentUser, "Tasks", id));
+
+    }
+
+    const highlightTask = async (id) => {
 
     const docRef = await getDoc(doc(db, "Users", currentUser, "Tasks", id))
     if(!docRef.exists()){
@@ -143,128 +223,104 @@ function TaskList ({currentUser}) {
     const highlight = data.highlight;
 
     await updateDoc(doc(db, "Users", currentUser, "Tasks", id), { highlight: !highlight});
-  }
-
-    /* TODO: Latest Main highlightTask
-    // highlight task
-    const highlightTask = (id) => {
-        console.log(sortMethod.current);
-        if (sortMethod.current !== 'Sort by: Highlighted'){
-            setTasks(
-                tasks.map((task) => task.id === id ? { ...task, highlight: !task.highlight} : task)
-            )
-        }
-        else{
-            let tasksCopy = tasks.map((task) => task.id === id ? { ...task, highlight: !task.highlight} : task);
-            let newTasks = sortTasks(tasksCopy, sortMethod.current);
-            setTasks(newTasks);
-
-        }
-    }*/
-
-    //this function returns an ID which specifies when it was created
-    //and is used to sort the tasks by time created
-    function getCurrentTimeID() {
-        let now = new Date();
-        let year = now.getUTCFullYear().toString();
-        let month = (now.getUTCMonth() + 1).toString().padStart(2, "0");
-        let day = now.getUTCDate().toString().padStart(2, "0");
-        let hour = now.getUTCHours().toString().padStart(2, "0");
-        let minute = now.getUTCMinutes().toString().padStart(2, "0");
-        let second = now.getUTCSeconds().toString().padStart(2, "0");
-        let id = parseInt(`${year}${month}${day}${hour}${minute}${second}`);
-        return id;
+    doProcess(true); //process db
     }
 
-
-  // add task
-  const addTask = async (task) => {
-    const highlight = false;
-
-    const tempRef = await addDoc(collection(doc(db, "Users", currentUser), "Tasks"), {
-      ...task,
-      highlight: highlight
-    });
-    //get ID from firebase and add it as ID
-    await updateDoc(doc(db, "Users", currentUser, "Tasks", tempRef.id), {id: tempRef.id})
-  }
-
-    /* TODO: Latest Main addTask
-
-    // add task
-    const addTask = (task) => {
-        // TODO: random number, replace with the database ID
-        // this will break at some point if enough tasks are added
-        const id = Math.floor(Math.random() * 11111) + 3;
+    const addTask = async (task) => {
         const highlight = false;
-        const showSubtasks = false;
-        const showSubtaskAdder = false;
-        const subtasks = [];
-        const timeAdded = getCurrentTimeID();
 
-        const newTask = { id, ...task, highlight, showSubtasks, showSubtaskAdder, subtasks, timeAdded};
+        const tempRef = await addDoc(collection(doc(db, "Users", currentUser), "Tasks"),
+            {
+                ...task,
+                highlight: highlight,
+                showSubtaskAdder: false,
+                showSubtasks: false,
+                hasSubtasks: false, //purely for backend
+                timeAdded: getCurrentTimeID(),
+        });
+        //get ID from firebase and add it as ID
+        await updateDoc(doc(db, "Users", currentUser, "Tasks", tempRef.id), {id: tempRef.id});
+        doProcess(true); //process db
+  }
 
-        let newTasks = [newTask, ...tasks];
-        let newSortedTasks = sortTasks(newTasks, sortMethod.current);
 
-        setTasks(newSortedTasks);
-    }
-    */
+  // SUBTASKS
 
-    // SUBTASKS
 
-    const showSubtasks = (e, id) => {
+    const showSubtasks = async (e, id) => {
         e.stopPropagation();
         setTasks(
             tasks.map((task) => task.id === id ? {...task, showSubtasks: !task.showSubtasks, showSubtaskAdder: false} : task)
         )
     }
 
-    const deleteSubtask = (e, taskID, subtaskID) => {
+    const deleteSubtask = async(e, taskID, subtaskID) => {
         e.stopPropagation();
-        const updatedTasks = [...tasks];
-        updatedTasks.forEach(
-            (task) => {
-                if (task.id === taskID){
-                    task.subtasks = task.subtasks.filter((subtask) => subtask.id !== subtaskID);
-                }
-            }
-        )
-        setTasks(updatedTasks);
+        console.log("deleting document: " + subtaskID );
+        await deleteDoc(doc(db, "Users", currentUser, "Tasks", taskID, "subtaskscol", subtaskID));
+        await updateDoc(doc(db, "Users", currentUser, "Tasks", taskID), {showSubtasks: false});
+        doProcess(true) //process db
     }
 
-    const highlightSubtask = (taskID, subtaskID) => {
-        const updatedTasks = [...tasks];
-        updatedTasks.forEach(
-            (task) => {
-                if (task.id === taskID){
-                    task.subtasks = task.subtasks.map(
-                        (subtask) => subtask.id === subtaskID ? { ...subtask, highlight: !subtask.highlight }: subtask
-                    )
-                }
-            }
-        )
-        setTasks(updatedTasks);
+    const highlightSubtask = async (taskID, subtaskID) => {
+
+        const docRef = await getDoc(doc(db, "Users", currentUser, "Tasks", taskID, "subtaskscol", subtaskID))
+        if(!docRef.exists()){
+            console.log("Document not found");
+            return;
+        }
+
+        const data = docRef.data()
+        const highlight = data.highlight;
+
+        await updateDoc(doc(db, "Users", currentUser, "Tasks", taskID, "subtaskscol", subtaskID), {
+            highlight: !highlight,
+        });
+
+        //collapse task when we highlight subtask - workaround for not being able to showSubtasks
+        await updateDoc(doc(db, "Users", currentUser, "Tasks", taskID), {showSubtasks: false});
+
+        doProcess(true) //process db
+
+        //TODO: Delete
+        //
+        // const updatedTasks = [...tasks];
+        // updatedTasks.forEach(
+        //     (task) => {
+        //         if (task.id === taskID){
+        //             task.subtasks = task.subtasks.map(
+        //                 (subtask) => subtask.id === subtaskID ? { ...subtask, highlight: !subtask.highlight }: subtask
+        //             )
+        //         }
+        //     }
+        // )
+
+        // setTasks(updatedTasks);
     }
 
-    const addSubtask = (content, taskID) => {
+    const addSubtask = async (content, taskID) => {
 
-        const id = Math.floor(Math.random() * 11111) + 3;
         const highlight = false;
-        const newSubtask = {id, content, highlight};
 
-        const updatedTasks = [...tasks];
-        updatedTasks.forEach(
-            (task) => {
-                if (task.id === taskID){
-                    task.subtasks = [...task.subtasks, newSubtask]
-                }
-            }
-        )
-        setTasks(updatedTasks);
+        //TODO: Fix adding subtasks moving task to bottom of sorting
+
+        const colRef = collection(doc(db, "Users", currentUser, "Tasks", taskID), "subtaskscol");
+
+        const tempRef = await addDoc(colRef,
+            {
+                highlight: highlight,
+                content: content,
+            });
+        //get ID from firebase and add it as ID
+        await updateDoc(doc(db, "Users", currentUser, "Tasks", taskID, "subtaskscol", tempRef.id), {id: tempRef.id});
+
+        //tell backend this task has a subtask to render
+        await updateDoc(doc(db, "Users", currentUser, "Tasks", taskID), {hasSubtasks: true, showSubtasks: false});
+
+        doProcess(true) //process db
     }
 
-    const toggleSubtaskAdder = (taskID) => {
+    const toggleSubtaskAdder = async (taskID) => {
         const updatedTasks = [...tasks];
         updatedTasks.forEach(
             (task) => {
@@ -284,7 +340,8 @@ function TaskList ({currentUser}) {
                 {showAdder && <TaskAdder addTask={addTask} unsetAdder={() => setShowAdder(false)} /> }
                 {tasks.length > 0 ? <Tasks tasks={tasks} highlightTask={highlightTask} deleteTask={deleteTask}
                  highlightSubtask={highlightSubtask} deleteSubtask={deleteSubtask} showSubtasks={showSubtasks}
-                 addSubtask={addSubtask} toggleSubtaskAdder={toggleSubtaskAdder} />: <div className="no-tasks">Empty Task List</div>}
+                 addSubtask={addSubtask} toggleSubtaskAdder={toggleSubtaskAdder}
+                />: <div className="no-tasks">Empty Task List</div>}
                 </div>
             </ div>
         </>
