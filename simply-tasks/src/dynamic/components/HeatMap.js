@@ -22,11 +22,10 @@ function HeatMap({tasks}){
       }));
 
     // console.log({dates}); // debugging
-    console.log({countDates});
+    // console.log({countDates});
 
     return (
         <>
-            <div className="task-list">
                 <div className="container">
                 <HeatMapHeader />
 
@@ -60,7 +59,6 @@ function HeatMap({tasks}){
                     </div>
 
                 </div>
-            </ div>
         </>
     );
 }

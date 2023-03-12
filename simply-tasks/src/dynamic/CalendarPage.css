@@ -1,6 +1,6 @@
 @import url('https://fonts.googleapis.com/css2?family=IBM+Plex+Sans:wght@200;400;500;600;700&display=swap');
 
- /* color scheme */
+/*
  :root {
   --primary-color: #268e8e;
   --offwhite-color: #f4f3f3;
@@ -13,25 +13,26 @@
     padding: 0;
 }
 
-/* strip links */
+
+
 a {
     color: #444444;
     text-decoration: none;
 }
 
-/* strip ul */
+
 ul {
     list-style-type: none;
     margin: 0;
     padding: 0;
 }
 
-/* get rid of side space */
+
 .container {
     width: 100%;
 }
 
-/* default rendering */
+
 body {
   background: #e4e2e2;
   margin: 0;
@@ -41,15 +42,12 @@ body {
   overflow-x: hidden;
 }
 
-/* NAVBAR */
-
-/* default */
 .navbar {
     background: var(--offwhite-color);
     padding: 1em;
 }
 
-/* render logo */
+
 .logo {
    text-decoration: none;
    font-weight: bold;
@@ -63,9 +61,9 @@ body {
 
 /* .account-area .logo span {
     color: var(--secondary-color);
-} */
+}
 
-/* lay out the navbar (just like home page) */
+
 .navbar .container {
      display: grid;
      grid-template-columns: auto auto;
@@ -99,10 +97,6 @@ nav li.log-out a:hover {
     background-color: var(--primary-color);
     color: var(--offwhite-color);
 }
-
-/*
-TASK LIST
-*/
 
 .task-list .X {
     color: rgb(207, 93, 93);
@@ -140,10 +134,10 @@ TASK LIST
     border-radius: 5px;    
     cursor: pointer;
     font-size: 0.92em;
-    font-family: inherit;   /* doesn't inherit otherwise */
+    font-family: inherit;   
   }
 
- .btn:active {  /* make interactive */
+ .btn:active {  
     transform: scale(0.95);
   }
 
@@ -171,13 +165,12 @@ TASK LIST
     font-weight: normal;
   }
 
-  @media only screen and (max-width: 600px) {   /* fix for small-scale */
+  @media only screen and (max-width: 600px) {   
     .task-list .container {
         max-width: 80%;
       }
   }
 
-  /* error msg for no tasks */
 
 
 .task-list .container {
@@ -191,7 +184,7 @@ TASK LIST
     margin-top: 5em;
 }
 
-/* task adder */
+
 
 .task-adder {
   display: flex;
@@ -234,7 +227,7 @@ TASK LIST
 .task-adder .left-side input[type=date] {
   font-size: .9em;
   width: 60%;
-}
+} */
 /* react calendar */
 
 

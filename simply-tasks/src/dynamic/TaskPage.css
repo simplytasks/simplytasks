@@ -100,15 +100,17 @@ nav li.log-out a:hover {
     color: var(--offwhite-color);
 }
 
-/* calendar toggle button */
+nav li.toggle-calendar a { 
+  color: var(--primary-color);
+  border: 0.3em solid var(--primary-color);
+  font-weight: bold;
+  border-radius: 5em;
+  margin-right: .5em;
+}
 
-.toggle-calendar button{
-  /* background-color:rgb(207, 93, 93); */
-  top:21%;
-  left:30%;
-  /* width:100px;
-  height:40px; */
-  position: absolute;
+nav li.toggle-calendar a:hover {
+  background-color: var(--primary-color);
+  color: var(--offwhite-color);
 }
 
 /*
