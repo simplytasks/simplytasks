@@ -14,12 +14,17 @@ const SubtaskAdder = ({taskID, addSubtask}) => {
             setContent('');
         }
     }
-
-    return (
+    const keyPressed = (e) => { //enter button
+        if (e.key === 'Enter'){
+             e.preventDefault()
+             submitSubtask()
+        }
+    }
+    return ( 
         <>
         <form className='subtask-adder'>
             <input className='subtask-input' type='text' placeholder='Type your new subtask'
-             value={content} onChange={(e) => setContent(e.target.value)} />
+             value={content} onKeyDown={keyPressed} onChange={(e) => setContent(e.target.value)} />
             <FaCheck className="✔" onClick={submitSubtask} />
         </form>
         </>

@@ -1,4 +1,9 @@
-function NavBar({setCurrentPage}) {
+import Button from './Button'
+import {FaCalendarAlt} from 'react-icons/fa'
+import {FaTasks} from 'react-icons/fa'
+
+function NavBar({setCurrentPage, setShowCalendar, showCalendar}) {
+
     return (
     <div className="navbar"> 
         <div className="container">
@@ -6,8 +11,16 @@ function NavBar({setCurrentPage}) {
   
           <nav>
               <ul>
-                  <li className="log-out">
-                    <a href="home-page/home-page.html" onClick={()=>setCurrentPage('home')}>Log Out</a>
+           <li className="toggle-calendar">
+            {// eslint-disable-next-line
+            }<a href="#!"  onClick={() => 
+            {
+              setShowCalendar(!showCalendar)
+            }}>{showCalendar ? 'Task View' : 'Calender View' }</a>
+            </li>
+            <li className="log-out">
+            {// eslint-disable-next-line
+            }<a href="#!" onClick={()=>setCurrentPage('home')}>Log Out</a>
                   </li>
               </ul>
           </nav>

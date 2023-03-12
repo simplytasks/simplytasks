@@ -4,11 +4,25 @@ import { useRef } from 'react'
 import TaskListHeader from './TaskListHeader'
 import Tasks from './Tasks'
 import TaskAdder from './TaskAdder'
+import {
+  DndContext,
+  closestCenter,
+  KeyboardSensor,
+  PointerSensor,
+  useSensor,
+  useSensors, MeasuringStrategy,
+} from '@dnd-kit/core';
+import {
+  arrayMove,
+  SortableContext,
+  sortableKeyboardCoordinates,
+  verticalListSortingStrategy,
+} from '@dnd-kit/sortable';
 
 export default TaskList;
 
 
-function TaskList ({user}) {
+function TaskList ({user, tasks, setTasks}) {
 
   // pass user down and have it change the task list 
 
@@ -30,15 +44,11 @@ function TaskList ({user}) {
       getTasks();
     }, [user])
 
-
-    // fetch tasks from server 
-
-    let [tasks, setTasks] = useState([]);
-
       // will show TaskAdder
-      const [showAdder, setShowAdder] = useState(false);
+      const [showAdder, setShowAdder] = useState(false); 
       // keeps track of how tasks are currently being sorted
       const sortMethod = useRef('Sort by: Recently Added');
+      
       
       const sortTasksByTimeAdded = (task1, task2) =>{
         if(task1.timeAdded < task2.timeAdded) 
@@ -66,14 +76,15 @@ function TaskList ({user}) {
         if(task2.date === '') 
           return -1;
 
+
         const task1Year = task1.date.substr(6, 10);
         const task2Year = task2.date.substr(6, 10);
 
         const task1Month = task1.date.substr(0, 2).padStart(2, "0");
         const task2Month = task2.date.substr(0, 2).padStart(2, "0");
 
-        const task1Day = task1.date.substr(4, 6).padStart(2, "0");
-        const task2Day = task2.date.substr(4, 6).padStart(2, "0");
+        const task1Day = task1.date.substr(3, 5).padStart(2, "0");
+        const task2Day = task2.date.substr(3, 5).padStart(2, "0");
 
         const score1 = parseInt(`${task1Year}${task1Month}${task1Day}`);
         const score2 = parseInt(`${task2Year}${task2Month}${task2Day}`); 
@@ -100,6 +111,8 @@ function TaskList ({user}) {
       }
 
       const changeSortMethod = () => {
+
+        console.log("i am trying to chang sort");
         let newSortMethod = '';
         if(sortMethod.current === 'Sort by: Recently Added'){
           newSortMethod = 'Sort by: Due Date';
@@ -108,6 +121,8 @@ function TaskList ({user}) {
           newSortMethod = 'Sort by: Highlighted';
         }
         else if(sortMethod.current === 'Sort by: Highlighted'){
+          newSortMethod = 'Sort by: Recently Added';
+        } else if(sortMethod.current === 'Sort by: Manual'){
           newSortMethod = 'Sort by: Recently Added';
         }
 
@@ -252,17 +267,82 @@ function TaskList ({user}) {
         setTasks(updatedTasks);
       }
 
+
+      const sensors = useSensors(
+        useSensor(PointerSensor),
+        useSensor(KeyboardSensor, {
+            coordinateGetter: sortableKeyboardCoordinates,
+        })
+    );
+
+
+    function handleDragEnd(event) {
+      const {active, over} = event;
+
+      //console.log("check1",active,over);
+
+      if (active.id !== over.id) {
+
+        
+
+          setTasks((items) => {
+              console.log("D", items)
+              const oldIndex = items.findIndex((o) => {
+                  if(o.id == active.id){
+                      return true
+                  } else {
+                      return false;
+                  }
+              });
+              const newIndex =  items.findIndex((n) => {
+                  if(n.id == over.id){
+                      return true
+                  } else {
+                      return false;
+                  }
+              });
+              console.log("checkB",oldIndex, newIndex);
+              return arrayMove(tasks, oldIndex, newIndex); //swap 0 and 2
+          });
+
+
+
+      }
+  }
+
+  const handleDragStart = () =>{
+   
+    sortMethod.current = "Sort by: Manual";
+    ///changeSortMethod()
+
+  }
+
     return (
         <>
-            <div className="task-list">
                 <div className="container">
                 <TaskListHeader setAdder={() => setShowAdder(true)} changeSort={changeSortMethod} sortMethod={sortMethod.current}/>
                 {showAdder && <TaskAdder addTask={addTask} unsetAdder={() => setShowAdder(false)} /> }
+
+                <DndContext
+            sensors={sensors}
+            collisionDetection={closestCenter}
+            onDragEnd={handleDragEnd}
+            onDragStart={handleDragStart}
+        >
+            <SortableContext
+                items={tasks}
+                strategy={verticalListSortingStrategy}
+            >
                 {tasks.length > 0 ? <Tasks tasks={tasks} highlightTask={highlightTask} deleteTask={deleteTask}
                  highlightSubtask={highlightSubtask} deleteSubtask={deleteSubtask} showSubtasks={showSubtasks}
                  addSubtask={addSubtask} toggleSubtaskAdder={toggleSubtaskAdder} />: <div className="no-tasks">Empty Task List</div>}
-                </div>
-            </ div>
+       
+
+
+            </SortableContext>
+        </DndContext>
+                
+               </div>
         </>
     );
 }
