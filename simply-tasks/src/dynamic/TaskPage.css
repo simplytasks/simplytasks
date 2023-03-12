@@ -102,18 +102,27 @@ nav li.log-out a:hover {
 
 /* calendar toggle button */
 
-.toggle-calendar button{
-  /* background-color:rgb(207, 93, 93); */
-  top:23%;
-  left:30%;
-  /* width:100px;
-  height:40px; */
-  position: absolute;
-}
+
 
 /*
 TASK LIST
 */
+
+.page {
+  margin: 6em auto;
+  position: relative;
+}
+
+.page .toggle-align {
+    max-width: 33em;
+    margin: 1em auto;
+}
+
+.page .toggle-padding .toggle-calendar button{
+
+  margin-left: 0.4em;
+
+}
 
 .task-list .X {
     color: rgb(207, 93, 93);
@@ -122,7 +131,7 @@ TASK LIST
 
 .task-list .container {
     max-width: 33em;
-    margin: 10em auto;
+    margin: 1em auto;
     min-height: 20em;
     border: 1px solid var(--secondary-color);
     padding: 2em;

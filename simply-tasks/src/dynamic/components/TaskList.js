@@ -356,8 +356,12 @@ function TaskList () {
 
     return (
         <>
+          <div className="page">
+            
+          <div className="toggle-align">
+              <div className="toggle-calendar"><Button contents = {showCalendar === false ? <FaCalendarAlt/> : <FaTasks/>} handleClick={() => showCalendar ? setShowCalendar(false) : setShowCalendar(true)}> </Button></div>
+          </div>
           
-            <div className="toggle-calendar"><Button contents = {showCalendar === false ? <FaCalendarAlt/> : <FaTasks/>} handleClick={() => showCalendar ? setShowCalendar(false) : setShowCalendar(true)}> </Button></div>
             <div className="task-list">
                 {showCalendar === false ? <div className="container">
                 <TaskListHeader setAdder={() => setShowAdder(true)} changeSort={changeSortMethod} sortMethod={sortMethod.current}/>
@@ -367,6 +371,7 @@ function TaskList () {
                  addSubtask={addSubtask} toggleSubtaskAdder={toggleSubtaskAdder} />: <div className="no-tasks">Empty Task List</div>}
                 </div> : <HeatMap tasks={tasks}/> } 
             </ div>
+          </div>   
         </>
     );
 }
