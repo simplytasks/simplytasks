@@ -1,13 +1,23 @@
-import NavBar from './components/NavBar.js'
-import TaskList from './components/TaskList.js'
+import NavBar from './components/NavBar.js';
+import TaskList from './components/TaskList.js';
+import {useState} from 'react';
+import HeatMap from './components/HeatMap'
 
 import './TaskPage.css';
 
-const TaskPage = ({setCurrentPage, currentUser}) => {
+const TaskPage = ({setCurrentPage}) => {
+
+    // calendar mode vs task list mode
+    const [showCalendar, setShowCalendar] = useState(false); 
+
+    const [tasks, setTasks] = useState([]);
+
     return (
         <>
-        <NavBar setCurrentPage={setCurrentPage} />
-        <TaskList currentUser={currentUser} setCurrentPage={setCurrentPage}/>
+        <NavBar setCurrentPage={setCurrentPage} showCalendar={showCalendar} setShowCalendar={setShowCalendar} />
+        <div className="task-list">
+        {showCalendar == false ? <TaskList tasks={tasks} setTasks={setTasks} /> : <HeatMap tasks={tasks}/> } 
+        </div>
       </>
     );
 }

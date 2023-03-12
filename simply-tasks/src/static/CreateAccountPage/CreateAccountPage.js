@@ -58,8 +58,8 @@ const CreateAccount = ({setCurrentPage,  setCurrentUser, currentUser}) => {
                     <div className="logo">Simply<span>Tasks</span></div>
                     <nav>
                         <ul>
-                            <li className="switch-login"><a href="#log-in" onClick={() => setCurrentPage('log-in')}>Log In</a></li>
-                            <li className="return-to-home"><a href="#return-to-home"
+                            <li className="switch-login"><a href="#!" onClick={() => setCurrentPage('log-in')}>Log In</a></li>
+                            <li className="return-to-home"><a href="#!"
                                                               onClick={() => setCurrentPage('home')}>Return to
                                 Home</a></li>
                         </ul>

@@ -50,8 +50,8 @@ const LogIn = ({setCurrentPage, setCurrentUser}) => {
 
             <nav>
                 <ul>
-                    <li className="switch-create-account"><a href="#create-account" onClick={() => setCurrentPage('create-account')}>Create Account</a></li>
-                    <li className="return-to-home"><a href="#return-to-home" onClick={() => setCurrentPage('home')}>Return to Home</a></li>
+                    <li className="switch-create-account"><a href="#!" onClick={() => setCurrentPage('create-account')}>Create Account</a></li>
+                    <li className="return-to-home"><a href="#!" onClick={() => setCurrentPage('home')}>Return to Home</a></li>
                 </ul>
             </nav>
         </div>

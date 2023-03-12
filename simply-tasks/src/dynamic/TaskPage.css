@@ -100,6 +100,19 @@ nav li.log-out a:hover {
     color: var(--offwhite-color);
 }
 
+nav li.toggle-calendar a { 
+  color: var(--primary-color);
+  border: 0.3em solid var(--primary-color);
+  font-weight: bold;
+  border-radius: 5em;
+  margin-right: .5em;
+}
+
+nav li.toggle-calendar a:hover {
+  background-color: var(--primary-color);
+  color: var(--offwhite-color);
+}
+
 /*
 TASK LIST
 */
@@ -136,7 +149,7 @@ TASK LIST
 .task-list .header .add {
   margin-right: 0.4em;
 }
-  
+
 .btn {
     display: inline-block;
     background: var(--primary-color);
@@ -170,6 +183,12 @@ TASK LIST
     align-items: center;
     justify-content: space-between;
     font-size: 1.1em;
+  }
+
+  .task .drag-and-drop {
+    font-size: .85em;
+    margin-bottom: .1em;
+    margin-right: .2em;
   }
   .task h5 {
     display: flex;
