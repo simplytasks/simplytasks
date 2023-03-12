@@ -33,10 +33,6 @@ const LogIn = ({setCurrentPage}) => {
             username.style.setProperty('--c', 'rgb(207, 93, 93)');
             setTimeout(() => username.style.setProperty('--c', 'gray'), 1500);
         }
-        else if (username.value === 'calendar'){
-            console.log(username.value); // shady method, update this later to include a calendar icon
-            setCurrentPage('calendar'); 
-        }
         else {
             console.log(username.value); // grab value of username for database, rerouted to specific user page
             setCurrentPage('user');
