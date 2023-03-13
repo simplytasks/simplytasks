@@ -18,7 +18,7 @@ Our project was a task manager with the following features:
     - Create Account Page
     - Task Page with Task List and functionality to add, remove, highlight tasks
     - Subtasks for each individual task in Task List with add, remove, highlight functionality
-    - Fully functional backend implementation using JSON-Server with Node.js with dynamic updates to users/tasks/subtasks
+    - Fully functional backend implementation using JSON-Server with Node.js to serve dynamic updates to users/tasks/subtasks
   - Byron Karlen
     - Sort task button with ability to sort tasks by Time Added, Due Date, or by Highlight
   - Nakul Khambati
