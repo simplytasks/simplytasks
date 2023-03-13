@@ -32,9 +32,12 @@ Our project was a task manager with the following features:
   ```
   npm install && npm start
   ```
-  Make sure that the development environment is not running on port 3002. Then, in a separate terminal, within the `simply-tasks` directory, run the following:
+  Make sure that the development environment is not running on port 3002. Also, make sure no other process is using port 3002. One way to do this would be:
   ```
-  awk '{print $2}' <(lsof -i :3002) | grep '[0-9]'
+  kill -9 $(awk '{print $2}' <(lsof -i :3002) | grep '[0-9]')
+  ```
+  Then, in a separate terminal, within the `simply-tasks` directory, run the following:
+  ```
   npm run server
   ```
   to run the server concurrently with the development environment in order to track state changes to users and user task lists and serve the necessary dynamic data for correct frontend functionality.
