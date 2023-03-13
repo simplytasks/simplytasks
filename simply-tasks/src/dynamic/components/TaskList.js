@@ -118,8 +118,6 @@ function TaskList ({user, tasks, setTasks}) {
       const sortTasksByManual = (task1, task2) => {
         let i1 = -1; 
         let i2 = -1;
-        // const i1 = prevDraggedTasks.current.indexOf(task1);
-        // const i2 = prevDraggedTasks.current.indexOf(task2);
         for(let i = 0; i < prevDraggedTasks.current.length; i++){
             if(prevDraggedTasks.current[i].content === task1.content && 
                 prevDraggedTasks.current[i].date === task1.date){
@@ -130,8 +128,6 @@ function TaskList ({user, tasks, setTasks}) {
                 i2 = i;
             }
         }
-        console.log('i1: ' + i1);
-        console.log('i2: ' + i2);
         if (i1 === -1 || i2 === -1){
             return 0;
         }
@@ -159,13 +155,6 @@ function TaskList ({user, tasks, setTasks}) {
         }
         else if (sortMethod === 'Sort by: Manual')
         {
-          for(let i = 0; i < currentTasks.length; i++){
-            console.log('currentTasks ' + i + ':' + currentTasks[i].content)
-          }
-          for(let i = 0; i < prevDraggedTasks.current.length; i++){
-            console.log('prevDraggedTasks ' + i + ':' + prevDraggedTasks.current[i].content)
-          }
-
           currentTasks.sort(sortTasksByManual);
           prevDraggedTasks.current = [...currentTasks]
         }
@@ -487,11 +476,8 @@ function TaskList ({user, tasks, setTasks}) {
   }
 
   const handleDragStart = () =>{
-    
     prevDraggedTasks.current = sortTasks(tasks);
-    console.log(prevDraggedTasks.current);
     sortMethod.current = "Sort by: Manual";
-
   }
 
     return (
