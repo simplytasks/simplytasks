@@ -68,6 +68,7 @@ function TaskList ({user, tasks, setTasks}) {
       
       const [showAdder, setShowAdder] = useState(false); 
       const sortMethod = useRef('Sort by: Recently Added');
+      const prevDraggedTasks = useRef([]);
       
       
       const sortTasksByTimeAdded = (task1, task2) =>{
@@ -113,18 +114,60 @@ function TaskList ({user, tasks, setTasks}) {
         else if (score1 > score2) return 1; 
         return 0;
       }
+      
+      const sortTasksByManual = (task1, task2) => {
+        let i1 = -1; 
+        let i2 = -1;
+        // const i1 = prevDraggedTasks.current.indexOf(task1);
+        // const i2 = prevDraggedTasks.current.indexOf(task2);
+        for(let i = 0; i < prevDraggedTasks.current.length; i++){
+            if(prevDraggedTasks.current[i].content === task1.content && 
+                prevDraggedTasks.current[i].date === task1.date){
+                i1 = i;
+            }
+            if(prevDraggedTasks.current[i].content === task2.content && 
+                prevDraggedTasks.current[i].date === task2.date){
+                i2 = i;
+            }
+        }
+        console.log('i1: ' + i1);
+        console.log('i2: ' + i2);
+        if (i1 === -1 || i2 === -1){
+            return 0;
+        }
+        else {
+            if (i1 < i2){
+                return -1;
+            }
+            else if (i1 > i2){
+                return 1; 
+            }
+            return 0; 
+        }
+      }
 
       const sortTasks = (currentTasks, sortMethod) => {
-
         if(sortMethod === 'Sort by: Highlighted'){
           currentTasks.sort(sortTasksByHighlight);
-      }
+        }
         else if (sortMethod === 'Sort by: Due Date'){
           currentTasks.sort(sortTasksByDueDate);
         }
         else if (sortMethod === 'Sort by: Recently Added')
         {
           currentTasks.sort(sortTasksByTimeAdded);
+        }
+        else if (sortMethod === 'Sort by: Manual')
+        {
+          for(let i = 0; i < currentTasks.length; i++){
+            console.log('currentTasks ' + i + ':' + currentTasks[i].content)
+          }
+          for(let i = 0; i < prevDraggedTasks.current.length; i++){
+            console.log('prevDraggedTasks ' + i + ':' + prevDraggedTasks.current[i].content)
+          }
+
+          currentTasks.sort(sortTasksByManual);
+          prevDraggedTasks.current = [...currentTasks]
         }
 
         return currentTasks;
@@ -141,7 +184,8 @@ function TaskList ({user, tasks, setTasks}) {
         }
         else if(sortMethod.current === 'Sort by: Highlighted'){
           newSortMethod = 'Sort by: Recently Added';
-        } else if(sortMethod.current === 'Sort by: Manual'){
+        } 
+        else if(sortMethod.current === 'Sort by: Manual'){
           newSortMethod = 'Sort by: Recently Added';
         }
 
@@ -337,7 +381,8 @@ function TaskList ({user, tasks, setTasks}) {
 
         const data = await res.json()
         
-        setTasks(data.tasks);
+        const sortedTasks = sortTasks(data.tasks, sortMethod.current);
+        setTasks(sortedTasks);
       }
 
       const addSubtask = async (content, taskID) => {
@@ -412,27 +457,29 @@ function TaskList ({user, tasks, setTasks}) {
 
       if (active.id !== over.id) {
 
-        
+            //TODO: modify prevdraggedTasks
 
-          setTasks((items) => {
-              console.log("D", items)
-              const oldIndex = items.findIndex((o) => {
-                  if(o.id === active.id){
-                      return true
-                  } else {
-                      return false;
-                  }
-              });
-              const newIndex =  items.findIndex((n) => {
-                  if(n.id === over.id){
-                      return true
-                  } else {
-                      return false;
-                  }
-              });
-              console.log("checkB",oldIndex, newIndex);
-              return arrayMove(tasks, oldIndex, newIndex); //swap 0 and 2
-          });
+          const setTasksFunc = (items) => {
+            console.log("D", items)
+            const oldIndex = items.findIndex((o) => {
+                if(o.id === active.id){
+                    return true
+                } else {
+                    return false;
+                }
+            });
+            const newIndex =  items.findIndex((n) => {
+                if(n.id === over.id){
+                    return true
+                } else {
+                    return false;
+                }
+            });
+            console.log("checkB",oldIndex, newIndex);
+            return arrayMove(tasks, oldIndex, newIndex); //swap 0 and 2
+        }
+        setTasks(setTasksFunc);
+        prevDraggedTasks.current = setTasksFunc([...tasks]);
 
 
 
@@ -440,9 +487,10 @@ function TaskList ({user, tasks, setTasks}) {
   }
 
   const handleDragStart = () =>{
-   
+    
+    prevDraggedTasks.current = sortTasks(tasks);
+    console.log(prevDraggedTasks.current);
     sortMethod.current = "Sort by: Manual";
-    ///changeSortMethod()
 
   }
 
