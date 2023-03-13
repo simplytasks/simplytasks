@@ -17,7 +17,7 @@ const TaskPage = ({setCurrentPage, user}) => {
         <>
         <NavBar setCurrentPage={setCurrentPage} showCalendar={showCalendar} setShowCalendar={setShowCalendar} />
         <div className="task-list">
-        {showCalendar == false ? <TaskList user={user} tasks={tasks} setTasks={setTasks} /> : <HeatMap tasks={tasks}/> } 
+        {showCalendar === false ? <TaskList user={user} tasks={tasks} setTasks={setTasks} /> : <HeatMap tasks={tasks}/> } 
         </div>
       </>
     );

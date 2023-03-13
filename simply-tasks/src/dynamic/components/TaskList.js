@@ -35,14 +35,19 @@ function TaskList ({user, tasks, setTasks}) {
     const response = await fetch(`http://localhost:3002/users/${user}`);
     const data = await response.json();
 
+    let currentTask = undefined;
+
     data.tasks.forEach(
+
       (task) => {
-        if (id == task.id){
-          return task;
+        
+        if (id === task.id){
+          currentTask = task
         }
       }
     )
-    console.log('could not find task');
+
+    return currentTask;
   }
 
   const recreateUser = (taskList) => {
@@ -212,17 +217,8 @@ function TaskList ({user, tasks, setTasks}) {
 
         const userFromDatabase = await res.json()
        
-        if (sortMethod.current !== 'Sort by: Highlighted'){
-          setTasks(
-              userFromDatabase.tasks
-          )
-        }
-        else {
-          
-          let sortedTasks = sortTasks(userFromDatabase.tasks, sortMethod.current);
-          setTasks(sortedTasks);
-
-        }
+        let sortedTasks = sortTasks(userFromDatabase.tasks, sortMethod.current);
+        setTasks(sortedTasks);
       }
       
       const addTask = async ({content, date}) => {
@@ -234,10 +230,9 @@ function TaskList ({user, tasks, setTasks}) {
         const id = Math.floor(Math.random() * 11111) + 3;
 
         const newTask = {content, date, highlight, showSubtasks, showSubtaskAdder, subtasks, timeAdded, id};
-        console.log(JSON.stringify(newTask));
 
         const data = await fetchTasks();
-        data.push(newTask);
+        data.unshift(newTask);
 
         const output = recreateUser(data);
 
@@ -259,10 +254,31 @@ function TaskList ({user, tasks, setTasks}) {
 
       // SUBTASKS
 
-      const showSubtasks = (e, id) => {
+      const showSubtasks = async (e, id) => {
         e.stopPropagation();
+
+        const task = await fetchTask(id);
+        const updatedTask = {...task, showSubtasks: ! task.showSubtasks}
+
+        const tasks = await fetchTasks();
+
+        const updatedTasks = tasks.map(
+          (task) => task.id === id ? updatedTask : task
+        )
+
+        const output = recreateUser(updatedTasks);
+
+        fetch(`http://localhost:3002/users/${user}`,{
+          method: 'PUT',
+          headers: {
+            'Content-type' : 'application/json'
+          },
+          body: JSON.stringify(output)
+        }
+        )
+
         setTasks(
-          tasks.map((task) => task.id === id ? {...task, showSubtasks: !task.showSubtasks, showSubtaskAdder: false} : task)
+          updatedTasks
         )
       }
 
@@ -275,25 +291,23 @@ function TaskList ({user, tasks, setTasks}) {
           (subtask) => subtask.id !== subtaskID
         );
         const updatedTask = {...task, subtasks: UPsubtasks}
-        const res = await fetch(`http://localhost:3002/users/${user}/tasks/${taskID}`,{
+        const tasks = await fetchTasks();
+
+        const updatedTasks = tasks.map(
+          (task) => task.id === taskID ? updatedTask : task
+        )
+
+        const output = recreateUser(updatedTasks);
+
+        fetch(`http://localhost:3002/users/${user}`,{
           method: 'PUT',
           headers: {
             'Content-type' : 'application/json'
           },
-          body: JSON.stringify(updatedTask)
+          body: JSON.stringify(output)
         }
         )
 
-        const data = await res.json()
-
-        const updatedTasks = [...tasks];
-        updatedTasks.forEach(
-          (task) => {
-            if (task.id === taskID){
-              task.subtasks = data.subtasks;
-            }
-          }
-        )
         setTasks(updatedTasks);
       }
 
@@ -304,26 +318,26 @@ function TaskList ({user, tasks, setTasks}) {
           (subtask) => subtask.id === subtaskID ? {...subtask, highlight: !subtask.highlight} : subtask
         );
         const updatedTask = {...task, subtasks: UPsubtasks}
-        const res = await fetch(`http://localhost:3002/users/${user}/tasks/${taskID}`,{
+        const tasks = await fetchTasks();
+
+        const updatedTasks = tasks.map(
+          (task) => task.id === taskID ? updatedTask : task
+        )
+
+        const output = recreateUser(updatedTasks);
+
+        const res = await fetch(`http://localhost:3002/users/${user}`,{
           method: 'PUT',
           headers: {
             'Content-type' : 'application/json'
           },
-          body: JSON.stringify(updatedTask)
+          body: JSON.stringify(output)
         }
         )
 
         const data = await res.json()
         
-        const updatedTasks = [...tasks];
-        updatedTasks.forEach(
-          (task) => {
-            if (task.id === taskID){
-              task.subtasks = data.subtasks
-            }
-          }
-        )
-        setTasks(updatedTasks);
+        setTasks(data.tasks);
       }
 
       const addSubtask = async (content, taskID) => {
@@ -333,34 +347,33 @@ function TaskList ({user, tasks, setTasks}) {
         const newSubtask = {content, highlight, id};
         
 
+        console.log(taskID)
         const task = await fetchTask(taskID)
         let UPsubtasks = task.subtasks;
         UPsubtasks.push(newSubtask);
         const updatedTask = {...task, subtasks: UPsubtasks}
-        const res = await fetch(`http://localhost:3002/users/${user}/tasks/${taskID}`,{
+        const tasks = await fetchTasks();
+
+        const updatedTasks = tasks.map(
+          (task) => task.id === taskID ? updatedTask : task
+        )
+
+        const output = recreateUser(updatedTasks);
+
+        fetch(`http://localhost:3002/users/${user}/`,{
           method: 'PUT',
           headers: {
             'Content-type' : 'application/json'
           },
-          body: JSON.stringify(updatedTask)
+          body: JSON.stringify(output)
         }
         )
 
-        const data = await res.json();
-
-        const updatedTasks = [...tasks];
-        updatedTasks.forEach(
-          (task) => {
-            if (task.id === taskID){
-              task.subtasks = [...data.subtasks]
-            }
-          }
-        )
         setTasks(updatedTasks);
       }
 
-      const toggleSubtaskAdder = (taskID) => {
-        const updatedTasks = [...tasks];
+      const toggleSubtaskAdder = async (taskID) => {
+        const updatedTasks = await fetchTasks()
         updatedTasks.forEach(
           (task) => {
             if (task.id === taskID){
@@ -368,6 +381,18 @@ function TaskList ({user, tasks, setTasks}) {
             }
           }
         )
+
+        const output = recreateUser(updatedTasks);
+
+        fetch(`http://localhost:3002/users/${user}/`,{
+          method: 'PUT',
+          headers: {
+            'Content-type' : 'application/json'
+          },
+          body: JSON.stringify(output)
+        }
+        )
+
         setTasks(updatedTasks);
       }
 
@@ -392,14 +417,14 @@ function TaskList ({user, tasks, setTasks}) {
           setTasks((items) => {
               console.log("D", items)
               const oldIndex = items.findIndex((o) => {
-                  if(o.id == active.id){
+                  if(o.id === active.id){
                       return true
                   } else {
                       return false;
                   }
               });
               const newIndex =  items.findIndex((n) => {
-                  if(n.id == over.id){
+                  if(n.id === over.id){
                       return true
                   } else {
                       return false;

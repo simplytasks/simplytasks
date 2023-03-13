@@ -19,7 +19,7 @@ const LogIn = ({setCurrentPage, setUser}) => {
             let userExists = false;
             userData.forEach(
                 (user) => {
-                    if (user.id == username.value){
+                    if (user.id === username.value){
                         userExists = true;
                     }
                 }
