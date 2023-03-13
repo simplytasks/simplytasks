@@ -32,12 +32,12 @@ Our project was a task manager with the following features:
   ```
   npm install && npm start
   ```
-  In a separate terminal, within the `simply-tasks` directory, run the following:
+  Make sure that the development environment is not running on port 3002. Then, in a separate terminal, within the `simply-tasks` directory, run the following:
   ```
   awk '{print $2}' <(lsof -i :3002) | grep '[0-9]'
   npm run server
   ```
-  to run the server concurrently with the development environment in order to reflect changes and track state changes to users and user task lists.
+  to run the server concurrently with the development environment in order to track state changes to users and user task lists and serve the necessary dynamic data for correct frontend functionality.
   
   The above assumes a POSIX-compliant [shell](https://pubs.opengroup.org/onlinepubs/9699919799/utilities/V3_chap02.html#tag_18), a local [git](https://git-scm.com/book/en/v2/Getting-Started-Installing-Git) installation, and also a local [Node.js](https://nodejs.org/en/) installation.
   
