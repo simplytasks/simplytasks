@@ -14,10 +14,17 @@ const LogIn = ({setCurrentPage, setUser}) => {
             setTimeout(() => username.style.setProperty('--c', 'gray'), 1500);
         } else {
             /* check user exists */
-            const response = await fetch(`http://localhost:3002/users`)
-            const data = await response.json();
-
-            if (!data.includes(username.value)){
+            const res = await fetch('http://localhost:3002/users');
+            let userData = await res.json();
+            let userExists = false;
+            userData.forEach(
+                (user) => {
+                    if (user.id == username.value){
+                        userExists = true;
+                    }
+                }
+            )
+            if (!userExists){
                 setUsernameValue('');
                 username.style.setProperty('--c', 'rgb(207, 93, 93)');
                 setPlaceholderValue("does not exist")

@@ -15,7 +15,7 @@ function App() {
   } else if (currentPage === 'log-in'){
     return <LogInPage setCurrentPage={setCurrentPage} setUser={setUser} />;
   } else if (currentPage === 'create-account'){
-    return <CreateAccountPage setCurrentPage={setCurrentPage} />;
+    return <CreateAccountPage setUser={setUser} setCurrentPage={setCurrentPage} />;
   } else {
     return <TaskPage user ={user} setCurrentPage={setCurrentPage} />
   }

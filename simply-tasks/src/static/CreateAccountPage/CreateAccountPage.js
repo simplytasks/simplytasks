@@ -3,7 +3,7 @@ import {useState, useEffect} from 'react';
 
 
 
-const CreateAccount = ({setCurrentPage}) => {
+const CreateAccount = ({setCurrentPage, setUser}) => {
 
     const [usernameValue, setUsernameValue] = useState('');
     const [placeholder, setPlaceholder] = useState('type a new username')
@@ -38,11 +38,16 @@ const CreateAccount = ({setCurrentPage}) => {
         } else {
 
             let userData = await fetchUsers();
-            console.log(userData);
-            console.log('username.value ' + username.value)
-            console.log('usernameValue ' + usernameValue)
+            let userExists = false;
+            userData.forEach(
+                (user) => {
+                    if (user.id == username.value){
+                        userExists = true;
+                    }
+                }
+            )
 
-            if (userData.includes(username.value)){ 
+            if (userExists){ 
                 setUsernameValue('');
                 setPlaceholder('username taken');
                 username.style.setProperty('--c', 'rgb(207, 93, 93)');
@@ -55,10 +60,9 @@ const CreateAccount = ({setCurrentPage}) => {
 
                 // console.log(userData);
 
-                const sendData = JSON.stringify(usernameValue)
-                console.log(sendData)
+                const sendData = {id: usernameValue, tasks: []};
 
-                const response = await fetch(`http://localhost:3002/users`, {
+                fetch(`http://localhost:3002/users`, {
                     method: 'POST',
                     headers: {
                       'Content-type': 'application/json'
@@ -66,25 +70,14 @@ const CreateAccount = ({setCurrentPage}) => {
                     body: JSON.stringify(sendData)
                   })
 
-                  const data = await response.json()
-                  console.log(data)
-
-                // const res = await fetch(`http://localhost:3002/${usernameValue}`, {
-                //     method: 'POST',
-                //     headers: {
-                //       'Content-type': 'application/json'
-                //     },
-                //     body: JSON.stringify([])
-                //   });
-
 
 
                 setUsernameValue("");
                 setPlaceholder('account created')
                 username.style.setProperty('--c', '#268e8e');
                 setTimeout(() => {
-                    // setCurrentPage('log-in');
-                    alert('would else go to log-in')
+                    setCurrentPage('log-in');
+                    
                 }, 1000);
 
             }
