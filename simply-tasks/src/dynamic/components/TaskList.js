@@ -171,42 +171,36 @@ function TaskList ({user, tasks, setTasks}) {
       const deleteTask = async (e, id) => {
         e.stopPropagation();
 
-        let data = await fetchTasks();
-        const newTasks = data.filter(
-          (task) => task.id !== id
-        )
+        const newTasks = tasks.filter(
+          task => task.id !== id
+          )
+
+        setTasks(newTasks)
 
         const output = recreateUser(newTasks);
 
-        const res = await fetch(`http://localhost:3002/users/${user}`,{
+        fetch(`http://localhost:3002/users/${user}`,{
           method: 'PUT',
           headers: {
             'Content-type' : 'application/json'
           },
           body: JSON.stringify(output)
-        }
-        )
-
-        const userFromDatabase = await res.json()
-
-      
-        setTasks(
-          userFromDatabase.tasks.filter((task) => task.id !== id)
-        )
+        })
       }
 
       // highlight task
       const highlightTask = async (id) => {
 
-        const data = await fetchTasks();
-
-        const newTasks = data.map(
+        const newTasks = tasks.map(
           (task) => task.id === id ? {...task, highlight: !task.highlight} : task
         )
 
+        const sortedTasks = sortTasks(newTasks, sortMethod.current);
+        setTasks(sortedTasks);
+
         const output = recreateUser(newTasks);
 
-        const res = await fetch(`http://localhost:3002/users/${user}`,{
+        fetch(`http://localhost:3002/users/${user}`,{
           method: 'PUT',
           headers: {
             'Content-type' : 'application/json'
@@ -214,11 +208,7 @@ function TaskList ({user, tasks, setTasks}) {
           body: JSON.stringify(output)
         }
         )
-
-        const userFromDatabase = await res.json()
-       
-        let sortedTasks = sortTasks(userFromDatabase.tasks, sortMethod.current);
-        setTasks(sortedTasks);
+      
       }
       
       const addTask = async ({content, date}) => {
@@ -231,12 +221,14 @@ function TaskList ({user, tasks, setTasks}) {
 
         const newTask = {content, date, highlight, showSubtasks, showSubtaskAdder, subtasks, timeAdded, id};
 
-        const data = await fetchTasks();
-        data.unshift(newTask);
+        const newTasks = [newTask, ...tasks]
 
-        const output = recreateUser(data);
+        const newSortedTasks = sortTasks(newTasks, sortMethod.current)
+        setTasks(newSortedTasks)
 
-        const res = await fetch(`http://localhost:3002/users/${user}`,{
+        const output = recreateUser(newTasks);
+
+        fetch(`http://localhost:3002/users/${user}`,{
           method: 'PUT',
           headers: {
             'Content-type' : 'application/json'
@@ -245,11 +237,6 @@ function TaskList ({user, tasks, setTasks}) {
         }
         )
 
-        const userFromDatabase = await res.json()
-
-        let newSortedTasks = sortTasks(userFromDatabase.tasks, sortMethod.current);
-
-        setTasks(newSortedTasks);
       }
 
       // SUBTASKS
@@ -257,14 +244,9 @@ function TaskList ({user, tasks, setTasks}) {
       const showSubtasks = async (e, id) => {
         e.stopPropagation();
 
-        const task = await fetchTask(id);
-        const updatedTask = {...task, showSubtasks: ! task.showSubtasks}
+        const updatedTasks = tasks.map(task => task.id === id ? {...task, showSubtasks: !task.showSubtasks, showSubtaskAdder: false} : task)
 
-        const tasks = await fetchTasks();
-
-        const updatedTasks = tasks.map(
-          (task) => task.id === id ? updatedTask : task
-        )
+        setTasks(updatedTasks)
 
         const output = recreateUser(updatedTasks);
 
@@ -277,25 +259,22 @@ function TaskList ({user, tasks, setTasks}) {
         }
         )
 
-        setTasks(
-          updatedTasks
-        )
       }
 
       const deleteSubtask = async (e, taskID, subtaskID) => {
 
         e.stopPropagation();
 
-        const task = await fetchTask(taskID);
-        let UPsubtasks = task.subtasks.filter(
-          (subtask) => subtask.id !== subtaskID
-        );
-        const updatedTask = {...task, subtasks: UPsubtasks}
-        const tasks = await fetchTasks();
-
-        const updatedTasks = tasks.map(
-          (task) => task.id === taskID ? updatedTask : task
+        const updatedTasks = [...tasks];
+        updatedTasks.forEach(
+          (task) => {
+            if (task.id === taskID){
+              task.subtasks = task.subtasks.filter((subtask) => subtask.id !== subtaskID);
+            }
+          }
         )
+
+        setTasks(updatedTasks);
 
         const output = recreateUser(updatedTasks);
 
@@ -307,26 +286,26 @@ function TaskList ({user, tasks, setTasks}) {
           body: JSON.stringify(output)
         }
         )
-
-        setTasks(updatedTasks);
       }
 
       const highlightSubtask = async (taskID, subtaskID) => {
 
-        const task = await fetchTask(taskID);
-        let UPsubtasks = task.subtasks.map(
-          (subtask) => subtask.id === subtaskID ? {...subtask, highlight: !subtask.highlight} : subtask
-        );
-        const updatedTask = {...task, subtasks: UPsubtasks}
-        const tasks = await fetchTasks();
-
-        const updatedTasks = tasks.map(
-          (task) => task.id === taskID ? updatedTask : task
+        const updatedTasks = [...tasks];
+        updatedTasks.forEach(
+          (task) => {
+            if (task.id === taskID){
+              task.subtasks = task.subtasks.map(
+                (subtask) => subtask.id === subtaskID ? { ...subtask, highlight: !subtask.highlight }: subtask
+              )
+            }
+          }
         )
+
+        setTasks(updatedTasks)
 
         const output = recreateUser(updatedTasks);
 
-        const res = await fetch(`http://localhost:3002/users/${user}`,{
+        fetch(`http://localhost:3002/users/${user}`,{
           method: 'PUT',
           headers: {
             'Content-type' : 'application/json'
@@ -334,10 +313,6 @@ function TaskList ({user, tasks, setTasks}) {
           body: JSON.stringify(output)
         }
         )
-
-        const data = await res.json()
-        
-        setTasks(data.tasks);
       }
 
       const addSubtask = async (content, taskID) => {
@@ -346,16 +321,13 @@ function TaskList ({user, tasks, setTasks}) {
         const highlight = false;
         const newSubtask = {content, highlight, id};
         
-
-        console.log(taskID)
-        const task = await fetchTask(taskID)
-        let UPsubtasks = task.subtasks;
-        UPsubtasks.push(newSubtask);
-        const updatedTask = {...task, subtasks: UPsubtasks}
-        const tasks = await fetchTasks();
-
-        const updatedTasks = tasks.map(
-          (task) => task.id === taskID ? updatedTask : task
+        const updatedTasks = [...tasks];
+        updatedTasks.forEach(
+          (task) => {
+            if (task.id === taskID){
+              task.subtasks = [...task.subtasks, newSubtask]
+            }
+          }
         )
 
         const output = recreateUser(updatedTasks);
@@ -373,7 +345,7 @@ function TaskList ({user, tasks, setTasks}) {
       }
 
       const toggleSubtaskAdder = async (taskID) => {
-        const updatedTasks = await fetchTasks()
+        const updatedTasks = [...tasks]
         updatedTasks.forEach(
           (task) => {
             if (task.id === taskID){
@@ -381,6 +353,7 @@ function TaskList ({user, tasks, setTasks}) {
             }
           }
         )
+        setTasks(updatedTasks)
 
         const output = recreateUser(updatedTasks);
 
@@ -392,8 +365,6 @@ function TaskList ({user, tasks, setTasks}) {
           body: JSON.stringify(output)
         }
         )
-
-        setTasks(updatedTasks);
       }
 
 
