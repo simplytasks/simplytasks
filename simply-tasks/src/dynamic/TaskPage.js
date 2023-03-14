@@ -7,7 +7,6 @@ import './TaskPage.css';
 
 const TaskPage = ({setCurrentPage, user}) => {
 
-    // calendar mode vs task list mode
     const [showCalendar, setShowCalendar] = useState(false); 
 
     const [tasks, setTasks] = useState([]);

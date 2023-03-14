@@ -4,15 +4,14 @@ import Calendar from 'react-calendar';
 import HeatMapHeader from './HeatMapHeader';
 
 export default HeatMap;
-// remove add task in the header here 
 function HeatMap({tasks}){
 
     const [date, setDate] = useState(new Date()); 
 
 
     const extractedDates = tasks
-    .map(task => task.date) // get all dates
-    .filter((date, index, array) => array.indexOf(date) === index); // filter out duplicates
+    .map(task => task.date)
+    .filter((date, index, array) => array.indexOf(date) === index);
   
     const countDates = extractedDates
       .map(date => ({

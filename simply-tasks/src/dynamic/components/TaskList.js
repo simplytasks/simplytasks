@@ -31,25 +31,6 @@ function TaskList ({user, tasks, setTasks}) {
     return data.tasks;
   }
 
-  const fetchTask = async (id) => {
-    const response = await fetch(`http://localhost:3002/users/${user}`);
-    const data = await response.json();
-
-    let currentTask = undefined;
-
-    data.tasks.forEach(
-
-      (task) => {
-        
-        if (id === task.id){
-          currentTask = task
-        }
-      }
-    )
-
-    return currentTask;
-  }
-
   const recreateUser = (taskList) => {
     return {id: user, tasks: taskList};
   }
@@ -150,8 +131,6 @@ function TaskList ({user, tasks, setTasks}) {
         setTasks(sortTasks(currentTasks, newSortMethod));
       }
 
-      //this function returns an ID which specifies when it was created 
-      //and is used to sort the tasks by time created
       function getCurrentTimeID() {
         let now = new Date();
         let year = now.getUTCFullYear().toString();
@@ -164,7 +143,6 @@ function TaskList ({user, tasks, setTasks}) {
         return id;
       }
 
-    
       // TASK MANAGEMENT
 
       // delete task
@@ -379,14 +357,11 @@ function TaskList ({user, tasks, setTasks}) {
     function handleDragEnd(event) {
       const {active, over} = event;
 
-      //console.log("check1",active,over);
-
       if (active.id !== over.id) {
 
         
 
           setTasks((items) => {
-              console.log("D", items)
               const oldIndex = items.findIndex((o) => {
                   if(o.id === active.id){
                       return true
@@ -401,7 +376,6 @@ function TaskList ({user, tasks, setTasks}) {
                       return false;
                   }
               });
-              console.log("checkB",oldIndex, newIndex);
               return arrayMove(tasks, oldIndex, newIndex); //swap 0 and 2
           });
 
@@ -413,7 +387,6 @@ function TaskList ({user, tasks, setTasks}) {
   const handleDragStart = () =>{
    
     sortMethod.current = "Sort by: Manual";
-    ///changeSortMethod()
 
   }
 

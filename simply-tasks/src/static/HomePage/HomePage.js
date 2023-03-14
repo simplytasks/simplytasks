@@ -35,11 +35,11 @@ const HomePage = ({setCurrentPage}) => {
     <section id="features-section" className="features-section">
         <div className="container">
             <ul className="features-list">
+                <li>Create user accounts with your own dedicated task list!</li>
                 <li>Add, highlight, and remove tasks!</li>
                 <li>Create subtasks specific to any task!</li>
-                <li>Sort your tasks by date, highlight, time added, or manually!</li>
-                <li>Drag and drop to re-organize your tasks manually!</li>
-                <li>View your tasks in a calender view!</li>
+                <li>Sort your tasks by date, highlight, time added, or by by drag-and-drop!</li>
+                <li>View your tasks in a calendar view!</li>
                 <li>Never worry about losing your tasks!</li>
             </ul>
 
@@ -54,19 +54,19 @@ const HomePage = ({setCurrentPage}) => {
                 <li>
                     <img alt='' src="/images/arteen.jpg" />
 
-                    <blockquote>"Meets all the requirements!"</blockquote>
+                    <blockquote>"Definitely a good project!"</blockquote>
                     <cite>- Arteen</cite>
                 </li>
                 <li>
                     <img alt='' src="/images/arteen.jpg" />
 
-                    <blockquote>"Definitely deserves an A!"</blockquote>
+                    <blockquote>"Probably took a long time!"</blockquote>
                     <cite>- Arteen</cite>
                 </li>
                 <li>
                     <img alt='' src="/images/arteen.jpg" />
 
-                    <blockquote>"Give us an A!"</blockquote>
+                    <blockquote>"Very nice styling!"</blockquote>
                     <cite>- Arteen</cite>
                 </li>
             </ul>

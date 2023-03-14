@@ -13,7 +13,7 @@ const LogIn = ({setCurrentPage, setUser}) => {
             username.style.setProperty('--c', 'rgb(207, 93, 93)');
             setTimeout(() => username.style.setProperty('--c', 'gray'), 1500);
         } else {
-            /* check user exists */
+
             const res = await fetch('http://localhost:3002/users');
             let userData = await res.json();
             let userExists = false;
@@ -32,7 +32,6 @@ const LogIn = ({setCurrentPage, setUser}) => {
             } else {
 
             setUser(username.value);
-            console.log('logging in for ' + username.value)
             setCurrentPage('user');
             }
         }

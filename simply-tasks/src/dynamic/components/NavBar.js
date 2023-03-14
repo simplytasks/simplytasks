@@ -11,7 +11,7 @@ function NavBar({setCurrentPage, setShowCalendar, showCalendar}) {
             <a href="#!"  onClick={() => 
             {
               setShowCalendar(!showCalendar)
-            }}>{showCalendar ? 'Task View' : 'Calender View' }</a>
+            }}>{showCalendar ? 'Task View' : 'Calendar View' }</a>
             </li>
             <li className="log-out">
             <a href="#!" onClick={()=>setCurrentPage('home')}>Log Out</a>

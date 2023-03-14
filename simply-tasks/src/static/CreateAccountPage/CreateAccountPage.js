@@ -7,7 +7,6 @@ const CreateAccount = ({setCurrentPage, setUser}) => {
 
     const [usernameValue, setUsernameValue] = useState('');
     const [placeholder, setPlaceholder] = useState('type a new username')
-    // const [users, setUsers] = useState([]);
 
     const fetchUsers = async () => {
         const response = await fetch(`http://localhost:3002/users`);
@@ -15,17 +14,6 @@ const CreateAccount = ({setCurrentPage, setUser}) => {
         
         return data;
       }
-    
-    //   useEffect(
-    //     () => {
-        
-    //       const getUsers = async () => {
-    //         const users = await fetchUsers();
-    //         setUsers(users);
-    //       }
-    
-    //       getUsers();
-    //     }, [])
 
 
     const handleSubmission = async (e) => {
@@ -55,11 +43,6 @@ const CreateAccount = ({setCurrentPage, setUser}) => {
                 {username.style.setProperty('--c', 'gray'); setPlaceholder('type a new username')}, 1500
                 );
             } else {
-
-                // userData.push(usernameValue);
-
-                // console.log(userData);
-
                 const sendData = {id: usernameValue, tasks: []};
 
                 fetch(`http://localhost:3002/users`, {
