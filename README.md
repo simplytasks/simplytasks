@@ -3,11 +3,14 @@
 Welcome to the homepage for our CS 35L -- Intro to Software Construction -- group project, Winter 2023 at UCLA. The group members involved were Arteen Abrishami, Byron Karlen, Matthew Aboudi, Karim Amr, and Nakul Khambati. 
 
 Our project was a task manager with the following features:
- - ability to add, highlight, remove tasks
- - ability to do the same for individual subtasks
- - ability to sort tasks by preferences
- - ability to manually sort tasks by drag-and-drop
- - ability to view tasks in a calender view
+ - ability to store user accounts with individual task lists on backend
+ 
+ - within each user account:
+   - ability to add, highlight, remove tasks
+   - ability to do the same for individual subtasks
+   - ability to sort tasks by preferences
+   - ability to manually sort tasks by drag-and-drop
+   - ability to view tasks in a calender view
  
  The following segments of the app were implemented by each group member:
  
