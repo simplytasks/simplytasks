@@ -25,7 +25,7 @@ Our project was a task manager with the following features:
   - Byron Karlen
     - Sort task button with ability to sort tasks by Time Added, Due Date, or by Highlight
   - Nakul Khambati
-    - Calender heat-map view of tasks with different colors based on number of tasks due on any given date
+    - Calendar heat-map view of tasks with different colors based on number of tasks due on any given date
   - Karim Amr
     - Drag-and-drop and manual sort functionality to enable user re-organization of tasks
   - Matthew Aboudi
