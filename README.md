@@ -1,6 +1,6 @@
 # [simplytasks.github.io](https://github.com/simplytasks/simplytasks.github.io)
 
-Welcome to the homepage for our CS 35L -- Intro to Software Construction -- group project, Winter 2023 at UCLA. The group members involved were Arteen Abrishami, Byron Karlen, Matthew Aboudi, Karim Amr, and Nakul Khambati. 
+Welcome to the homepage for our CS 35L -- Intro to Software Construction -- group project, Winter 2023 at UCLA. The group members involved were Arteen Abrishami, Byron Karlen, Matthew Aboudi, Karim Amr, and Nakul Khambhati. 
 
 Our project was a task manager with the following features:
  - ability to store user accounts with individual task lists on backend
@@ -24,7 +24,7 @@ Our project was a task manager with the following features:
     - Fully functional backend implementation using JSON-Server with Node.js to serve dynamic updates to users/tasks/subtasks
   - Byron Karlen
     - Sort task button with ability to sort tasks by Time Added, Due Date, or by Highlight
-  - Nakul Khambati
+  - Nakul Khambhati
     - Calendar heat-map view of tasks with different colors based on number of tasks due on any given date
   - Karim Amr
     - Drag-and-drop and manual sort functionality to enable user re-organization of tasks
