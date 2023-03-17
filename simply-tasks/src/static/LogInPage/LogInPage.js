@@ -28,7 +28,10 @@ const LogIn = ({setCurrentPage, setUser}) => {
                 setUsernameValue('');
                 username.style.setProperty('--c', 'rgb(207, 93, 93)');
                 setPlaceholderValue("does not exist")
-                setTimeout(() => username.style.setProperty('--c', 'gray'), 1500);
+                setTimeout(() => {
+                    username.style.setProperty('--c', 'gray')
+                    setPlaceholderValue("type your username")}
+                    , 1500);
             } else {
 
             setUser(username.value);
