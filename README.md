@@ -1,4 +1,4 @@
-# [simplytasks.github.io](https://github.com/simplytasks/simplytasks.github.io)
+# [SimplyTasks](https://github.com/simplytasks/simplytasks)
 
 Welcome to the homepage for our CS 35L -- Intro to Software Construction -- group project, Winter 2023 at UCLA. The group members involved were Arteen Abrishami, Byron Karlen, Matthew Aboudi, Karim Amr, and Nakul Khambhati. 
 
