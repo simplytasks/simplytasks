@@ -62,7 +62,10 @@ Our project was a task manager with the following features:
 
 Here's an example of how it might look like when you run it:
 
-![home-page][./imgs/home-page.png]
-![empty-task-list][./imgs/empty-task-list.png]
-![task-list][./imgs/task-list.png]
-![calendar][./imgs/calendar.png]
+![home-page](imgs/home-page.png)
+
+![empty-task-list](imgs/empty-task-list.png)
+
+![task-list](imgs/task-list.png)
+
+![calendar](imgs/calendar.png)
