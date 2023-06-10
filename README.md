@@ -21,7 +21,7 @@ Our project was a task manager with the following features:
     - Create Account Page
     - Task Page with Task List and functionality to add, remove, highlight tasks
     - Subtasks for each individual task in Task List with add, remove, highlight functionality
-    - Fully functional backend implementation using JSON-Server with Node.js to serve dynamic updates to users/tasks/subtasks
+    - Fully functional backend implementation using Node.js, updated reliably with states of users/tasks/subtasks; able to recover user information with individual task pages even upon crash testing
   - Byron Karlen
     - Sort task button with ability to sort tasks by Time Added, Due Date, or by Highlight
   - Nakul Khambhati
@@ -57,5 +57,12 @@ Our project was a task manager with the following features:
   to run the server concurrently with the development environment in order to track state changes to users and user task lists and serve the necessary dynamic data for correct frontend functionality.
   
   The above assumes a POSIX-compliant [shell](https://pubs.opengroup.org/onlinepubs/9699919799/utilities/V3_chap02.html#tag_18), a local [git](https://git-scm.com/book/en/v2/Getting-Started-Installing-Git) installation, and also a local [Node.js](https://nodejs.org/en/) installation.
-  
-  
+
+## Example
+
+Here's an example of how it might look like when you run it:
+
+![home-page][./imgs/home-page.png]
+![empty-task-list][./imgs/empty-task-list.png]
+![task-list][./imgs/task-list.png]
+![calendar][./imgs/calendar.png]
