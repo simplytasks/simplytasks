@@ -1,6 +1,6 @@
 # [SimplyTasks](https://github.com/simplytasks/simplytasks)
 
-Welcome to the homepage for our CS 35L -- Intro to Software Construction -- group project, Winter 2023 at UCLA. The group members involved were Arteen Abrishami, Byron Karlen, Matthew Aboudi, Karim Amr, and Nakul Khambhati. 
+Welcome to the homepage for our CS 35L -- Software Construction -- group project, Winter 2023 at UCLA. The group members involved were Arteen Abrishami, Byron Karlen, Matthew Aboudi, Karim Amr, and Nakul Khambhati. 
 
 Our project was a task manager with the following features:
  - ability to store user accounts with individual task lists on backend
